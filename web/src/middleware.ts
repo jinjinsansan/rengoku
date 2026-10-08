@@ -21,10 +21,9 @@ export async function middleware(request: NextRequest) {
       },
     }
   )
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) {
+  // ★getClaims = ログインの印 (JWT) の署名を手元で確かめる (ES256)。getUser のように毎回 Supabase へ問い合わせない。
+  const { data } = await supabase.auth.getClaims()
+  if (!data?.claims?.sub) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)

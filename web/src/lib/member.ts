@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -22,12 +23,16 @@ export type Member = {
  * - Rengoku で登録した人 (user_metadata.team = 'rengoku') は、初回に rg_members の行を作る
  * - それ以外 (bafather.uk だけの会員) は、運営が rg_members に登録するまで入れない
  */
-export async function requireMember(): Promise<{ userId: string; email: string; member: Member }> {
+export const requireMember = cache(loadMember)
+
+// ★cache: 1 回の画面の表示の中で、layout と page が何度呼んでも問い合わせは 1 度だけ。
+async function loadMember(): Promise<{ userId: string; email: string; member: Member }> {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  // ★getClaims = 署名を手元で確かめる (ES256)。中身に sub・email・user_metadata が入っている。
+  const { data } = await supabase.auth.getClaims()
+  const claims = data?.claims as { sub?: string; email?: string; user_metadata?: Record<string, unknown> } | undefined
+  if (!claims?.sub) redirect('/login')
+  const user = { id: claims.sub, email: claims.email || '', user_metadata: claims.user_metadata || {} }
 
   const admin = createAdminClient()
   let { data: member } = await admin.from('rg_members').select('*').eq('user_id', user.id).maybeSingle()
