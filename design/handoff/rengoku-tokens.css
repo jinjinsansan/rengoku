@@ -1,0 +1,66 @@
+/* Rengoku（煉獄）デザイントークン */
+:root {
+  /* 色 */
+  --rg-ink: #140A06;
+  --rg-char: #24120B;
+  --rg-panel: rgba(36,18,11,.86);
+  --rg-crimson: #B3121B;
+  --rg-flame: #FF5A1F;
+  --rg-ember: #FF8A1F;
+  --rg-gold: #FFC83D;
+  --rg-gold-deep: #D98A0A;
+  --rg-cream: #FFF4E2;
+  --rg-ash: #B9A48F;
+  --rg-win: #FFC83D;
+  --rg-lose: #7FB2FF;
+  --rg-draw: #9A8C80;
+  --rg-ok: #5BD18B;
+  --rg-line: rgba(255,200,61,.35);
+  --rg-line-strong: rgba(255,200,61,.75);
+
+  /* グラデーション */
+  --rg-grad-flame: linear-gradient(180deg,#FFB13D,#FF5A1F 45%,#B3121B);
+  --rg-grad-gold: linear-gradient(180deg,#FFE38A,#FFC83D 50%,#D98A0A);
+  --rg-grad-char: linear-gradient(180deg,#3A1D10,#24120B 60%,#1A0C07);
+  --rg-grad-gold-plate: linear-gradient(100deg,#FFF3B0,#FFC83D 30%,#D98A0A 48%,#FFE38A 62%,#FFF3B0);
+  --rg-grad-bonfire: radial-gradient(120% 60% at 50% 110%,rgba(255,90,31,.38),rgba(179,18,27,.18) 40%,transparent 70%);
+
+  /* 文字 */
+  --rg-font-heading: "Zen Old Mincho", serif;                 /* 700 見出し・ボタン */
+  --rg-font-ui: "Zen Kaku Gothic New", system-ui, sans-serif;  /* 500/700 本文 */
+  --rg-font-label: "Cinzel", serif;                            /* 500/600 英字ロゴ・英字ラベル */
+  --rg-font-num: "Saira Condensed", sans-serif;               /* 600 + tabular-nums */
+  --rg-fs-hero-num: 76px;
+  --rg-fs-title: 18px;
+  --rg-fs-body: 14px;
+  --rg-fs-note: 12px;
+
+  /* 形 */
+  --rg-radius-btn: 14px;
+  --rg-radius-card: 14px;
+  --rg-radius-capsule: 12px;
+  --rg-radius-badge: 6px;
+  --rg-border-btn: 1px solid var(--rg-ink);
+  --rg-border-card: 1px solid rgba(255,200,61,.28);
+  --rg-hairline-gold: 1px solid rgba(255,200,61,.6);
+
+  /* 板ボタン */
+  --rg-btn-h: 60px;
+  --rg-btn-h-sm: 50px;
+  --rg-btn-depth: 4px;
+  --rg-grad-flame-refined: linear-gradient(180deg,#E8822E,#C8441A 55%,#8E1015);
+  --rg-btn-shadow: inset 0 0 0 1px rgba(255,222,150,.55), inset 0 1px 0 rgba(255,255,255,.35), 0 4px 0 #0A0503, 0 12px 22px rgba(150,40,10,.3);
+  --rg-btn-shadow-pressed: inset 0 0 0 1px rgba(255,222,150,.55), 0 0 0 #0A0503, 0 4px 10px rgba(150,40,10,.3);
+  --rg-gold-text: #F2C463;
+  --rg-label-gold: #C9A56A;
+  --rg-press-in: 80ms;
+  --rg-press-out: 120ms;
+
+  /* 骨組み */
+  --rg-hud-h: 64px;
+  --rg-tabbar-h: 76px;
+  --rg-app-w: 390px;
+
+  /* 動き */
+  --rg-shimmer-dur: 6s;
+}

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { TapFeedback } from '@/components/tap-feedback'
 
 export const metadata: Metadata = {
   title: 'Rengoku',
@@ -10,17 +11,25 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: '#140A06', width: 'device-width', initialScale: 1, viewportFit: 'cover' }
 
+// 「動きを止める」(マイページの設定・この端末だけ) を、描画の前に反映する
+const MOTION_INIT = `try{if(localStorage.getItem('rg-reduce-motion')==='1')document.documentElement.dataset.reduceMotion='1'}catch(e){}`
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
       <head>
+        <script dangerouslySetInnerHTML={{ __html: MOTION_INIT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&family=Saira+Condensed:wght@700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Saira+Condensed:wght@600&family=Zen+Kaku+Gothic+New:wght@500;700&family=Zen+Old+Mincho:wght@500;700&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <TapFeedback />
+        {children}
+      </body>
     </html>
   )
 }

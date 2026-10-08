@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/browser'
+import { Background } from '@/components/background'
 import type { PublicSupabase } from '@/lib/supabase/env'
 
 function LoginForm({ cfg }: { cfg: PublicSupabase }) {
@@ -30,27 +31,30 @@ function LoginForm({ cfg }: { cfg: PublicSupabase }) {
   }
 
   return (
-    <main className="app" style={{ paddingTop: 48 }}>
-      <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <span className="plate" style={{ fontSize: 24 }}>煉獄</span>
+    <div className="rg-shell"><main className="rg-main" style={{ paddingTop: 56, maxWidth: 420 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, marginBottom: 28 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/brand/emblem.svg" alt="" width={72} height={72} style={{ filter: 'drop-shadow(0 0 14px rgba(255,120,31,.45))' }} />
+        <div className="rg-logo" style={{ fontSize: 26 }}>RENGOKU</div>
       </div>
-      <form className="panel stack" onSubmit={onSubmit}>
-        <h2>ログイン</h2>
-        <input className="input" type="email" autoComplete="email" placeholder="メールアドレス" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input className="input" type="password" autoComplete="current-password" placeholder="パスワード" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        {error && <p className="err">{error}</p>}
-        <button className="btn" disabled={loading}>{loading ? '確認中…' : 'ログイン'}</button>
+      <form className="rg-card rg-stack" onSubmit={onSubmit}>
+        <div className="rg-head"><span className="rg-head-ja">ログイン</span></div>
+        <input className="rg-input" type="email" autoComplete="email" placeholder="メールアドレス" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input className="rg-input" type="password" autoComplete="current-password" placeholder="パスワード" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        {error && <p className="rg-err">{error}</p>}
+        <button className="rg-btn" disabled={loading}>{loading ? '確認中…' : 'ログイン'}</button>
       </form>
-      <p className="ash" style={{ textAlign: 'center', fontSize: 13 }}>
+      <p className="sub" style={{ textAlign: 'center', fontSize: 13 }}>
         はじめての方は <Link href="/signup" style={{ color: 'var(--rg-gold)' }}>登録</Link>
       </p>
-    </main>
+    </main></div>
   )
 }
 
 export function LoginFormPage({ cfg }: { cfg: PublicSupabase }) {
   return (
     <Suspense>
+      <Background embers={10} side />
       <LoginForm cfg={cfg} />
     </Suspense>
   )

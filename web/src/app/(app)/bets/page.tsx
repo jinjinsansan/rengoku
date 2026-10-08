@@ -3,6 +3,7 @@ import { requireMember } from '@/lib/member'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { addDays, fmtJst, jstDate, jstMidnightUtc } from '@/lib/jst'
 import { pnlClass, signedUsd, usd } from '@/lib/money'
+import { Card, Stat } from '@/components/card'
 
 const RANGES = [
   { k: 'today', label: '今日', days: 0 },
@@ -10,7 +11,7 @@ const RANGES = [
   { k: 'month', label: '今月', days: -1 },
 ]
 
-// BET 履歴 (brief/02_screens.md の 5)。期間の合計 → 日ごと → 1 回ずつ。
+// BET 履歴: 期間の合計 → 日ごと → 1 回ずつ。
 export default async function Bets({ searchParams }: { searchParams: Promise<{ r?: string; day?: string }> }) {
   const { userId } = await requireMember()
   const { r = 'today', day } = await searchParams
@@ -48,43 +49,49 @@ export default async function Bets({ searchParams }: { searchParams: Promise<{ r
   }
 
   return (
-    <div>
-      <div className="chips">
+    <div className="rg-stack">
+      <div className="rg-chips" style={{ marginBottom: 0 }}>
         {RANGES.map((x) => (
-          <Link key={x.k} href={`/bets?r=${x.k}`} className={'chip' + (!day && r === x.k ? ' on' : '')}>{x.label}</Link>
+          <Link key={x.k} href={`/bets?r=${x.k}`} className={'rg-chip' + (!day && r === x.k ? ' on' : '')}>{x.label}</Link>
         ))}
-        {day && <span className="chip on">{day}</span>}
+        {day && <span className="rg-chip on">{day}</span>}
       </div>
-      <section className="panel">
-        <h2>合計</h2>
-        <div className={'num big ' + pnlClass(sum.pnl)}>{signedUsd(sum.pnl)}</div>
-        <div className="ash num" style={{ marginTop: 6 }}>
-          ローリング {usd(sum.roll)} · {rows.length} 回 · {sum.w}-{sum.l}-{sum.t} · 勝率 {sum.w + sum.l ? ((sum.w / (sum.w + sum.l)) * 100).toFixed(1) : '-'}%
+
+      <Card tone="hero" en="TOTAL" ja="期間の合計">
+        <div className={'rg-hero-num ' + pnlClass(sum.pnl)} style={{ fontSize: 56 }}>{signedUsd(sum.pnl)}</div>
+        <div className="rg-sep" />
+        <div className="rg-stats">
+          <Stat label="ローリング">{usd(sum.roll)}</Stat>
+          <Stat label="BET 回数">{rows.length}</Stat>
+          <Stat label="勝率">{sum.w + sum.l ? ((sum.w / (sum.w + sum.l)) * 100).toFixed(1) : '-'}%</Stat>
         </div>
-      </section>
+      </Card>
+
       {!day && byDay.size > 1 && (
-        <section className="panel">
-          <h2>日ごと</h2>
+        <Card en="DAILY" ja="日ごと">
           {Array.from(byDay.entries()).map(([d, x]) => (
-            <Link key={d} href={`/bets?day=${d}`} className="row">
-              <span>{d}</span>
-              <span className="num">{x.n} 回 <b className={pnlClass(x.pnl)}>{signedUsd(x.pnl)}</b></span>
+            <Link key={d} href={`/bets?day=${d}`} className="rg-row">
+              <span className="num">{d}</span>
+              <span className="sub" style={{ fontSize: 12 }}><span className="num">{x.n}</span> 回</span>
+              <span className={'num ' + pnlClass(x.pnl)} style={{ fontSize: 17 }}>{signedUsd(x.pnl)}</span>
             </Link>
           ))}
-        </section>
+        </Card>
       )}
-      <section className="panel">
-        <h2>1 回ずつ</h2>
-        {rows.length === 0 && <p className="ash">この期間の BET はありません</p>}
+
+      <Card en="BETS" ja="1 回ずつ" aside={`${rows.length} 件`}>
+        {rows.length === 0 && <p className="sub">この期間の BET はありません</p>}
         {rows.slice(0, 300).map((b, i) => (
-          <div key={i} className="row" style={{ fontSize: 13 }}>
-            <span className="ash num">{fmtJst(b.occurred_at)}</span>
-            <span>{b.table_name}</span>
+          <div key={i} className="rg-row" style={{ fontSize: 12 }}>
+            <span className="num sub" style={{ width: 86 }}>{fmtJst(b.occurred_at)}</span>
+            <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.table_name}</span>
             <span className="num">{String(b.side || '').slice(0, 1).toUpperCase()} {usd(b.amount)}</span>
-            <span className={'num ' + pnlClass(b.pnl)}>{b.outcome === 'push' ? '±0' : signedUsd(b.pnl)}</span>
+            <span className={'num ' + (b.outcome === 'push' ? 'draw' : pnlClass(b.pnl))} style={{ width: 64, textAlign: 'right', fontSize: 15 }}>
+              {b.outcome === 'push' ? '±0' : signedUsd(b.pnl)}
+            </span>
           </div>
         ))}
-      </section>
+      </Card>
     </div>
   )
 }
