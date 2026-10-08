@@ -1,0 +1,91 @@
+/* 仮のスタイル — デザイン (Claude Design) が届いたら置き換える。トークンは brief/01_concept.md のとおり。 */
+:root {
+  --rg-ink: #140a06;
+  --rg-char: #24120b;
+  --rg-panel: rgba(36, 18, 11, 0.86);
+  --rg-crimson: #b3121b;
+  --rg-flame: #ff5a1f;
+  --rg-ember: #ff8a1f;
+  --rg-gold: #ffc83d;
+  --rg-gold-deep: #d98a0a;
+  --rg-cream: #fff4e2;
+  --rg-ash: #b9a48f;
+  --rg-win: #ffc83d;
+  --rg-lose: #7fb2ff;
+  --rg-ok: #5bd18b;
+  --rg-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--rg-ink); color: var(--rg-cream); }
+body {
+  font-family: 'M PLUS Rounded 1c', system-ui, sans-serif;
+  font-weight: 700;
+  min-height: 100dvh;
+  background: radial-gradient(120% 60% at 50% 110%, rgba(255, 90, 31, 0.28), transparent 60%), var(--rg-ink);
+}
+a { color: inherit; text-decoration: none; }
+.num { font-family: 'Saira Condensed', system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+.win { color: var(--rg-win); }
+.lose { color: var(--rg-lose); }
+.ash { color: var(--rg-ash); }
+.app { max-width: 480px; margin: 0 auto; min-height: 100dvh; padding: 72px 14px calc(96px + var(--rg-safe-bottom)); }
+.hud {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20; height: 60px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  max-width: 480px; margin: 0 auto; padding: 0 12px;
+  background: rgba(20, 10, 6, 0.88); border-bottom: 2px solid rgba(255, 200, 61, 0.45);
+}
+.plate {
+  padding: 6px 12px; border-radius: 10px; border: 3px solid var(--rg-ink); color: var(--rg-ink); font-weight: 900;
+  background: linear-gradient(100deg, #fff3b0, #ffc83d 30%, #d98a0a 48%, #ffe38a 62%, #fff3b0);
+  background-size: 240% 100%;
+  animation: sheen 6s linear infinite;
+}
+@keyframes sheen { from { background-position: 0% 0; } to { background-position: 240% 0; } }
+.tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; max-width: 480px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  padding: 8px 8px calc(8px + var(--rg-safe-bottom));
+  background: rgba(20, 10, 6, 0.94); border-top: 2px solid rgba(255, 200, 61, 0.35);
+}
+.tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 0; border-radius: 12px; font-size: 11px; color: var(--rg-ash); position: relative; }
+.tab.on { color: var(--rg-gold); background: rgba(255, 90, 31, 0.16); }
+.tab .dot { position: absolute; top: 4px; right: 22%; width: 8px; height: 8px; border-radius: 50%; background: var(--rg-flame); }
+.panel { background: var(--rg-panel); border: 2px solid rgba(255, 200, 61, 0.35); border-radius: 16px; padding: 14px; margin-bottom: 12px; }
+.panel.hot { border-color: var(--rg-flame); }
+.panel h2 { font-size: 14px; margin: 0 0 10px; color: var(--rg-gold); }
+.big { font-size: 44px; line-height: 1; }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255, 244, 226, 0.08); }
+.row:last-child { border-bottom: 0; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 900; }
+.badge.report { background: var(--rg-gold); color: var(--rg-ink); }
+.badge.event { background: var(--rg-flame); color: var(--rg-cream); }
+.badge.maintenance { background: var(--rg-crimson); color: #fff; }
+.badge.general { background: var(--rg-ash); color: var(--rg-ink); }
+/* 板状の大きなボタン — 押すと影の分だけ沈む (brief/03_components.md) */
+.btn {
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;
+  min-height: 64px; padding: 10px 16px; border-radius: 14px; border: 4px solid var(--rg-ink); cursor: pointer;
+  font: inherit; font-size: 20px; font-weight: 900; color: var(--rg-cream);
+  background: linear-gradient(180deg, #ffb13d, #ff5a1f 45%, #b3121b);
+  box-shadow: 0 7px 0 var(--rg-ink), 0 12px 20px rgba(0, 0, 0, 0.45), inset 0 3px 0 rgba(255, 255, 255, 0.55);
+  transform: translateY(0);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.btn small { font-size: 11px; font-weight: 700; opacity: 0.9; }
+.btn:active {
+  transform: translateY(7px);
+  box-shadow: 0 0 0 var(--rg-ink), 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 3px 0 rgba(255, 255, 255, 0.55);
+  transition-duration: 0.08s;
+}
+.btn.gold { color: var(--rg-ink); background: linear-gradient(180deg, #ffe38a, #ffc83d 46%, #d98a0a); }
+.btn.char { color: var(--rg-gold); background: linear-gradient(180deg, #3a1d11, #24120b); border-color: var(--rg-gold-deep); }
+.btn.sm { min-height: 44px; font-size: 15px; }
+.btn:disabled { filter: grayscale(1); opacity: 0.6; }
+.input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 3px solid var(--rg-ink); background: var(--rg-cream); color: var(--rg-ink); font: inherit; font-size: 16px; }
+.textarea { min-height: 120px; }
+.err { color: #ffb4a8; font-size: 13px; }
+.stack > * + * { margin-top: 10px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.chip { padding: 6px 12px; border-radius: 999px; border: 2px solid rgba(255, 200, 61, 0.35); font-size: 13px; }
+.chip.on { background: var(--rg-gold); color: var(--rg-ink); border-color: var(--rg-gold); }
