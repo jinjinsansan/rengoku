@@ -10,6 +10,7 @@
 | [`brief/03_components.md`](brief/03_components.md) | ボタン・HUD・カードなど部品の決まり |
 | [`brief/04_pwa_icon.md`](brief/04_pwa_icon.md) | PWA のアイコンとスプラッシュ |
 | [`brief/05_sample_data.md`](brief/05_sample_data.md) | 画面に入れる見本の数字 (すべて架空) |
+| [`brief/06_master_screen.md`](brief/06_master_screen.md) | 運用者向けマスター画面の中身 (指示文は `MASTER_DESIGN_PROMPT.md`) |
 | [`references/`](references/) | 操作感の参考 (同じオーナーのゲーム「star」の画面) |
 
 ## 前提
