@@ -1,5 +1,7 @@
 import { createBrowserClient } from '@supabase/ssr'
+import type { PublicSupabase } from './env'
 
-export function createClient() {
-  return createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+/** ブラウザ用。接続先はサーバーの画面から渡してもらう (lib/supabase/env.ts の説明)。 */
+export function createClient(cfg: PublicSupabase) {
+  return createBrowserClient(cfg.url, cfg.anonKey)
 }

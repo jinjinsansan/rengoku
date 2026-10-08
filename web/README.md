@@ -24,7 +24,7 @@ Next.js 15 (App Router) + Supabase。**bafather.uk と同じ Supabase** を使�
 1. Supabase の SQL エディタで `supabase/rengoku_001_foundation.sql` を流す (表を足すだけ・既存の表は変えない)
 2. 同じファイルの末尾の例のとおり、運営 3 名を `rg_members` に登録する (role = owner / staff)
 3. Vercel に新しいプロジェクトを作る: リポジトリ `jinjinsansan/rengoku`・Root Directory = `web`
-4. 環境変数 (`.env.example` の名前): Supabase の 3 つ・`CRON_SECRET`・`PAYMENT_USDT_TRC20_ADDRESS`
+4. 環境変数 (`.env.example` の名前): Supabase の 3 つ (SUPABASE_URL・SUPABASE_ANON_KEY・SUPABASE_SERVICE_ROLE_KEY。NEXT_PUBLIC_ は付けない)・`CRON_SECRET`・`PAYMENT_USDT_TRC20_ADDRESS`
 5. ドメインをつなぐ。Supabase の Authentication → URL Configuration の Redirect URLs に `https://<ドメイン>/auth/callback` を足す
 6. 運営の誰かでログインして、サロンに最初の投稿をする
 
