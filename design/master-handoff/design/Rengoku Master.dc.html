@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Cinzel:wght@500;600&family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0C0604;font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:#F6EAD6;-webkit-font-smoothing:antialiased}
+a{color:#F2C463}a:hover{color:#FFE9A8}
+@keyframes rgBlink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes rgPulse{0%{box-shadow:0 0 0 0 rgba(91,209,139,.7)}100%{box-shadow:0 0 0 7px rgba(91,209,139,0)}}
+@keyframes rgEmber{0%{transform:translate(0,0);opacity:0}10%{opacity:1}70%{opacity:.6}100%{transform:translate(var(--dx),var(--rise));opacity:0}}
+</style>
+</helmet>
+
+<section style="background:#0C0604;padding:64px 72px 96px;display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:960px">
+    <div style="font-family:'Cinzel',serif;font-weight:600;letter-spacing:.3em;color:#F2C463;font-size:14px">RENGOKU · MASTER</div>
+    <div style="font-family:'Zen Old Mincho',serif;font-size:32px;font-weight:700">マスター画面（運用者向け）</div>
+    <div style="font-size:15px;color:#B9A48F;line-height:1.7;text-wrap:pretty">会員アプリと同じ「篝火の紋」の見た目ですが、操作の速さを優先して飾りはごく控えめにしています。罫線と P/B のボタンは、バカラの慣習どおり P = 青、B = 赤、T = 緑です。PC の画面は実際に操作できます。卓を押すと切り替わり、チップを選んで PLAYER / BANKER を押すと受付票が出ます。取消は締め切り 5 秒前まで、緊急 STOP は確認つきです。</div>
+  </div>
+
+  <!-- ================= PC ================= -->
+  <div id="M1" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">M1</span><span style="font-size:15px;font-weight:700;color:#B9A48F">PC 1440×900 · 全体</span></div>
+    <div data-screen-label="M1 PC" style="width:1440px;height:900px;position:relative;overflow:hidden;background:#0E0705;border-radius:10px;box-shadow:0 0 0 1px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+      <div style="position:absolute;inset:0;background:radial-gradient(60% 30% at 50% 110%,rgba(255,110,31,.14),transparent 70%);pointer-events:none"></div>
+      {{ embersPC }}
+
+      <!-- A: top bar -->
+      <div style="height:60px;flex:none;display:flex;align-items:center;gap:22px;padding:0 18px;background:rgba(17,8,5,.94);border-bottom:1px solid rgba(255,200,61,.35);position:relative;z-index:2">
+        <div style="display:flex;align-items:center;gap:9px">
+          <svg width="28" height="28" viewBox="0 0 100 100"><defs><linearGradient id="mG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3B0"></stop><stop offset=".5" stop-color="#FFC83D"></stop><stop offset="1" stop-color="#D98A0A"></stop></linearGradient><linearGradient id="mF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD36A"></stop><stop offset=".5" stop-color="#FF6A24"></stop><stop offset="1" stop-color="#B3121B"></stop></linearGradient></defs><circle cx="50" cy="50" r="45" fill="none" stroke="url(#mG)" stroke-width="4"></circle><path d="M50 6C56 24 70 30 76 48 80 40 78 32 76 28 86 38 90 52 86 66 80 82 66 92 50 92 34 92 18 80 14 62 12 48 20 38 28 30 28 40 30 46 36 50 36 32 42 18 50 6Z" fill="url(#mF)" transform="translate(50 52) scale(.6) translate(-50 -50)"></path></svg>
+          <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.24em;color:#F2C463">RENGOKU</span>
+          <span style="padding:2px 7px;border:1px solid rgba(255,200,61,.6);border-radius:4px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.2em;color:#F2C463">MASTER</span>
+        </div>
+        <span style="width:1px;height:30px;background:rgba(255,200,61,.25)"></span>
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:#C9A56A">SESSION</span>
+          <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:36px;line-height:1;color:#F2C463;font-variant-numeric:tabular-nums">+$43.95</span>
+          <span style="font-size:12px;color:#A89078">116 回</span>
+        </div>
+        <span style="width:1px;height:30px;background:rgba(255,200,61,.25)"></span>
+        <div style="display:flex;align-items:baseline;gap:10px">
+          <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:#C9A56A">TABLE</span>
+          <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:19px">{{ sel }}</span>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:18px">
+          <span style="display:flex;align-items:center;gap:7px;font-size:12px;color:#5BD18B"><span style="width:7px;height:7px;border-radius:50%;background:#5BD18B;animation:rgPulse 1.8s ease-out infinite"></span>マスター接続中</span>
+          <span style="display:flex;align-items:center;gap:7px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:#FF6A3D"><span style="width:8px;height:8px;border-radius:50%;background:#FF3B30;animation:rgBlink 1.4s infinite"></span>REC 01:24:10</span>
+          <button style="height:40px;padding:0 18px;border-radius:10px;border:1px solid #0A0503;background:linear-gradient(180deg,#D8262F,#9E0F17 60%,#6E070D);box-shadow:inset 0 0 0 1px rgba(255,190,170,.5),0 3px 0 #0A0503;color:#FFF4E2;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px;letter-spacing:.12em;cursor:pointer;display:flex;align-items:center;gap:8px" style-active="transform:translateY(3px);box-shadow:inset 0 0 0 1px rgba(255,190,170,.5),0 0 0 #0A0503" onClick="{{ openStop }}"><span style="width:10px;height:10px;background:#FFF4E2;border-radius:2px"></span>緊急 STOP</button>
+        </div>
+      </div>
+
+      <!-- B: tiles -->
+      <div style="flex:none;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding:10px 12px;position:relative;z-index:1">
+        <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="7">
+          <div style="border:1px solid rgba(255,200,61,.22);border-radius:10px;background:rgba(26,13,8,.8);padding:7px 12px;display:flex;flex-direction:column;gap:1px">
+            <span style="font-size:11px;color:#A89078">{{ t.label }}</span>
+            <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:22px;line-height:1.15;color:{{ t.color }};font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- body -->
+      <div style="flex:1;min-height:0;display:grid;grid-template-columns:270px minmax(0,1fr) 510px;gap:12px;padding:0 12px 12px;position:relative;z-index:1">
+
+        <!-- C: tables -->
+        <div style="min-height:0;display:flex;flex-direction:column;border:1px solid rgba(255,200,61,.22);border-radius:12px;background:rgba(20,10,6,.75)">
+          <div style="padding:10px 12px 8px;display:flex;align-items:baseline;gap:8px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:#C9A56A">TABLES</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">卓の一覧</span>
+            <span style="margin-left:auto;font-family:'Saira Condensed',sans-serif;font-size:13px;color:#A89078">{{ tableCount }}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;padding:0 12px 10px;border-bottom:1px solid rgba(255,200,61,.14)">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+              <button style="height:26px;padding:0 10px;border-radius:13px;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.color }};font-family:inherit;font-size:11px;font-weight:700;cursor:pointer" onClick="{{ f.pick }}">{{ f.label }}</button>
+            </sc-for>
+          </div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ tables }}" as="t" hint-placeholder-count="8">
+              <div style="flex:none;border-radius:10px;border:1px solid {{ t.border }};background:{{ t.bg }};box-shadow:{{ t.shadow }};padding:8px 10px;display:flex;flex-direction:column;gap:6px;cursor:pointer" onClick="{{ t.pick }}">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:13px;color:{{ t.starColor }}">★</span>
+                  <span style="font-size:13px;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.name }}</span>
+                  <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;color:{{ t.stColor }};background:{{ t.stBg }}">{{ t.stLabel }}</span>
+                </div>
+                <div style="display:grid;grid-template-rows:repeat(6,7px);grid-auto-flow:column;grid-auto-columns:7px;gap:2px;height:52px;overflow:hidden">
+                  <sc-for list="{{ t.beads }}" as="b" hint-placeholder-count="40"><span style="width:7px;height:7px;border-radius:50%;background:{{ b.c }}"></span></sc-for>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:13px">
+                  <span style="color:#6FA0FF">P {{ t.p }}</span><span style="color:#FF6B6E">B {{ t.b }}</span><span style="color:#4FCB8A">T {{ t.t }}</span>
+                  <span style="margin-left:auto;font-family:'Zen Kaku Gothic New';font-size:11px;color:#E9DCC8">{{ t.streak }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- center -->
+        <div style="min-height:0;display:flex;flex-direction:column;gap:10px">
+          <!-- D -->
+          <div style="flex:none;border:1px solid rgba(255,200,61,.3);border-radius:12px;background:rgba(26,13,8,.82);padding:12px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:baseline;gap:12px">
+              <span style="font-size:18px;color:#F2C463">★</span>
+              <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:26px;line-height:1.2">{{ sel }}</span>
+              <span style="padding:2px 8px;border-radius:4px;background:{{ selStreakBg }};color:#FFF4E2;font-size:12px;font-weight:700">{{ selStreak }}</span>
+              <span style="margin-left:auto;display:flex;gap:12px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:18px"><span style="color:#6FA0FF">P {{ selP }}</span><span style="color:#FF6B6E">B {{ selB }}</span><span style="color:#4FCB8A">T {{ selT }}</span></span>
+            </div>
+            <div style="display:grid;grid-template-rows:repeat(6,18px);grid-auto-flow:column;grid-auto-columns:18px;gap:3px;height:123px;overflow:hidden;padding:6px;border-radius:8px;background:rgba(10,5,3,.6);border:1px solid rgba(255,200,61,.12)">
+              <sc-for list="{{ selBeads }}" as="b" hint-placeholder-count="90"><span style="width:18px;height:18px;border-radius:50%;background:{{ b.c }};display:grid;place-items:center;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:11px;color:#fff">{{ b.l }}</span></sc-for>
+            </div>
+          </div>
+
+          <!-- E -->
+          <div style="flex:none;border:1px solid rgba(255,200,61,.55);border-radius:12px;background:linear-gradient(180deg,rgba(40,18,9,.92),rgba(22,11,6,.94));box-shadow:inset 0 0 0 4px rgba(14,7,5,.6),inset 0 0 0 5px rgba(255,200,61,.1);padding:14px 18px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:#C9A56A">DISPATCH</span>
+              <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">配信先 <span style="font-family:'Saira Condensed',sans-serif;font-size:20px;color:#F2C463">18</span> 台</span>
+              <span style="flex:1;min-width:0;font-family:'Saira Condensed',sans-serif;font-size:13px;color:#A89078;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">gold · taka · tana · ken · yu · mika · sho · rin · haru · kai · nao · sora · ryo · aki · mei · jun · tomo · kei</span>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
+                <button style="height:40px;min-width:62px;padding:0 14px;border-radius:20px;border:1px solid {{ c.border }};background:{{ c.bg }};box-shadow:{{ c.shadow }};color:{{ c.color }};font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;cursor:pointer;transition:background 100ms" onClick="{{ c.pick }}"><span style="font-family:{{ c.font }};font-size:{{ c.fs }}">{{ c.label }}</span></button>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 150px minmax(0,1fr);gap:28px;align-items:center;opacity:{{ betOpacity }}">
+              <div style="border-radius:18px;box-shadow:{{ pRing }};transition:box-shadow .25s">
+                <button style="width:100%;height:150px;border-radius:16px;border:1px solid #05070F;background:linear-gradient(180deg,#5B97FF,#2457C9 55%,#12307A);box-shadow:inset 0 0 0 1px rgba(200,220,255,.5),inset 0 1px 0 rgba(255,255,255,.4),0 6px 0 #05070F,0 18px 30px rgba(36,87,201,.3);color:#FFFFFF;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(6px);box-shadow:inset 0 0 0 1px rgba(200,220,255,.5),0 0 0 #05070F,0 4px 10px rgba(36,87,201,.3);transition-duration:60ms" onClick="{{ pressP }}">
+                  <span style="font-family:'Cinzel',serif;font-weight:600;font-size:38px;letter-spacing:.14em;padding-left:.14em;line-height:1">PLAYER</span>
+                  <span style="font-size:12px;font-weight:700;opacity:.9">プレイヤー · {{ chipLabel }}</span>
+                  <sc-if value="{{ betIsP }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:10px;right:12px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.92);color:#12307A;font-size:11px;font-weight:700">送信済み</span></sc-if>
+                </button>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+                <div style="width:124px;height:124px;border-radius:50%;background:conic-gradient({{ secColor }} {{ secPct }},rgba(255,200,61,.1) 0);display:grid;place-items:center">
+                  <div style="width:112px;height:112px;border-radius:50%;background:#140A06;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                    <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:56px;line-height:1;color:{{ secColor }};font-variant-numeric:tabular-nums">{{ sec }}</span>
+                    <span style="font-size:11px;font-weight:700;color:{{ secColor }}">{{ secLabel }}</span>
+                  </div>
+                </div>
+                <span style="font-size:11px;color:#A89078">締め切りまで（秒）</span>
+              </div>
+              <div style="border-radius:18px;box-shadow:{{ bRing }};transition:box-shadow .25s">
+                <button style="width:100%;height:150px;border-radius:16px;border:1px solid #12030A;background:linear-gradient(180deg,#F25A55,#C2222B 55%,#76101A);box-shadow:inset 0 0 0 1px rgba(255,205,195,.5),inset 0 1px 0 rgba(255,255,255,.4),0 6px 0 #12030A,0 18px 30px rgba(194,34,43,.3);color:#FFFFFF;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(6px);box-shadow:inset 0 0 0 1px rgba(255,205,195,.5),0 0 0 #12030A,0 4px 10px rgba(194,34,43,.3);transition-duration:60ms" onClick="{{ pressB }}">
+                  <span style="font-family:'Cinzel',serif;font-weight:600;font-size:38px;letter-spacing:.14em;padding-left:.14em;line-height:1">BANKER</span>
+                  <span style="font-size:12px;font-weight:700;opacity:.9">バンカー · {{ chipLabel }}</span>
+                  <sc-if value="{{ betIsB }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:10px;right:12px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.92);color:#76101A;font-size:11px;font-weight:700">送信済み</span></sc-if>
+                </button>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button style="height:36px;padding:0 14px;border-radius:9px;border:1px solid rgba(255,200,61,.55);background:rgba(20,10,6,.6);color:#F2C463;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;opacity:{{ cancelOpacity }}" style-active="background:rgba(255,200,61,.12)" onClick="{{ cancel }}">BET の取消</button>
+              <button style="height:36px;padding:0 14px;border-radius:9px;border:1px solid rgba(255,200,61,.55);background:rgba(20,10,6,.6);color:#F2C463;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;opacity:{{ swapOpacity }}" style-active="background:rgba(255,200,61,.12)" onClick="{{ swap }}">P ⇄ B</button>
+              <button style="height:36px;padding:0 14px;border-radius:9px;border:1px solid rgba(79,203,138,.55);background:rgba(20,10,6,.6);color:#4FCB8A;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;opacity:{{ swapOpacity }}" style-active="background:rgba(79,203,138,.12)" onClick="{{ toTie }}">⇄ TIE</button>
+              <span style="margin-left:auto;font-size:12px;color:#A89078">{{ lastAction }}</span>
+            </div>
+          </div>
+
+          <!-- F -->
+          <div style="flex:1;min-height:0;overflow-y:auto">
+            <sc-if value="{{ noReceipt }}" hint-placeholder-val="{{ true }}">
+              <div style="border:1px dashed rgba(255,200,61,.25);border-radius:12px;padding:16px;font-size:13px;color:#A89078;text-align:center">PLAYER か BANKER を押すと、ここに受付票が出ます</div>
+            </sc-if>
+            <sc-for list="{{ liveReceipt }}" as="r" hint-placeholder-count="0">
+              <div style="border-radius:12px;border:1px solid {{ r.border }};background:rgba(20,10,6,.9);box-shadow:{{ r.glow }};transition:box-shadow .4s;padding:10px 14px;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:10px">
+                  <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:#C9A56A">RECEIPT</span>
+                  <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">受付票</span>
+                  <span style="font-size:12px;font-weight:700;color:{{ r.sideColor }}">{{ r.side }}</span>
+                  <span style="margin-left:auto;font-size:12px;font-weight:700;color:{{ r.sumColor }}">{{ r.summary }}</span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:5px">
+                  <sc-for list="{{ r.chips }}" as="c" hint-placeholder-count="18">
+                    <span style="display:flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:5px;border:1px solid {{ c.border }};background:{{ c.bg }};font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:14px;color:{{ c.color }}"><span style="font-size:11px">{{ c.mark }}</span>{{ c.name }}<span style="opacity:.8;font-size:12px">{{ c.amt }}</span></span>
+                  </sc-for>
+                </div>
+                <sc-for list="{{ r.reasons }}" as="x" hint-placeholder-count="0">
+                  <div style="display:flex;gap:10px;font-size:12px;line-height:1.55;padding:6px 10px;border-radius:6px;background:{{ x.bg }}"><span style="flex:none;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:14px;color:{{ x.color }};min-width:36px">{{ x.name }}</span><span style="color:#E9DCC8">{{ x.text }}</span></div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- H I J -->
+          <div style="flex:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+            <div style="height:40px;border:1px solid rgba(255,200,61,.22);border-radius:10px;background:rgba(20,10,6,.75);display:flex;align-items:center;gap:8px;padding:0 12px;cursor:pointer"><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:13px">資金管理</span><span style="flex:1;min-width:0;font-size:11px;color:#A89078;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">マーチン · 元本 $500 · 損切り −$100</span><span style="color:#F2C463">▾</span></div>
+            <div style="height:40px;border:1px solid rgba(255,200,61,.22);border-radius:10px;background:rgba(20,10,6,.75);display:flex;align-items:center;gap:8px;padding:0 12px;cursor:pointer"><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:13px">セッション</span><span style="flex:1;min-width:0;font-size:11px;color:#A89078;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">REC 中 · ローリング $1,842</span><span style="color:#F2C463">▾</span></div>
+            <div style="height:40px;border:1px solid rgba(255,200,61,.22);border-radius:10px;background:rgba(20,10,6,.75);display:flex;align-items:center;gap:8px;padding:0 12px;cursor:pointer"><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:13px">接続・シグナル</span><span style="flex:1;min-width:0;font-size:11px;color:#A89078;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">送信 116 件</span><span style="color:#F2C463">▾</span></div>
+          </div>
+        </div>
+
+        <!-- G: agents -->
+        <div style="min-height:0;display:flex;flex-direction:column;border:1px solid rgba(255,200,61,.22);border-radius:12px;background:rgba(20,10,6,.75)">
+          <div style="padding:10px 12px 8px;display:flex;align-items:baseline;gap:8px;border-bottom:1px solid rgba(255,200,61,.14)">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:#C9A56A">AGENTS</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">受け子</span>
+            <span style="margin-left:auto;font-size:12px;color:#A89078">稼働 <span style="font-family:'Saira Condensed',sans-serif;font-size:15px;color:#5BD18B">15</span> / 18 · 要確認 <span style="font-family:'Saira Condensed',sans-serif;font-size:15px;color:#FF8A6A">4</span></span>
+          </div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:8px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:max-content;gap:6px">
+            <sc-for list="{{ agents }}" as="a" hint-placeholder-count="18">
+              <div style="border-radius:9px;border:1px solid {{ a.border }};background:rgba(26,13,8,.85);padding:7px 9px;display:flex;flex-direction:column;gap:3px">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="width:7px;height:7px;border-radius:50%;background:{{ a.dot }};flex:none"></span>
+                  <span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px;line-height:1.1">{{ a.name }}</span>
+                  <span style="margin-left:auto;font-size:10px;color:#C9A56A;white-space:nowrap">{{ a.strat }}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#A89078"><span>段 <span style="font-family:'Saira Condensed',sans-serif;font-size:13px;color:#F6EAD6">{{ a.step }}</span> · 次 <span style="font-family:'Saira Condensed',sans-serif;font-size:13px;color:#F6EAD6">{{ a.next }}</span></span><span style="font-family:'Saira Condensed',sans-serif;font-size:13px;color:{{ a.todayColor }}">{{ a.today }}</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#A89078"><span>前回 <span style="font-family:'Saira Condensed',sans-serif;font-size:13px;color:{{ a.prevColor }}">{{ a.prev }}</span></span><span style="padding:0 5px;border-radius:3px;font-size:10px;font-weight:700;color:{{ a.curColor }};background:{{ a.curBg }}">{{ a.cur }}</span></div>
+                <sc-if value="{{ a.hasAlert }}" hint-placeholder-val="{{ false }}"><div style="margin-top:2px;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;color:{{ a.alertColor }};background:{{ a.alertBg }}">{{ a.alert }}</div></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOP confirm -->
+      <sc-if value="{{ stopOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;z-index:10;background:rgba(5,2,1,.72);display:grid;place-items:center">
+          <div style="width:420px;border-radius:14px;border:1px solid #D8262F;background:#1A0C07;box-shadow:0 30px 60px rgba(0,0,0,.6);padding:24px;display:flex;flex-direction:column;gap:14px">
+            <div style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:20px">全 18 台を止めますか？</div>
+            <div style="font-size:13px;line-height:1.7;color:#E9DCC8">すべての受け子が BET をやめ、ロビーで待機します。受付中の BET は取り消されます。</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px">
+              <button style="height:48px;border-radius:10px;border:1px solid rgba(255,200,61,.55);background:transparent;color:#F2C463;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px;cursor:pointer" onClick="{{ closeStop }}">やめる</button>
+              <button style="height:48px;border-radius:10px;border:1px solid #0A0503;background:linear-gradient(180deg,#D8262F,#9E0F17 60%,#6E070D);box-shadow:inset 0 0 0 1px rgba(255,190,170,.5),0 3px 0 #0A0503;color:#FFF4E2;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px;cursor:pointer" style-active="transform:translateY(3px)" onClick="{{ closeStop }}">止める</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- ================= Mobile ================= -->
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <div id="M2" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">M2</span><span style="font-size:15px;font-weight:700;color:#B9A48F">スマホ · 操作</span></div>
+      <div data-screen-label="M2 Mobile Op" style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#0E0705;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8"><span>18:47</span><span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span></div>
+        <div style="height:52px;flex:none;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid rgba(255,200,61,.35);background:rgba(17,8,5,.94)">
+          <div style="display:flex;flex-direction:column;line-height:1.1"><span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.22em;color:#C9A56A">SESSION</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:24px;color:#F2C463">+$43.95</span></div>
+          <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#5BD18B"><span style="width:6px;height:6px;border-radius:50%;background:#5BD18B"></span>接続中</span>
+          <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:13px;color:#FF6A3D;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#FF3B30;animation:rgBlink 1.4s infinite"></span>REC</span>
+          <button style="margin-left:auto;height:34px;padding:0 12px;border-radius:9px;border:1px solid #0A0503;background:linear-gradient(180deg,#D8262F,#9E0F17 60%,#6E070D);box-shadow:inset 0 0 0 1px rgba(255,190,170,.5),0 3px 0 #0A0503;color:#FFF4E2;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:13px;cursor:pointer" onClick="{{ openStop }}">STOP</button>
+        </div>
+        <div style="flex:1;min-height:0;overflow-y:auto;padding:12px 12px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="flex:none;border:1px solid rgba(255,200,61,.3);border-radius:12px;background:rgba(26,13,8,.82);padding:10px 12px;display:flex;gap:12px;align-items:center">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:18px">{{ sel }}</span><span style="padding:1px 6px;border-radius:3px;background:{{ selStreakBg }};font-size:11px;font-weight:700">{{ selStreak }}</span></div>
+              <div style="display:grid;grid-template-rows:repeat(6,8px);grid-auto-flow:column;grid-auto-columns:8px;gap:2px;height:58px;overflow:hidden">
+                <sc-for list="{{ selBeadsM }}" as="b" hint-placeholder-count="60"><span style="width:8px;height:8px;border-radius:50%;background:{{ b.c }}"></span></sc-for>
+              </div>
+            </div>
+            <div style="width:78px;height:78px;flex:none;border-radius:50%;background:conic-gradient({{ secColor }} {{ secPct }},rgba(255,200,61,.1) 0);display:grid;place-items:center">
+              <div style="width:68px;height:68px;border-radius:50%;background:#140A06;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:34px;line-height:1;color:{{ secColor }}">{{ sec }}</span><span style="font-size:9px;font-weight:700;color:{{ secColor }}">{{ secLabel }}</span></div>
+            </div>
+          </div>
+          <div style="flex:none;display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
+              <button style="flex:none;height:40px;min-width:52px;padding:0 12px;border-radius:20px;border:1px solid {{ c.border }};background:{{ c.bg }};box-shadow:{{ c.shadow }};color:{{ c.color }};font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px;cursor:pointer" onClick="{{ c.pick }}"><span style="font-family:{{ c.font }};font-size:{{ c.fs }}">{{ c.label }}</span></button>
+            </sc-for>
+          </div>
+          <div style="flex:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;opacity:{{ betOpacity }}">
+            <div style="border-radius:18px;box-shadow:{{ pRing }}">
+              <button style="width:100%;height:180px;border-radius:16px;border:1px solid #05070F;background:linear-gradient(180deg,#5B97FF,#2457C9 55%,#12307A);box-shadow:inset 0 0 0 1px rgba(200,220,255,.5),inset 0 1px 0 rgba(255,255,255,.4),0 6px 0 #05070F;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(6px);box-shadow:inset 0 0 0 1px rgba(200,220,255,.5),0 0 0 #05070F;transition-duration:60ms" onClick="{{ pressP }}"><span style="font-family:'Cinzel',serif;font-weight:600;font-size:56px;line-height:1">P</span><span style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em">PLAYER</span></button>
+            </div>
+            <div style="border-radius:18px;box-shadow:{{ bRing }}">
+              <button style="width:100%;height:180px;border-radius:16px;border:1px solid #12030A;background:linear-gradient(180deg,#F25A55,#C2222B 55%,#76101A);box-shadow:inset 0 0 0 1px rgba(255,205,195,.5),inset 0 1px 0 rgba(255,255,255,.4),0 6px 0 #12030A;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(6px);box-shadow:inset 0 0 0 1px rgba(255,205,195,.5),0 0 0 #12030A;transition-duration:60ms" onClick="{{ pressB }}"><span style="font-family:'Cinzel',serif;font-weight:600;font-size:56px;line-height:1">B</span><span style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:.2em">BANKER</span></button>
+            </div>
+          </div>
+          <div style="flex:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px">
+            <button style="height:38px;border-radius:9px;border:1px solid rgba(255,200,61,.55);background:rgba(20,10,6,.6);color:#F2C463;font-family:inherit;font-size:12px;font-weight:700;opacity:{{ cancelOpacity }}" onClick="{{ cancel }}">取消</button>
+            <button style="height:38px;border-radius:9px;border:1px solid rgba(255,200,61,.55);background:rgba(20,10,6,.6);color:#F2C463;font-family:inherit;font-size:12px;font-weight:700;opacity:{{ swapOpacity }}" onClick="{{ swap }}">P ⇄ B</button>
+            <button style="height:38px;border-radius:9px;border:1px solid rgba(79,203,138,.55);background:rgba(20,10,6,.6);color:#4FCB8A;font-family:inherit;font-size:12px;font-weight:700;opacity:{{ swapOpacity }}" onClick="{{ toTie }}">⇄ TIE</button>
+          </div>
+          <sc-if value="{{ noReceipt }}" hint-placeholder-val="{{ true }}">
+            <div style="flex:none;border:1px dashed rgba(255,200,61,.25);border-radius:12px;padding:12px;font-size:12px;color:#A89078;text-align:center">P か B を押すと受付票が出ます</div>
+          </sc-if>
+          <sc-for list="{{ liveReceipt }}" as="r" hint-placeholder-count="0">
+            <div style="flex:none;border-radius:12px;border:1px solid {{ r.border }};background:rgba(20,10,6,.9);box-shadow:{{ r.glow }};padding:10px 12px;display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:14px">受付票</span><span style="font-size:11px;font-weight:700;color:{{ r.sideColor }}">{{ r.side }}</span><span style="margin-left:auto;font-size:11px;font-weight:700;color:{{ r.sumColor }}">{{ r.summary }}</span></div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px">
+                <sc-for list="{{ r.chips }}" as="c" hint-placeholder-count="18"><span style="height:22px;padding:0 6px;display:flex;align-items:center;gap:3px;border-radius:4px;border:1px solid {{ c.border }};background:{{ c.bg }};font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:13px;color:{{ c.color }}"><span style="font-size:10px">{{ c.mark }}</span>{{ c.name }}</span></sc-for>
+              </div>
+              <sc-for list="{{ r.reasons }}" as="x" hint-placeholder-count="0"><div style="font-size:11px;line-height:1.5;padding:5px 8px;border-radius:5px;background:{{ x.bg }}"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:13px;color:{{ x.color }};margin-right:6px">{{ x.name }}</span>{{ x.text }}</div></sc-for>
+            </div>
+          </sc-for>
+        </div>
+        <div style="height:82px;flex:none;padding:8px 6px 22px;box-sizing:border-box;border-top:1px solid rgba(255,200,61,.35);background:#0C0604;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
+          <sc-for list="{{ mtabsOp }}" as="m" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative"><span style="position:absolute;top:-12px;width:5px;height:5px;transform:rotate(45deg);background:#FFC83D;opacity:{{ m.on }}"></span><span style="font-size:12px;font-weight:700;color:{{ m.color }}">{{ m.label }}</span><span style="font-family:'Cinzel',serif;font-size:8px;letter-spacing:.16em;color:{{ m.color }}">{{ m.en }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div id="M3" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">M3</span><span style="font-size:15px;font-weight:700;color:#B9A48F">スマホ · 受け子の一覧（押すと開閉）</span></div>
+      <div data-screen-label="M3 Mobile Agents" style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#0E0705;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8"><span>18:47</span><span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span></div>
+        <div style="height:52px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid rgba(255,200,61,.35);background:rgba(17,8,5,.94)">
+          <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.22em;color:#C9A56A">AGENTS</span>
+          <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:17px">受け子</span>
+          <span style="margin-left:auto;font-size:12px;color:#A89078">稼働 <span style="font-family:'Saira Condensed',sans-serif;font-size:16px;color:#5BD18B">15</span> / 18</span>
+        </div>
+        <div style="flex:1;min-height:0;overflow-y:auto;padding:10px 12px 16px;display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ agentsM }}" as="a" hint-placeholder-count="12">
+            <div style="flex:none;border-radius:10px;border:1px solid {{ a.border }};background:rgba(26,13,8,.85);overflow:hidden">
+              <div style="height:48px;display:flex;align-items:center;gap:8px;padding:0 12px;cursor:pointer" onClick="{{ a.toggle }}">
+                <span style="width:8px;height:8px;border-radius:50%;background:{{ a.dot }};flex:none"></span>
+                <span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;width:44px">{{ a.name }}</span>
+                <span style="font-size:11px;color:#C9A56A;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.strat }} · 段 {{ a.step }}</span>
+                <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:{{ a.todayColor }}">{{ a.today }}</span>
+                <span style="padding:0 5px;border-radius:3px;font-size:10px;font-weight:700;color:{{ a.curColor }};background:{{ a.curBg }}">{{ a.cur }}</span>
+                <span style="color:#F2C463;font-size:11px">{{ a.caret }}</span>
+              </div>
+              <sc-if value="{{ a.hasAlert }}" hint-placeholder-val="{{ false }}"><div style="margin:-6px 12px 8px 28px;font-size:11px;font-weight:700;color:{{ a.alertColor }}">{{ a.alert }}</div></sc-if>
+              <sc-if value="{{ a.open }}" hint-placeholder-val="{{ false }}">
+                <div style="border-top:1px solid rgba(255,200,61,.14);padding:10px 12px 12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+                  <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10px;color:#A89078">次の額</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:17px">{{ a.next }}</span></div>
+                  <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10px;color:#A89078">前回</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:17px;color:{{ a.prevColor }}">{{ a.prev }}</span></div>
+                  <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10px;color:#A89078">今日</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:17px;color:{{ a.todayColor }}">{{ a.today }}</span></div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="height:82px;flex:none;padding:8px 6px 22px;box-sizing:border-box;border-top:1px solid rgba(255,200,61,.35);background:#0C0604;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
+          <sc-for list="{{ mtabsAg }}" as="m" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative"><span style="position:absolute;top:-12px;width:5px;height:5px;transform:rotate(45deg);background:#FFC83D;opacity:{{ m.on }}"></span><span style="font-size:12px;font-weight:700;color:{{ m.color }}">{{ m.label }}</span><span style="font-family:'Cinzel',serif;font-size:8px;letter-spacing:.16em;color:{{ m.color }}">{{ m.en }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Receipt states ================= -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="font-family:'Zen Old Mincho',serif;font-size:24px;font-weight:700">受付票の 4 つの状態</div>
+    <div style="font-size:14px;color:#B9A48F">成立 = 緑 ✓ / 不成立 = 炎色 ✕ / 締切待ち = 灰 … / 応答なし = 黄 ?。不成立と応答なしの台は、1 台ずつ理由を出します。</div>
+  </div>
+  <div id="M4" style="display:grid;grid-template-columns:repeat(2,640px);gap:24px">
+    <sc-for list="{{ receiptStates }}" as="r" hint-placeholder-count="4">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:13px;font-weight:700;color:#B9A48F">{{ r.title }}</span>
+        <div style="border-radius:12px;border:1px solid {{ r.border }};background:rgba(20,10,6,.9);box-shadow:{{ r.glow }};padding:10px 14px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.24em;color:#C9A56A">RECEIPT</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">受付票</span>
+            <span style="font-size:12px;font-weight:700;color:{{ r.sideColor }}">{{ r.side }}</span>
+            <span style="margin-left:auto;font-size:12px;font-weight:700;color:{{ r.sumColor }}">{{ r.summary }}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px">
+            <sc-for list="{{ r.chips }}" as="c" hint-placeholder-count="18">
+              <span style="display:flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:5px;border:1px solid {{ c.border }};background:{{ c.bg }};font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:14px;color:{{ c.color }}"><span style="font-size:11px">{{ c.mark }}</span>{{ c.name }}<span style="opacity:.8;font-size:12px">{{ c.amt }}</span></span>
+            </sc-for>
+          </div>
+          <sc-for list="{{ r.reasons }}" as="x" hint-placeholder-count="0">
+            <div style="display:flex;gap:10px;font-size:12px;line-height:1.55;padding:6px 10px;border-radius:6px;background:{{ x.bg }}"><span style="flex:none;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:14px;color:{{ x.color }};min-width:36px">{{ x.name }}</span><span style="color:#E9DCC8">{{ x.text }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- ================= Agent states ================= -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="font-family:'Zen Old Mincho',serif;font-size:24px;font-weight:700">受け子のカードの状態</div>
+    <div style="font-size:14px;color:#B9A48F">正常 / 止まっている / ロビーに入れない / 段のズレ（＋ Chrome を開き直し中）。縁の色と下の帯で見分けます。</div>
+  </div>
+  <div id="M5" style="display:flex;flex-wrap:wrap;gap:20px">
+    <sc-for list="{{ agentStates }}" as="a" hint-placeholder-count="5">
+      <div style="display:flex;flex-direction:column;gap:8px;width:220px">
+        <span style="font-size:13px;font-weight:700;color:#B9A48F">{{ a.stateName }}</span>
+        <div style="border-radius:9px;border:1px solid {{ a.border }};background:rgba(26,13,8,.85);padding:9px 11px;display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:{{ a.dot }}"></span>
+            <span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px">{{ a.name }}</span>
+            <span style="margin-left:auto;font-size:11px;color:#C9A56A">{{ a.strat }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#A89078"><span>段 <span style="font-family:'Saira Condensed',sans-serif;font-size:14px;color:#F6EAD6">{{ a.step }}</span> · 次 <span style="font-family:'Saira Condensed',sans-serif;font-size:14px;color:#F6EAD6">{{ a.next }}</span></span><span style="font-family:'Saira Condensed',sans-serif;font-size:14px;color:{{ a.todayColor }}">{{ a.today }}</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#A89078"><span>前回 <span style="font-family:'Saira Condensed',sans-serif;font-size:14px;color:{{ a.prevColor }}">{{ a.prev }}</span></span><span style="padding:0 6px;border-radius:3px;font-size:11px;font-weight:700;color:{{ a.curColor }};background:{{ a.curBg }}">{{ a.cur }}</span></div>
+          <sc-if value="{{ a.hasAlert }}" hint-placeholder-val="{{ false }}"><div style="margin-top:3px;padding:3px 7px;border-radius:4px;font-size:11px;font-weight:700;color:{{ a.alertColor }};background:{{ a.alertBg }}">{{ a.alert }}</div></sc-if>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- ================= Parts ================= -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="font-family:'Zen Old Mincho',serif;font-size:24px;font-weight:700">新しい部品の色</div>
+    <div style="font-size:14px;color:#B9A48F">rengoku-tokens.css の「マスター画面」に追加した値です（--rg-m-*）。</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,220px));gap:14px">
+    <sc-for list="{{ mSwatches }}" as="s" hint-placeholder-count="12">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:40px;height:40px;border-radius:8px;flex:none;border:1px solid rgba(255,244,226,.12);background:{{ s.v }}"></span>
+        <div style="display:flex;flex-direction:column;min-width:0"><span style="font-family:'Saira Condensed',sans-serif;font-size:14px">{{ s.n }}</span><span style="font-size:11px;color:#A89078">{{ s.d }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;動き&quot;}}">
+class Component extends DCLogic {
+  state = { sel: 'Baccarat 5', chip: 'step', sec: 9, hold: 0, bet: null, phase: 'none', pressed: null, flash: false, stopOpen: false, filter: 'all', openAgent: 'ryo' };
+  componentDidMount() { this.iv = setInterval(() => this.tick(), 1000); }
+  componentWillUnmount() { clearInterval(this.iv); [this.t1, this.t2, this.t3].forEach(clearTimeout); }
+  tick() {
+    this.setState(s => {
+      if (s.sec > 0) return { sec: s.sec - 1 };
+      if (s.hold < 3) return { hold: s.hold + 1 };
+      return { sec: 18, hold: 0, bet: null, phase: 'none' };
+    });
+  }
+  press(side) {
+    if (this.state.sec === 0) return;
+    if (navigator.vibrate) navigator.vibrate(10);
+    [this.t1, this.t2, this.t3].forEach(clearTimeout);
+    this.setState({ bet: side, pressed: side, phase: 'pending', flash: false });
+    this.t1 = setTimeout(() => this.setState({ pressed: null }), 700);
+    this.t2 = setTimeout(() => { this.setState({ phase: 'done', flash: true }); this.t3 = setTimeout(() => this.setState({ flash: false }), 900); }, 1600);
+  }
+  rng(seed) { let x = 0; for (const c of seed) x = (x * 31 + c.charCodeAt(0)) % 233280; return () => { x = (x * 9301 + 49297) % 233280; return x / 233280; }; }
+  beads(seed, n) { const r = this.rng(seed); const a = []; for (let i = 0; i < n; i++) { const v = r(); a.push(v < .1 ? 'T' : v < .55 ? 'B' : 'P'); } return a; }
+  streak(a) { const s = a.filter(x => x !== 'T'); if (!s.length) return ['', 'P']; const last = s[s.length - 1]; let k = 0; for (let i = s.length - 1; i >= 0 && s[i] === last; i--) k++; return [last + ' ' + k + ' 連', last]; }
+
+  agentsBase() {
+    if (this._ab) return this._ab;
+    const names = ['gold', 'taka', 'tana', 'ken', 'yu', 'mika', 'sho', 'rin', 'haru', 'kai', 'nao', 'sora', 'ryo', 'aki', 'mei', 'jun', 'tomo', 'kei'];
+    const strats = ['マーチン', 'グランドマーチン', 'SEQ バランス', 'SEQ 守備', 'フラット'];
+    const status = { sora: 'stopped', ryo: 'lobby', aki: 'chrome', mei: 'drift' };
+    const fixed = { gold: ['SEQ 攻撃', 4, 8, 12.4], taka: ['マーチン', 2, .4, 3.2], tana: ['マーチン', 1, .2, -1.8] };
+    const r = this.rng('agents');
+    this._ab = names.map((name, i) => {
+      const f = fixed[name];
+      const strat = f ? f[0] : strats[i % strats.length];
+      const step = f ? f[1] : 1 + Math.floor(r() * 5);
+      const next = f ? f[2] : [0.2, 0.4, 0.8, 1, 2, 4][Math.floor(r() * 6)];
+      const today = f ? f[3] : Math.round((r() * 20 - 7) * 100) / 100;
+      const side = r() > .5 ? 'B' : 'P', win = r() > .45, pamt = [0.2, 0.4, 1, 2][Math.floor(r() * 4)];
+      return { name, strat, step, next, today, st: status[name] || 'ok', prev: `${side} $${pamt.toFixed(2)} ${win ? '勝' : '負'}`, prevColor: win ? '#F2C463' : '#7FB2FF' };
+    });
+    return this._ab;
+  }
+  result(a, phase) {
+    if (phase === 'none') return 'idle';
+    if (a.st === 'stopped' || a.st === 'chrome') return 'none';
+    if (phase === 'pending') return 'wait';
+    if (a.name === 'tana' || a.st === 'lobby') return 'ng';
+    return 'ok';
+  }
+  RC = {
+    ok: { color: '#5BD18B', bg: 'rgba(91,209,139,.12)', border: 'rgba(91,209,139,.55)', mark: '✓', label: '成立' },
+    ng: { color: '#FF6A3D', bg: 'rgba(255,106,61,.14)', border: 'rgba(255,106,61,.6)', mark: '✕', label: '不成立' },
+    wait: { color: '#B3A496', bg: 'rgba(125,111,100,.16)', border: 'rgba(125,111,100,.5)', mark: '…', label: '締切待ち' },
+    none: { color: '#F2C94C', bg: 'rgba(242,201,76,.12)', border: 'rgba(242,201,76,.55)', mark: '?', label: '応答なし' },
+    idle: { color: '#7D6F64', bg: 'rgba(125,111,100,.1)', border: 'rgba(125,111,100,.3)', mark: '', label: '—' }
+  };
+  reasonText(a, table) {
+    if (a.name === 'tana') return `卓の最低額未満の可能性: ${table} で $0.20 以下は過去 13 回すべて不成立・$3.00 以上は成立`;
+    if (a.st === 'lobby') return 'ロビーに入れず、卓に着席できていません（3 回続けて失敗）';
+    if (a.st === 'stopped') return '最後の通信 3 分前 — PC が止まっている可能性があります';
+    if (a.st === 'chrome') return 'Chrome を開き直しています（あと 20 秒ほど）';
+    return '';
+  }
+  receipt(res, side, chipAmt, table, flash, title) {
+    const A = this.agentsBase();
+    const chips = A.map(a => { const k = res(a); const c = this.RC[k]; return { name: a.name, color: c.color, bg: c.bg, border: c.border, mark: c.mark, amt: k === 'ok' || k === 'wait' ? '$' + (chipAmt ?? a.next).toFixed(2) : '', k }; });
+    const cnt = k => chips.filter(c => c.k === k).length;
+    const reasons = A.filter(a => ['ng', 'none'].includes(res(a))).map(a => { const k = res(a); return { name: a.name, text: (k === 'none' ? '応答なし — ' : '') + this.reasonText(a, table), color: this.RC[k].color, bg: k === 'ng' ? 'rgba(255,106,61,.08)' : 'rgba(242,201,76,.07)' }; });
+    const wait = cnt('wait'), ng = cnt('ng'), no = cnt('none'), ok = cnt('ok');
+    let summary, sumColor, border;
+    if (wait) { summary = `締切待ち ${wait} 台` + (no ? ` · 応答なし ${no}` : ''); sumColor = '#B3A496'; border = 'rgba(125,111,100,.6)'; }
+    else if (ng || no) { summary = `成立 ${ok} / 不成立 ${ng} / 応答なし ${no}`; sumColor = ng ? '#FF8A6A' : '#F2C94C'; border = ng ? 'rgba(255,106,61,.6)' : 'rgba(242,201,76,.6)'; }
+    else { summary = `全 ${ok} 台 成立`; sumColor = '#5BD18B'; border = 'rgba(91,209,139,.6)'; }
+    const total = chips.filter(c => c.k === 'ok').reduce((s, c, i) => s + (chipAmt ?? A.find(a => a.name === c.name).next), 0);
+    if (!wait) summary += ` · 合計 $${total.toFixed(2)}`;
+    return { title, side: side === 'P' ? 'PLAYER' : side === 'B' ? 'BANKER' : 'TIE', sideColor: side === 'P' ? '#6FA0FF' : side === 'B' ? '#FF6B6E' : '#4FCB8A', chips, reasons, summary, sumColor, border, glow: flash ? `0 0 0 2px ${ng ? 'rgba(255,106,61,.7)' : 'rgba(91,209,139,.7)'}, 0 0 28px ${ng ? 'rgba(255,106,61,.35)' : 'rgba(91,209,139,.35)'}` : 'none' };
+  }
+  agentView(a, phase) {
+    const S = {
+      ok: ['rgba(255,200,61,.22)', '#5BD18B', ''],
+      stopped: ['rgba(125,111,100,.8)', '#7D6F64', '止まっている · 最後の通信 3 分前', '#C9B8A6', 'rgba(125,111,100,.2)'],
+      lobby: ['rgba(255,90,61,.75)', '#FF5A3D', 'ロビーに入れない', '#FF8A6A', 'rgba(255,90,61,.14)'],
+      chrome: ['rgba(242,201,76,.7)', '#F2C94C', 'Chrome を開き直し中', '#F2C94C', 'rgba(242,201,76,.12)'],
+      drift: ['rgba(255,176,74,.7)', '#5BD18B', '段のズレ: 親 4 段 / 本機 2 段', '#FFB04A', 'rgba(255,176,74,.12)']
+    }[a.st];
+    const k = this.result(a, phase), c = this.RC[k];
+    return { ...a, step: String(a.step), next: '$' + a.next.toFixed(2), today: (a.today >= 0 ? '+$' : '−$') + Math.abs(a.today).toFixed(2), todayColor: a.today >= 0 ? '#F2C463' : '#7FB2FF', border: S[0], dot: S[1], hasAlert: !!S[2], alert: S[2], alertColor: S[3], alertBg: S[4], cur: k === 'idle' ? '今回 —' : c.label, curColor: c.color, curBg: c.bg };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const P = '#3E7BF0', B = '#E0393E', T = '#2FAE6A', BC = { P, B, T };
+    const tb = [
+      ['Baccarat 5', '通常', 1, 9, 1], ['Speed Baccarat 15', 'Speed', 1, 4, 1], ['Korean Baccarat 2', 'Korean', 1, 12, 1], ['Baccarat 1', '通常', 0, 0, 0],
+      ['Lightning Baccarat', 'Lightning', 1, 7, 0], ['Speed Baccarat 3', 'Speed', 1, 11, 0], ['No Commission 2', '通常', 0, 0, 1], ['Korean Baccarat 1', 'Korean', 1, 2, 0],
+      ['Baccarat 8', '通常', 1, 14, 0], ['Speed Baccarat 7', 'Speed', 1, 6, 0], ['Baccarat 12', '通常', 1, 10, 0], ['Speed Baccarat 21', 'Speed', 0, 0, 0]
+    ];
+    const flt = s.filter;
+    const filters = [['all', 'すべて'], ['fav', '★ お気に入り'], ['Speed', 'Speed'], ['Korean', 'Korean'], ['Lightning', 'Lightning']].map(([id, label]) => ({
+      label, border: flt === id ? '#F2C463' : 'rgba(255,200,61,.3)', bg: flt === id ? 'rgba(242,196,99,.16)' : 'transparent', color: flt === id ? '#F2C463' : '#A89078', pick: () => this.setState({ filter: id })
+    }));
+    const tables = tb.filter(([n, k, o, sc, fav]) => flt === 'all' || (flt === 'fav' ? fav : k === flt)).map(([name, kind, open, sc, fav]) => {
+      const bd = this.beads(name, 34 + (name.length * 7) % 30);
+      const isSel = name === s.sel, live = isSel ? s.sec : sc, op = isSel ? s.sec > 0 : !!open;
+      return {
+        name, starColor: fav ? '#F2C463' : 'rgba(255,200,61,.25)',
+        beads: bd.map(x => ({ c: BC[x] })), p: bd.filter(x => x === 'P').length, b: bd.filter(x => x === 'B').length, t: bd.filter(x => x === 'T').length,
+        streak: this.streak(bd)[0],
+        stLabel: isSel ? `現在 · ${op ? live + ' 秒' : '締切'}` : op ? `受付中 ${live}` : '締切',
+        stColor: isSel ? '#140A06' : op ? '#5BD18B' : '#A89078', stBg: isSel ? '#F2C463' : op ? 'rgba(91,209,139,.12)' : 'rgba(125,111,100,.15)',
+        border: isSel ? '#F2C463' : 'rgba(255,200,61,.18)', bg: isSel ? 'rgba(60,26,10,.9)' : 'rgba(26,13,8,.7)', shadow: isSel ? 'inset 0 0 0 1px rgba(242,196,99,.4), 0 0 16px rgba(255,138,31,.18)' : 'none',
+        pick: () => this.setState({ sel: name, bet: null, phase: 'none' })
+      };
+    });
+    const sb = this.beads(s.sel, 96), [sStreak, sLast] = this.streak(sb);
+    const chipDefs = [['step', '段どおり', null], ['1', '$1', 1], ['5', '$5', 5], ['10', '$10', 10], ['25', '$25', 25], ['50', '$50', 50], ['100', '$100', 100]];
+    const chips = chipDefs.map(([id, label]) => {
+      const on = s.chip === id;
+      return { label, font: id === 'step' ? "'Zen Old Mincho',serif" : "'Saira Condensed',sans-serif", fs: id === 'step' ? '14px' : '17px',
+        border: on ? '#FFE9A8' : 'rgba(255,200,61,.4)', bg: on ? 'linear-gradient(180deg,#FFE38A,#F2C463 50%,#D98A0A)' : 'rgba(20,10,6,.6)', color: on ? '#140A06' : '#F2C463',
+        shadow: on ? 'inset 0 1px 0 rgba(255,255,255,.6), 0 0 0 3px rgba(242,196,99,.22)' : 'none', pick: () => this.setState({ chip: id }) };
+    });
+    const chipDef = chipDefs.find(c => c[0] === s.chip), chipAmt = chipDef[2];
+    const secColor = s.sec === 0 ? '#7D6F64' : s.sec <= 5 ? '#FF6A3D' : s.sec <= 8 ? '#FFB04A' : '#5BD18B';
+    const A = this.agentsBase();
+    const ring = side => s.pressed === side ? `0 0 0 3px ${side === 'P' ? '#9CC0FF' : '#FFB0A8'}, 0 0 40px ${side === 'P' ? 'rgba(91,151,255,.7)' : 'rgba(242,90,85,.7)'}` : s.bet === side ? `0 0 0 2px ${side === 'P' ? 'rgba(156,192,255,.7)' : 'rgba(255,176,168,.7)'}` : 'none';
+    const liveReceipt = s.phase === 'none' ? [] : [this.receipt(a => this.result(a, s.phase), s.bet, chipAmt, s.sel, s.flash, '')];
+    const ex = (fn) => fn;
+    const receiptStates = [
+      this.receipt(a => 'ok', 'B', null, 'Baccarat 5', true, '1. 全台成立（そろった瞬間に一度だけ緑に光る）'),
+      this.receipt(a => (a.name === 'tana' || a.name === 'ryo') ? 'ng' : 'ok', 'B', null, 'Korean Baccarat 2', false, '2. 一部不成立と理由'),
+      this.receipt(a => 'wait', 'P', null, 'Baccarat 5', false, '3. 締切待ち'),
+      this.receipt(a => (a.name === 'sora' || a.name === 'aki') ? 'none' : 'ok', 'P', null, 'Baccarat 5', false, '4. 応答なし')
+    ];
+    receiptStates[3].reasons = [
+      { name: 'sora', text: '応答なし — 最後の通信 3 分前。PC が止まっている可能性があります', color: '#F2C94C', bg: 'rgba(242,201,76,.07)' },
+      { name: 'aki', text: '応答なし — Chrome を開き直しています（あと 20 秒ほど）', color: '#F2C94C', bg: 'rgba(242,201,76,.07)' }
+    ];
+    const stName = { ok: '正常', stopped: '止まっている', lobby: 'ロビーに入れない', drift: '段のズレ', chrome: 'Chrome を開き直し中' };
+    const agentStates = ['gold', 'sora', 'ryo', 'mei', 'aki'].map(n => { const a = A.find(x => x.name === n); const v = this.agentView(a, n === 'gold' ? 'done' : 'none'); return { ...v, stateName: stName[a.st] }; });
+    const order = { lobby: 0, stopped: 1, chrome: 2, drift: 3, ok: 4 };
+    const agentsM = [...A].sort((x, y) => order[x.st] - order[y.st]).map(a => { const v = this.agentView(a, s.phase); const open = s.openAgent === a.name; return { ...v, open, caret: open ? '▴' : '▾', toggle: () => this.setState({ openAgent: open ? null : a.name }) }; });
+    const mt = (on) => [['操作', 'BET'], ['卓', 'TABLES'], ['受け子', 'AGENTS'], ['資金', 'FUNDS'], ['履歴', 'SESSION']].map(([label, en], i) => ({ label, en, on: i === on ? 1 : 0, color: i === on ? '#F2C463' : '#A89078' }));
+    const lastSideTxt = s.bet === 'P' ? 'PLAYER' : s.bet === 'B' ? 'BANKER' : s.bet === 'T' ? 'TIE' : null;
+    const mSwatches = [
+      ['--rg-m-player', '#2457C9', 'PLAYER ボタンの面'], ['--rg-m-banker', '#C2222B', 'BANKER ボタンの面'], ['--rg-m-tie', '#2FAE6A', 'TIE・罫線の T'],
+      ['--rg-m-bead-p', P, '罫線の P'], ['--rg-m-bead-b', B, '罫線の B'], ['--rg-m-text-p', '#6FA0FF', '文字の P'], ['--rg-m-text-b', '#FF6B6E', '文字の B'],
+      ['--rg-m-ok', '#5BD18B', '成立'], ['--rg-m-ng', '#FF6A3D', '不成立'], ['--rg-m-wait', '#7D6F64', '締切待ち'], ['--rg-m-none', '#F2C94C', '応答なし'], ['--rg-m-stop', '#C2121B', '緊急 STOP']
+    ].map(([n, v, d]) => ({ n, v, d }));
+    return {
+      sel: s.sel, tables, filters, tableCount: '60 卓',
+      selBeads: sb.map(x => ({ c: BC[x], l: x })), selBeadsM: sb.slice(-72).map(x => ({ c: BC[x] })),
+      selP: sb.filter(x => x === 'P').length, selB: sb.filter(x => x === 'B').length, selT: sb.filter(x => x === 'T').length,
+      selStreak: sStreak, selStreakBg: sLast === 'P' ? '#2457C9' : '#C2222B',
+      chips, chipLabel: chipDef[1],
+      sec: String(s.sec), secColor, secPct: (s.sec / 18 * 100) + '%', secLabel: s.sec === 0 ? '締切' : s.sec <= 5 ? '締切間近' : '受付中',
+      betOpacity: s.sec === 0 ? .45 : 1, cancelOpacity: s.bet && s.sec > 5 ? 1 : .35, swapOpacity: s.bet && s.sec > 0 ? 1 : .35,
+      betIsP: s.bet === 'P', betIsB: s.bet === 'B', pRing: ring('P'), bRing: ring('B'),
+      pressP: () => this.press('P'), pressB: () => this.press('B'),
+      cancel: () => { if (s.bet && s.sec > 5) this.setState({ bet: null, phase: 'none' }); },
+      swap: () => { if (s.bet && s.sec > 0) this.setState({ bet: s.bet === 'P' ? 'B' : 'P' }); },
+      toTie: () => { if (s.bet && s.sec > 0) this.setState({ bet: 'T' }); },
+      lastAction: lastSideTxt ? `最後の操作 18:42:07 · ${lastSideTxt} ${chipDef[1]}` : '最後の操作 18:41:48 · BANKER 段どおり',
+      noReceipt: s.phase === 'none', liveReceipt,
+      agents: A.map(a => this.agentView(a, s.phase)), agentsM, agentStates, receiptStates,
+      tiles: [['稼働中の受け子', '15 / 18', '#5BD18B'], ['セッション損益', '+$43.95', '#F2C463'], ['セッション勝率', '50.5%', '#F6EAD6'], ['1 日の損益（JST）', '+$20.30', '#F2C463'], ['1 日の勝率', '51.2%', '#F6EAD6'], ['最後の操作', '18:42:07', '#F6EAD6'], ['選んでいる卓', s.sel, '#F6EAD6']].map(([label, value, color]) => ({ label, value, color })),
+      mtabsOp: mt(0), mtabsAg: mt(2), mSwatches,
+      stopOpen: s.stopOpen, openStop: () => this.setState({ stopOpen: true }), closeStop: () => this.setState({ stopOpen: false }),
+      embersPC: this.embers()
+    };
+  }
+  embers() {
+    if (this._em !== undefined) return this._em;
+    if (!(this.props.motion ?? true)) return (this._em = null);
+    const R = React.createElement, r = this.rng('em'), kids = [];
+    for (let i = 0; i < 6; i++) { const sz = 2 + r() * 2, dur = 10 + r() * 8; kids.push(R('span', { key: i, style: { position: 'absolute', left: r() * 100 + '%', bottom: '-6px', width: sz, height: sz, borderRadius: '50%', background: '#FF8A1F', boxShadow: '0 0 6px 1px rgba(255,110,31,.4)', animation: `rgEmber ${dur}s linear ${-r() * dur}s infinite`, '--dx': (r() * 40 - 20) + 'px', '--rise': '-920px', opacity: 0 } })); }
+    return (this._em = R('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' } }, kids));
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+/* Rengoku（煉獄）デザイントークン */
+:root {
+  /* 色 */
+  --rg-ink: #140A06;
+  --rg-char: #24120B;
+  --rg-panel: rgba(36,18,11,.86);
+  --rg-crimson: #B3121B;
+  --rg-flame: #FF5A1F;
+  --rg-ember: #FF8A1F;
+  --rg-gold: #FFC83D;
+  --rg-gold-deep: #D98A0A;
+  --rg-cream: #FFF4E2;
+  --rg-ash: #B9A48F;
+  --rg-win: #FFC83D;
+  --rg-lose: #7FB2FF;
+  --rg-draw: #9A8C80;
+  --rg-ok: #5BD18B;
+  --rg-line: rgba(255,200,61,.35);
+  --rg-line-strong: rgba(255,200,61,.75);
+
+  /* グラデーション */
+  --rg-grad-flame: linear-gradient(180deg,#FFB13D,#FF5A1F 45%,#B3121B);
+  --rg-grad-gold: linear-gradient(180deg,#FFE38A,#FFC83D 50%,#D98A0A);
+  --rg-grad-char: linear-gradient(180deg,#3A1D10,#24120B 60%,#1A0C07);
+  --rg-grad-gold-plate: linear-gradient(100deg,#FFF3B0,#FFC83D 30%,#D98A0A 48%,#FFE38A 62%,#FFF3B0);
+  --rg-grad-bonfire: radial-gradient(120% 60% at 50% 110%,rgba(255,90,31,.38),rgba(179,18,27,.18) 40%,transparent 70%);
+
+  /* 文字 */
+  --rg-font-heading: "Zen Old Mincho", serif;                 /* 700 見出し・ボタン */
+  --rg-font-ui: "Zen Kaku Gothic New", system-ui, sans-serif;  /* 500/700 本文 */
+  --rg-font-label: "Cinzel", serif;                            /* 500/600 英字ロゴ・英字ラベル */
+  --rg-font-num: "Saira Condensed", sans-serif;               /* 600 + tabular-nums */
+  --rg-fs-hero-num: 76px;
+  --rg-fs-title: 18px;
+  --rg-fs-body: 14px;
+  --rg-fs-note: 12px;
+
+  /* 形 */
+  --rg-radius-btn: 14px;
+  --rg-radius-card: 14px;
+  --rg-radius-capsule: 12px;
+  --rg-radius-badge: 6px;
+  --rg-border-btn: 1px solid var(--rg-ink);
+  --rg-border-card: 1px solid rgba(255,200,61,.28);
+  --rg-hairline-gold: 1px solid rgba(255,200,61,.6);
+
+  /* 板ボタン */
+  --rg-btn-h: 60px;
+  --rg-btn-h-sm: 50px;
+  --rg-btn-depth: 4px;
+  --rg-grad-flame-refined: linear-gradient(180deg,#E8822E,#C8441A 55%,#8E1015);
+  --rg-btn-shadow: inset 0 0 0 1px rgba(255,222,150,.55), inset 0 1px 0 rgba(255,255,255,.35), 0 4px 0 #0A0503, 0 12px 22px rgba(150,40,10,.3);
+  --rg-btn-shadow-pressed: inset 0 0 0 1px rgba(255,222,150,.55), 0 0 0 #0A0503, 0 4px 10px rgba(150,40,10,.3);
+  --rg-gold-text: #F2C463;
+  --rg-label-gold: #C9A56A;
+  --rg-press-in: 80ms;
+  --rg-press-out: 120ms;
+
+  /* 骨組み */
+  --rg-hud-h: 64px;
+  --rg-tabbar-h: 76px;
+  --rg-app-w: 390px;
+
+  /* 動き */
+  --rg-shimmer-dur: 6s;
+
+  /* ===== マスター画面（運用者向け）===== */
+  /* バカラの慣習色（罫線と P/B ボタンの中だけで使う） */
+  --rg-m-bead-p: #3E7BF0;
+  --rg-m-bead-b: #E0393E;
+  --rg-m-bead-t: #2FAE6A;
+  --rg-m-text-p: #6FA0FF;
+  --rg-m-text-b: #FF6B6E;
+  --rg-m-text-t: #4FCB8A;
+  --rg-m-player: #2457C9;
+  --rg-m-banker: #C2222B;
+  --rg-m-tie: #2FAE6A;
+  --rg-m-grad-player: linear-gradient(180deg,#5B97FF,#2457C9 55%,#12307A);
+  --rg-m-grad-banker: linear-gradient(180deg,#F25A55,#C2222B 55%,#76101A);
+  --rg-m-shadow-player: inset 0 0 0 1px rgba(200,220,255,.5), inset 0 1px 0 rgba(255,255,255,.4), 0 6px 0 #05070F, 0 18px 30px rgba(36,87,201,.3);
+  --rg-m-shadow-banker: inset 0 0 0 1px rgba(255,205,195,.5), inset 0 1px 0 rgba(255,255,255,.4), 0 6px 0 #12030A, 0 18px 30px rgba(194,34,43,.3);
+  --rg-m-ring-player: 0 0 0 3px #9CC0FF, 0 0 40px rgba(91,151,255,.7);   /* 押した直後 700ms */
+  --rg-m-ring-banker: 0 0 0 3px #FFB0A8, 0 0 40px rgba(242,90,85,.7);
+  --rg-m-pb-h: 150px;          /* PC */
+  --rg-m-pb-h-mobile: 180px;
+  --rg-m-pb-gap: 28px;         /* P と B の間（中央に残り秒 150px） */
+  --rg-m-pb-depth: 6px;
+  --rg-m-pb-press-in: 60ms;
+
+  /* 受付票・状態 */
+  --rg-m-ok: #5BD18B;
+  --rg-m-ok-bg: rgba(91,209,139,.12);
+  --rg-m-ng: #FF6A3D;
+  --rg-m-ng-bg: rgba(255,106,61,.14);
+  --rg-m-wait: #7D6F64;
+  --rg-m-wait-text: #B3A496;
+  --rg-m-wait-bg: rgba(125,111,100,.16);
+  --rg-m-none: #F2C94C;
+  --rg-m-none-bg: rgba(242,201,76,.12);
+  --rg-m-warn: #FFB04A;        /* 締切間近・段のズレ */
+  --rg-m-stop: #C2121B;
+  --rg-m-grad-stop: linear-gradient(180deg,#D8262F,#9E0F17 60%,#6E070D);
+
+  /* 額のチップ */
+  --rg-m-chip-h: 40px;
+  --rg-m-chip-radius: 20px;
+  --rg-m-chip-on-bg: linear-gradient(180deg,#FFE38A,#F2C463 50%,#D98A0A);
+  --rg-m-chip-on-ring: 0 0 0 3px rgba(242,196,99,.22);
+
+  /* 罫線の丸 */
+  --rg-m-bead-sm: 7px;   /* 卓のカード */
+  --rg-m-bead-md: 8px;   /* スマホ */
+  --rg-m-bead-lg: 18px;  /* 選んでいる卓（文字入り） */
+  --rg-m-bead-gap-sm: 2px;
+  --rg-m-bead-gap-lg: 3px;
+
+  /* 卓のカード */
+  --rg-m-table-radius: 10px;
+  --rg-m-table-sel-border: #F2C463;
+  --rg-m-table-sel-bg: rgba(60,26,10,.9);
+
+  /* 骨組み（PC 1440） */
+  --rg-m-topbar-h: 60px;
+  --rg-m-col-tables: 270px;
+  --rg-m-col-agents: 510px;
+}

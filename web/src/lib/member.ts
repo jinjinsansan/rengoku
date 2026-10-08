@@ -64,5 +64,5 @@ export async function requireStaff() {
 
 /** マスター画面の入口 (田辺版のマスター)。ボタンは rg_members.can_master の人だけに出す。 */
 export function masterUrl(): string {
-  return (process.env.MASTER_URL || 'https://master.bafather.uk/master').trim()
+  return (process.env.MASTER_URL || 'https://master.rengoku.net/master').trim()
 }
