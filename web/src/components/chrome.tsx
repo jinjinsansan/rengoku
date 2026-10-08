@@ -6,7 +6,7 @@ import { IconBell, IconCoin, IconHistory, IconHome, IconMenu, IconPerson, IconSa
 
 const TITLES: [string, string][] = [
   ['/home', 'ホーム'], ['/salon', 'サロン'], ['/bets', 'BET 履歴'], ['/settlement', '精算'],
-  ['/me', 'マイページ'], ['/referral', '紹介'], ['/notifications', '通知'],
+  ['/me', 'マイページ'], ['/referral', '紹介'], ['/notifications', '通知'], ['/admin', '管理者画面'],
 ]
 
 /** 上部 HUD: 左 = 紋章 + RENGOKU / 中央 = 画面名 / 右 = ベル (未読数) とメニュー (説明書 4-2)。 */

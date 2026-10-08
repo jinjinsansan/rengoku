@@ -221,3 +221,8 @@ create policy rg_referral_own on public.rg_referral_rewards for select using (re
 --   (初期値の「有料・30%」のままだと bafather.uk の 0:05 の締めが残高から引き、足りないと停止 = 受け子が止まる):
 -- insert into public.billing(user_id, is_free, profit_share_rate) select id, true, 0 from public.profiles where email = 'MEMBER_EMAIL'
 -- on conflict (user_id) do update set is_free = true, profit_share_rate = 0, updated_at = now();
+
+-- ── 2026-10-09 追加: マスター画面のボタンを出す人 (田辺さん・オーナーの 2 名) ──
+alter table public.rg_members add column if not exists can_master boolean not null default false;
+-- update public.rg_members m set can_master = true from public.receiver_status rs
+-- where rs.user_id = m.user_id and rs.product = 'bacopy' and rs.executor_id in ('tanabe01', 'tanabe03');

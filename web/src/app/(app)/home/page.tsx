@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { requireMember } from '@/lib/member'
+import { isStaff, masterUrl, requireMember } from '@/lib/member'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { dueCharges, receiverStatuses, referralSummary, todaySummary, weekPnl } from '@/lib/data'
 import { addDays, jstDate } from '@/lib/jst'
@@ -49,6 +49,16 @@ export default async function Home() {
 
   return (
     <div className="rg-grid">
+      {(member.can_master || isStaff(member)) && (
+        <div className="full" style={{ display: 'grid', gridTemplateColumns: member.can_master && isStaff(member) ? '1fr 1fr' : '1fr', gap: 10 }}>
+          {member.can_master && (
+            <a href={masterUrl()} target="_blank" rel="noopener" className="rg-btn rg-btn-sm">マスター画面<small>田辺版の操作</small></a>
+          )}
+          {isStaff(member) && (
+            <Link href="/admin" className="rg-btn-sub rg-btn-sm">管理者画面</Link>
+          )}
+        </div>
+      )}
       {unpaid && (
         <Link href="/settlement" className="rg-notice full">
           <span className="rg-notice-diamond" />

@@ -13,6 +13,7 @@ export type Member = {
   joined_at: string
   salon_seen_at: string | null
   settings: Record<string, unknown>
+  can_master: boolean
 }
 
 /**
@@ -47,4 +48,16 @@ export async function requireMember(): Promise<{ userId: string; email: string; 
 
 export function isStaff(m: Pick<Member, 'role'>): boolean {
   return m.role === 'staff' || m.role === 'owner'
+}
+
+/** 管理者画面に入れる人 (運営)。それ以外はダッシュボードへ戻す。 */
+export async function requireStaff() {
+  const ctx = await requireMember()
+  if (!isStaff(ctx.member)) redirect('/home')
+  return ctx
+}
+
+/** マスター画面の入口 (田辺版のマスター)。ボタンは rg_members.can_master の人だけに出す。 */
+export function masterUrl(): string {
+  return (process.env.MASTER_URL || 'https://master.bafather.uk/master').trim()
 }
