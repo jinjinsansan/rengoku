@@ -28,12 +28,28 @@ export async function todaySummary(userId: string): Promise<DaySummary> {
 }
 
 export async function receiverStatuses(userId: string) {
-  const { data } = await createAdminClient()
-    .from('receiver_status')
-    .select('executor_id, product, last_seen_at, engine_running, table_name, balance, last_bet_at')
-    .eq('user_id', userId)
-    .order('last_seen_at', { ascending: false })
-  return data || []
+  const admin = createAdminClient()
+  const [{ data }, { data: snaps }] = await Promise.all([
+    admin
+      .from('receiver_status')
+      .select('executor_id, product, last_seen_at, engine_running, table_name, balance, last_bet_at')
+      .eq('user_id', userId)
+      .order('last_seen_at', { ascending: false }),
+    // ★2026-10-10: 残高の通貨はマスターの記録 (資産の画面の記録) から。生存報告には通貨が無いので、
+    //   何でも $ を付けていた (DOGE の枚数が $ に見えた)。
+    admin
+      .from('rg_wallet_snapshots')
+      .select('executor_id, balance, currency, at')
+      .eq('user_id', userId)
+      .order('at', { ascending: false })
+      .limit(20),
+  ])
+  const latest = new Map<string, { balance: number; currency: string }>()
+  for (const s of snaps || []) if (!latest.has(s.executor_id)) latest.set(s.executor_id, { balance: Number(s.balance), currency: String(s.currency || '') })
+  return (data || []).map((r) => {
+    const s = latest.get(r.executor_id)
+    return s ? { ...r, balance: s.balance, currency: s.currency } : { ...r, currency: '' }
+  })
 }
 
 export async function weekPnl(userId: string): Promise<{ date: string; pnl: number | null }[]> {

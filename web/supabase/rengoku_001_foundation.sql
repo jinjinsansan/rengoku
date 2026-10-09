@@ -241,3 +241,87 @@ create table if not exists public.rg_payment_items (
   primary key (order_id, charge_id)
 );
 alter table public.rg_payment_items enable row level security;   -- サーバー (service role) だけが読み書きする
+
+-- ============================================================
+-- 2026-10-10 資産の画面 (BTC・ETH で運用する会員) — 「期間」の仕組み
+--   受け子は触らない。VPS が 10 分ごとにマスターの残高・通貨・決済済み BET を /api/cron/wallet へ送る。
+--   期間 = 1 つの通貨で運用していたひと続きの間。通貨が変わると (30 分続いたら) 閉じて新しく始める。
+--   元本は期間を始めた時の残高と値段を自動で記録。説明できない残高の差は入金・出金として記録。
+--   読み書きはサーバー (service role) だけ。会員は API 経由で自分の分だけ見る。
+-- ============================================================
+alter table public.rg_members add column if not exists wallet_currency_override text;
+alter table public.rg_members add column if not exists wallet_override_at timestamptz;
+
+create table if not exists public.rg_prices (
+  currency text not null,
+  at       timestamptz not null,
+  usd      numeric not null,
+  primary key (currency, at)
+);
+
+create table if not exists public.rg_wallet_snapshots (
+  id          bigserial primary key,
+  user_id     uuid not null references auth.users(id) on delete cascade,
+  executor_id text not null,
+  at          timestamptz not null,
+  balance     numeric not null,
+  currency    text not null default '',
+  reported_at timestamptz
+);
+create index if not exists idx_rg_wallet_snapshots_user_at on public.rg_wallet_snapshots(user_id, at desc);
+
+create table if not exists public.rg_wallet_periods (
+  id              bigserial primary key,
+  user_id         uuid not null references auth.users(id) on delete cascade,
+  executor_id     text not null,
+  currency        text not null,
+  source          text not null default 'auto' check (source in ('auto', 'member')),
+  started_at      timestamptz not null,
+  start_coins     numeric not null,
+  start_price     numeric,
+  ended_at        timestamptz,
+  end_coins       numeric,
+  end_price       numeric,
+  end_reason      text,
+  trade_usd       numeric not null default 0,
+  trade_coins     numeric not null default 0,
+  flow_in_usd     numeric not null default 0,
+  flow_out_usd    numeric not null default 0,
+  flow_net_coins  numeric not null default 0,
+  last_balance    numeric,
+  last_at         timestamptz,
+  updated_at      timestamptz not null default now()
+);
+create unique index if not exists uq_rg_wallet_periods_open on public.rg_wallet_periods(user_id, executor_id) where ended_at is null;
+create index if not exists idx_rg_wallet_periods_user on public.rg_wallet_periods(user_id, started_at desc);
+
+create table if not exists public.rg_wallet_flows (
+  id        bigserial primary key,
+  period_id bigint not null references public.rg_wallet_periods(id) on delete cascade,
+  user_id   uuid not null references auth.users(id) on delete cascade,
+  at        timestamptz not null,
+  kind      text not null check (kind in ('deposit', 'withdraw')),
+  coins     numeric not null,
+  price     numeric,
+  usd       numeric
+);
+create index if not exists idx_rg_wallet_flows_period on public.rg_wallet_flows(period_id, at);
+
+create table if not exists public.rg_wallet_bets (
+  decision_id  text primary key,
+  user_id      uuid not null references auth.users(id) on delete cascade,
+  executor_id  text not null,
+  at           timestamptz not null,
+  pnl_usd      numeric not null,
+  period_id    bigint references public.rg_wallet_periods(id) on delete set null,
+  price        numeric,
+  coins        numeric,
+  processed_at timestamptz
+);
+create index if not exists idx_rg_wallet_bets_user_unprocessed on public.rg_wallet_bets(user_id, at) where processed_at is null;
+
+alter table public.rg_prices enable row level security;
+alter table public.rg_wallet_snapshots enable row level security;
+alter table public.rg_wallet_periods enable row level security;
+alter table public.rg_wallet_flows enable row level security;
+alter table public.rg_wallet_bets enable row level security;

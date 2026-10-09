@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { isStaff, masterBackupUrl, masterUrl, requireMember } from '@/lib/member'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { dueCharges, receiverStatuses, referralSummary, todaySummary, weekPnl } from '@/lib/data'
+import { fmtBalance } from '@/lib/wallet-core'
 import { addDays, jstDate } from '@/lib/jst'
 import { signedUsd, usd } from '@/lib/money'
 import { Card, KindBadge, Stat } from '@/components/card'
@@ -101,7 +102,7 @@ export default async function Home() {
         {rcv && (
           <div className="rg-stats">
             <Stat label="卓"><span style={{ fontSize: 15 }}>{rcv.table_name || '-'}</span></Stat>
-            <Stat label="残高">{rcv.balance != null ? usd(rcv.balance) : '-'}</Stat>
+            <Stat label="残高">{fmtBalance(rcv.balance, rcv.currency)}</Stat>
             <Stat label="最後の BET">{hm(rcv.last_bet_at)}</Stat>
           </div>
         )}

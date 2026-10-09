@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { isStaff, masterBackupUrl, masterUrl, requireMember } from '@/lib/member'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { receiverStatuses } from '@/lib/data'
+import { fmtBalance } from '@/lib/wallet-core'
 import { pnlClass, signedUsd, usd } from '@/lib/money'
 import { Card, Stat } from '@/components/card'
 import { signOut, updateProfile } from '../actions'
@@ -44,7 +45,7 @@ export default async function Me() {
         {receivers.map((r) => (
           <div key={r.executor_id} className="rg-row">
             <span>{r.executor_id}</span>
-            <span className="num" style={{ fontSize: 15 }}>{r.balance != null ? usd(r.balance) : '-'}</span>
+            <span className="num" style={{ fontSize: 15 }}>{fmtBalance(r.balance, r.currency)}</span>
           </div>
         ))}
       </Card>
