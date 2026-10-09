@@ -68,6 +68,8 @@ export default async function Me() {
           {member.can_master && <a href={masterUrl()} target="_blank" rel="noopener" className="rg-btn rg-btn-sm">マスター画面</a>}
           {member.can_master && <a href={masterBackupUrl()} target="_blank" rel="noopener" className="rg-btn-sub rg-btn-sm">マスター画面の予備 (前の画面)</a>}
           {isStaff(member) && <Link href="/admin" className="rg-btn-sub rg-btn-sm">管理者画面</Link>}
+          <Link href="/assets" className="rg-btn-sub rg-btn-sm">資産</Link>
+          <Link href="/me/wallet" className="rg-btn-sub rg-btn-sm">財布の通貨</Link>
           <Link href="/referral" className="rg-btn-sub rg-btn-sm">紹介</Link>
           <form action={signOut}><button className="rg-btn-sub rg-btn-sm">ログアウト</button></form>
         </div>

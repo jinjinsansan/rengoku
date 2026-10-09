@@ -3,6 +3,8 @@ import { isStaff, masterBackupUrl, masterUrl, requireMember } from '@/lib/member
 import { createAdminClient } from '@/lib/supabase/admin'
 import { dueCharges, receiverStatuses, referralSummary, todaySummary, weekPnl } from '@/lib/data'
 import { fmtBalance } from '@/lib/wallet-core'
+import { loadWallet } from '@/lib/wallet-view'
+import { AssetCard } from '@/components/wallet-home'
 import { addDays, jstDate } from '@/lib/jst'
 import { signedUsd, usd } from '@/lib/money'
 import { Card, KindBadge, Stat } from '@/components/card'
@@ -29,13 +31,14 @@ function minutesAgo(iso: string | null | undefined): number | null {
 export default async function Home() {
   const { userId, member } = await requireMember()
   const admin = createAdminClient()
-  const [today, receivers, charges, week, ref, posts] = await Promise.all([
+  const [today, receivers, charges, week, ref, posts, wallet] = await Promise.all([
     todaySummary(userId),
     receiverStatuses(userId),
     dueCharges(userId),
     weekPnl(userId),
     referralSummary(userId),
     admin.from('rg_posts').select('id, kind, title, published_at').is('deleted_at', null).order('published_at', { ascending: false }).limit(3),
+    loadWallet(userId, { series: false }),
   ])
   const now = new Date().toISOString()
   const todayStr = jstDate()
@@ -85,6 +88,8 @@ export default async function Home() {
           <Stat label="勝率">{winRate}%</Stat>
         </div>
       </Card>
+
+      {wallet.current && <AssetCard p={wallet.current} />}
 
       <Card
         en="AGENT"

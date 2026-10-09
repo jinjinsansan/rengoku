@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Saira+Condensed:wght@600;700&family=Shippori+Mincho+B1:wght@500;800&family=Cinzel:wght@500;600&family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0C0604;font-family:"M PLUS Rounded 1c",system-ui,sans-serif;color:#FFF4E2;-webkit-font-smoothing:antialiased}
+a{color:#FFC83D}a:hover{color:#FFE38A}
+@keyframes rgEmber{0%{transform:translate(0,0);opacity:0}10%{opacity:1}70%{opacity:.75}100%{transform:translate(var(--dx),var(--rise));opacity:0}}
+@keyframes rgShimmer{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes rgFlicker{0%{transform:scaleY(1) scaleX(1);opacity:.85}50%{transform:scaleY(1.08) scaleX(.97);opacity:1}100%{transform:scaleY(.95) scaleX(1.03);opacity:.8}}
+@keyframes rgPulse{0%{box-shadow:0 0 0 0 rgba(91,209,139,.7)}100%{box-shadow:0 0 0 9px rgba(91,209,139,0)}}
+@keyframes rgBlink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes rgRise{0%{opacity:0;transform:translateY(46px) scale(.9);filter:blur(10px)}60%{opacity:1;filter:blur(0)}100%{opacity:1;transform:none;filter:blur(0)}}
+@keyframes rgBlade{0%{background-position:-60% 0}100%{background-position:160% 0}}
+</style>
+</helmet>
+
+<section style="background:#0C0604;padding:64px 72px 40px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(255,200,61,.18)">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px">
+    <div style="font-family:'Cinzel',serif;font-weight:600;letter-spacing:.3em;color:#F2C463;font-size:14px">RENGOKU · TURN 4</div>
+    <div style="font-family:'Zen Old Mincho',serif;font-size:32px;font-weight:700">PC・iPad 表示（2a で統一）</div>
+    <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;color:#B9A48F;line-height:1.7;text-wrap:pretty">PC（1280 幅）は資料どおり、中央にスマホ幅のアプリを置き、左右は炎の背景です。iPad（820 幅）は画面いっぱいに広げ、カードを 2 列に並べます（中身は最大 760px）。ホーム画面は中でスクロールできます。</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+    <!-- PC TOP -->
+    <div id="4a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">4a</span><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;color:#B9A48F">PC 1280 · TOP</span></div>
+      <div data-screen-label="4a PC TOP" style="width:1280px;height:800px;border-radius:12px;overflow:hidden;background:#1c1714;box-shadow:0 0 0 1px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+        <div style="height:40px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;background:#231d19;border-bottom:1px solid #3a2c24">
+          <span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span><span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span><span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span>
+          <span style="margin-left:16px;width:360px;height:24px;border-radius:6px;background:#140F0C;display:flex;align-items:center;padding:0 12px;font-family:system-ui,sans-serif;font-size:12px;color:#8E7A66">rengoku.app</span>
+        </div>
+        <div style="flex:1;position:relative;overflow:hidden;background:#0C0604">
+          <div style="position:absolute;inset:0;background:radial-gradient(40% 70% at 0% 100%,rgba(255,110,31,.32),rgba(179,18,27,.12) 50%,transparent 80%),radial-gradient(40% 70% at 100% 100%,rgba(255,110,31,.32),rgba(179,18,27,.12) 50%,transparent 80%),radial-gradient(60% 40% at 50% 110%,rgba(255,138,31,.25),transparent 70%)"></div>
+          <div style="position:absolute;left:0;bottom:-40px;width:520px;height:380px;transform-origin:0 100%;animation:rgFlicker 3.4s ease-in-out infinite alternate;background:radial-gradient(60% 70% at 20% 100%,rgba(255,177,61,.3),rgba(255,90,31,.1) 50%,transparent 78%)"></div>
+          <div style="position:absolute;right:0;bottom:-40px;width:520px;height:380px;transform-origin:100% 100%;animation:rgFlicker 3s ease-in-out infinite alternate-reverse;background:radial-gradient(60% 70% at 80% 100%,rgba(255,177,61,.3),rgba(255,90,31,.1) 50%,transparent 78%)"></div>
+          {{ embersPC1 }}
+          <div style="position:absolute;left:80px;top:0;bottom:0;display:flex;align-items:center;gap:18px">
+            <span style="width:1px;height:220px;background:linear-gradient(180deg,transparent,rgba(255,200,61,.5),transparent)"></span>
+            <span style="writing-mode:vertical-rl;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.6em;color:rgba(242,196,99,.55)">RENGOKU · MEMBERS</span>
+          </div>
+          <div style="position:absolute;top:0;bottom:0;left:50%;width:390px;margin-left:-195px;border-left:1px solid rgba(255,200,61,.3);border-right:1px solid rgba(255,200,61,.3);box-shadow:0 0 60px rgba(0,0,0,.8)">
+            <dc-import name="Rengoku Top" motion="{{ motionOn }}" seed="{{ 53 }}" hint-size="390px,760px" style="width:390px;height:760px;display:block"></dc-import>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PC Home -->
+    <div id="4b" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">4b</span><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;color:#B9A48F">PC 1280 · ダッシュボード</span></div>
+      <div data-screen-label="4b PC Home" style="width:1280px;height:800px;border-radius:12px;overflow:hidden;background:#1c1714;box-shadow:0 0 0 1px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+        <div style="height:40px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;background:#231d19;border-bottom:1px solid #3a2c24">
+          <span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span><span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span><span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span>
+          <span style="margin-left:16px;width:360px;height:24px;border-radius:6px;background:#140F0C;display:flex;align-items:center;padding:0 12px;font-family:system-ui,sans-serif;font-size:12px;color:#8E7A66">rengoku.app/home</span>
+        </div>
+        <div style="flex:1;position:relative;overflow:hidden;background:#0C0604">
+          <div style="position:absolute;inset:0;background:radial-gradient(40% 70% at 0% 100%,rgba(255,110,31,.32),rgba(179,18,27,.12) 50%,transparent 80%),radial-gradient(40% 70% at 100% 100%,rgba(255,110,31,.32),rgba(179,18,27,.12) 50%,transparent 80%)"></div>
+          <div style="position:absolute;left:0;bottom:-40px;width:520px;height:380px;transform-origin:0 100%;animation:rgFlicker 3.4s ease-in-out infinite alternate;background:radial-gradient(60% 70% at 20% 100%,rgba(255,177,61,.3),rgba(255,90,31,.1) 50%,transparent 78%)"></div>
+          <div style="position:absolute;right:0;bottom:-40px;width:520px;height:380px;transform-origin:100% 100%;animation:rgFlicker 3s ease-in-out infinite alternate-reverse;background:radial-gradient(60% 70% at 80% 100%,rgba(255,177,61,.3),rgba(255,90,31,.1) 50%,transparent 78%)"></div>
+          {{ embersPC2 }}
+          <div style="position:absolute;left:80px;top:0;bottom:0;display:flex;align-items:center;gap:18px">
+            <span style="width:1px;height:220px;background:linear-gradient(180deg,transparent,rgba(255,200,61,.5),transparent)"></span>
+            <span style="writing-mode:vertical-rl;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.6em;color:rgba(242,196,99,.55)">RENGOKU · MEMBERS</span>
+          </div>
+          <div style="position:absolute;top:0;bottom:0;left:50%;width:390px;margin-left:-195px;border-left:1px solid rgba(255,200,61,.3);border-right:1px solid rgba(255,200,61,.3);box-shadow:0 0 60px rgba(0,0,0,.8)">
+            <dc-import name="Rengoku Home" unpaid="{{ unpaid }}" receiver-online="{{ receiverOnline }}" motion="{{ motionOn }}" safe-bottom="{{ 8 }}" hint-size="390px,760px" style="width:390px;height:760px;display:block"></dc-import>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iPad TOP -->
+    <div id="4c" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">4c</span><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;color:#B9A48F">iPad 820×1180 · TOP</span></div>
+      <div data-screen-label="4c iPad TOP" style="width:820px;height:1180px;border-radius:40px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 14px #201814,0 0 0 15px #3a2c24,0 40px 80px rgba(0,0,0,.7)">
+        <div style="position:absolute;top:0;left:0;right:0;height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:14px;color:#E9DCC8;z-index:4"><span>18:47</span><span>10月10日(土)</span></div>
+        <dc-import name="Rengoku Top" motion="{{ motionOn }}" seed="{{ 61 }}" hint-size="820px,1180px" style="position:absolute;inset:0;width:820px;height:1180px;display:block"></dc-import>
+      </div>
+    </div>
+
+    <!-- iPad Home -->
+    <div id="4d" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">4d</span><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;color:#B9A48F">iPad 820×1180 · ダッシュボード（2 列）</span></div>
+      <div data-screen-label="4d iPad Home" style="width:820px;height:1180px;border-radius:40px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 14px #201814,0 0 0 15px #3a2c24,0 40px 80px rgba(0,0,0,.7)">
+        <div style="position:absolute;top:0;left:0;right:0;height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:14px;color:#E9DCC8;background:#110805"><span>18:47</span><span>10月10日(土)</span></div>
+        <dc-import name="Rengoku Home" unpaid="{{ unpaid }}" receiver-online="{{ receiverOnline }}" motion="{{ motionOn }}" safe-bottom="{{ 20 }}" seed="{{ 67 }}" hint-size="820px,1152px" style="position:absolute;top:28px;left:0;width:820px;height:1152px;display:block"></dc-import>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#0C0604;padding:64px 72px 40px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(255,200,61,.18)">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px">
+    <div style="font-family:'Cinzel',serif;font-weight:600;letter-spacing:.3em;color:#F2C463;font-size:14px">RENGOKU · TURN 3</div>
+    <div style="font-family:'Zen Old Mincho',serif;font-size:32px;font-weight:700">2a の方向で全体をそろえる</div>
+    <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;color:#B9A48F;line-height:1.7;text-wrap:pretty">見出しは明朝体（Zen Old Mincho）、本文は細身のゴシック体（Zen Kaku Gothic New）、英字ラベルは Cinzel にしました。数字は読みやすさを優先して Saira Condensed のままです。縁は 1px の金線、ボタンの沈みは 4px です。</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+
+    <!-- 3a Dashboard -->
+    <div id="3a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">3a</span><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;color:#B9A48F">ダッシュボード（中はスクロールできます）</span></div>
+      <div data-screen-label="3a Dashboard" style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7);font-family:'Zen Kaku Gothic New',sans-serif;color:#F6EAD6">
+        <div style="position:absolute;inset:0;background:radial-gradient(90% 40% at 50% 108%,rgba(255,110,31,.3),rgba(179,18,27,.12) 45%,transparent 75%)"></div>
+        {{ embersDash3 }}
+        <div style="position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8;background:#110805;z-index:3">
+          <span>18:47</span>
+          <span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span>
+        </div>
+        <!-- HUD -->
+        <div style="position:absolute;top:44px;left:0;right:0;height:64px;display:flex;align-items:center;gap:10px;padding:0 16px;box-sizing:border-box;background:rgba(17,8,5,.88);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,200,61,.35);z-index:3">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg width="30" height="30" viewBox="0 0 100 100"><defs><linearGradient id="t3hG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3B0"></stop><stop offset=".5" stop-color="#FFC83D"></stop><stop offset="1" stop-color="#D98A0A"></stop></linearGradient><linearGradient id="t3hF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD36A"></stop><stop offset=".5" stop-color="#FF6A24"></stop><stop offset="1" stop-color="#B3121B"></stop></linearGradient></defs><circle cx="50" cy="50" r="45" fill="none" stroke="url(#t3hG)" stroke-width="4"></circle><path d="M50 6C56 24 70 30 76 48 80 40 78 32 76 28 86 38 90 52 86 66 80 82 66 92 50 92 34 92 18 80 14 62 12 48 20 38 28 30 28 40 30 46 36 50 36 32 42 18 50 6Z" fill="url(#t3hF)" transform="translate(50 52) scale(.6) translate(-50 -50)"></path></svg>
+            <span style="font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.24em;color:#F2C463">RENGOKU</span>
+          </div>
+          <div style="flex:1;text-align:center;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:17px;letter-spacing:.12em">ホーム</div>
+          <button style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,200,61,.6);background:rgba(20,10,6,.6);position:relative;display:grid;place-items:center;cursor:pointer;padding:0" style-active="background:rgba(255,200,61,.12)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2C463" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4z"></path><path d="M10 21h4"></path></svg>
+            <span style="position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#B3121B;border:1.5px solid #110805;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:12px;line-height:15px;color:#FFF4E2;box-sizing:border-box;text-align:center;padding:0 4px">3</span>
+          </button>
+          <button style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,200,61,.6);background:rgba(20,10,6,.6);display:grid;place-items:center;cursor:pointer;padding:0" style-active="background:rgba(255,200,61,.12)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2C463" stroke-width="1.7" stroke-linecap="round"><path d="M5 8h14M5 12h14M5 16h14"></path></svg>
+          </button>
+        </div>
+
+        <div style="position:absolute;top:108px;left:0;right:0;bottom:0;overflow-y:auto;padding:16px 16px 130px;box-sizing:border-box;display:grid;grid-auto-rows:max-content;align-content:start;gap:14px;z-index:1">
+
+          <sc-if value="{{ unpaid }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;border:1px solid rgba(255,200,61,.6);background:rgba(26,13,8,.9)">
+              <span style="width:6px;height:6px;transform:rotate(45deg);background:#F2C463;box-shadow:0 0 8px #FFC83D;animation:rgBlink 2s ease-in-out infinite;flex:none"></span>
+              <span style="flex:1;font-size:13px;font-weight:500;line-height:1.5">10/08 分の精算のご案内があります</span>
+              <span style="font-size:12px;font-weight:700;color:#F2C463;letter-spacing:.08em">見る ›</span>
+            </div>
+          </sc-if>
+
+          <!-- 今日の利益 -->
+          <div style="border-radius:14px;border:1px solid rgba(255,170,80,.6);background:linear-gradient(180deg,rgba(60,24,10,.9),rgba(24,12,7,.92));box-shadow:inset 0 0 0 4px rgba(17,8,5,.6),inset 0 0 0 5px rgba(255,200,61,.14),0 0 30px rgba(255,90,31,.14);padding:18px 20px 20px;display:flex;flex-direction:column;gap:4px;position:relative;overflow:hidden">
+            <div style="display:flex;align-items:baseline;gap:10px">
+              <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">TODAY</span>
+              <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px;letter-spacing:.08em">今日の利益</span>
+              <span style="margin-left:auto;font-size:11px;color:#A89078">10/10(土) · 0:00 締め</span>
+            </div>
+            <span style="display:block;padding:0;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:72px;line-height:1.35;font-variant-numeric:tabular-nums;color:{{ profitColor }};text-shadow:{{ profitGlow }};transition:text-shadow .5s,color .5s">{{ profitText }}</span>
+            <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:#A89078">
+              <span>締めまで</span>
+              <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:17px;color:#F6EAD6;font-variant-numeric:tabular-nums;letter-spacing:.04em">{{ closeText }}</span>
+            </div>
+            <div style="height:1px;margin:14px 0 10px;background:linear-gradient(90deg,rgba(255,200,61,.45),rgba(255,200,61,.05))"></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr))">
+              <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;color:#A89078">勝-負-引分</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:21px;font-variant-numeric:tabular-nums"><span style="color:#F2C463">51</span>-<span style="color:#7FB2FF">46</span>-<span style="color:#A89078">9</span></span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:1px solid rgba(255,200,61,.18)"><span style="font-size:11px;color:#A89078">BET 回数</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:21px">106</span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:1px solid rgba(255,200,61,.18)"><span style="font-size:11px;color:#A89078">勝率</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:21px">52.6%</span></div>
+            </div>
+          </div>
+
+          <!-- 受け子 -->
+          <sc-if value="{{ receiverOnline }}" hint-placeholder-val="{{ true }}">
+            <div style="border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 18px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:baseline;gap:10px">
+                <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">AGENT</span>
+                <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">受け子 PC-01</span>
+                <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:#5BD18B"><span style="width:7px;height:7px;border-radius:50%;background:#5BD18B;animation:rgPulse 1.8s ease-out infinite"></span>オンライン</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr))">
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;color:#A89078">卓</span><span style="font-size:14px;font-weight:700">Baccarat 5</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:1px solid rgba(255,200,61,.18)"><span style="font-size:11px;color:#A89078">残高</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:18px">$1,284.50</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:1px solid rgba(255,200,61,.18)"><span style="font-size:11px;color:#A89078">最後の BET</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:18px">18:42</span></div>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ receiverOffline }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:14px;border:1px solid #E2602A;background:rgba(26,13,8,.9);padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:10px">
+                <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">AGENT</span>
+                <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">受け子 PC-01</span>
+                <span style="margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:#A89078"><span style="width:7px;height:7px;border-radius:50%;background:#6b5d52"></span>オフライン</span>
+              </div>
+              <div style="font-size:14px;font-weight:700;color:#FF9A5A">止まっています — 最後の通信 12 分前</div>
+              <div style="font-size:12px;color:#A89078;line-height:1.6">PC の電源とネットワークをご確認ください。</div>
+            </div>
+          </sc-if>
+
+          <!-- 精算 -->
+          <sc-if value="{{ unpaid }}" hint-placeholder-val="{{ true }}">
+            <div style="border-radius:14px;border:1px solid rgba(255,200,61,.6);background:rgba(26,13,8,.9);padding:16px 18px 20px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:baseline;gap:10px">
+                <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">SETTLEMENT</span>
+                <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">精算のご案内</span>
+                <span style="margin-left:auto;font-size:11px;color:#A89078">10/08 分</span>
+              </div>
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+                <span style="font-size:12px;color:#A89078">利益 $42.80 × 30%</span>
+                <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:38px;line-height:1;color:#F2C463;font-variant-numeric:tabular-nums">$12.84</span>
+              </div>
+              <div style="font-size:13px;line-height:1.75;color:#E9DCC8">お手数ですが、あと <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#F6EAD6;font-variant-numeric:tabular-nums">{{ dueText }}</span> 以内のご送金をお願いいたします。</div>
+              <button style="margin-top:6px;height:60px;width:100%;border-radius:12px;border:1px solid #140A06;background:linear-gradient(180deg,#E8822E,#C8441A 55%,#8E1015);box-shadow:inset 0 0 0 1px rgba(255,222,150,.55),inset 0 1px 0 rgba(255,255,255,.35),0 4px 0 #0A0503,0 12px 22px rgba(150,40,10,.3);color:#FFF4E2;font-family:'Zen Old Mincho',serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(4px);box-shadow:inset 0 0 0 1px rgba(255,222,150,.55),0 0 0 #0A0503,0 4px 10px rgba(150,40,10,.3);transition-duration:80ms" onClick="{{ tap }}">
+                <span style="font-weight:700;font-size:17px;letter-spacing:.24em;padding-left:.24em">送金する</span>
+                <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:11px;opacity:.9">12.84 USDT · 24 時間以内</span>
+              </button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ paid }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:14px;border:1px solid rgba(91,209,139,.4);background:rgba(26,13,8,.82);padding:14px 18px;display:flex;align-items:center;gap:12px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5BD18B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M7.5 12.5l3 3 6-7"></path></svg>
+              <div style="display:flex;flex-direction:column;gap:2px"><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:14px">精算はすべて完了しています</span><span style="font-size:12px;color:#A89078">いつもありがとうございます。</span></div>
+            </div>
+          </sc-if>
+
+          <!-- サロン -->
+          <div style="border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 18px 6px;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+              <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">SALON</span>
+              <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">Rengoku サロン</span>
+              <span style="margin-left:auto;font-size:12px;font-weight:700;color:#F2C463">すべて ›</span>
+            </div>
+            <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid rgba(255,200,61,.12)">
+                <span style="flex:none;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.04em;background:{{ p.bg }};color:{{ p.fg }}">{{ p.type }}</span>
+                <span style="flex:1;min-width:0;font-size:13px;line-height:1.5;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">{{ p.title }}</span>
+                <span style="flex:none;width:6px;height:6px;border-radius:50%;background:#FF6A24;box-shadow:0 0 6px #FF6A24;opacity:{{ p.unread }}"></span>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- 今週 -->
+          <div style="border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 18px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;gap:10px">
+              <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">WEEK</span>
+              <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">今週の推移</span>
+              <span style="margin-left:auto;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:17px;color:#F2C463">+$82.95</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+              <sc-for list="{{ weekR }}" as="d" hint-placeholder-count="7">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+                  <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:12px;color:{{ d.color }};height:14px">{{ d.val }}</span>
+                  <div style="width:100%;height:90px;position:relative">
+                    <div style="position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(255,200,61,.22)"></div>
+                    <div style="position:absolute;left:32%;right:32%;bottom:50%;height:{{ d.pos }};border-radius:2px 2px 0 0;background:linear-gradient(180deg,#FFE9A8,#E0A93A)"></div>
+                    <div style="position:absolute;left:32%;right:32%;top:50%;height:{{ d.neg }};border-radius:0 0 2px 2px;background:#6F9FE6"></div>
+                  </div>
+                  <span style="font-family:'Zen Old Mincho',serif;font-size:12px;color:{{ d.labelColor }}">{{ d.day }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- 紹介 -->
+          <div style="border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 18px 20px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:baseline;gap:10px">
+              <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">REFERRAL</span>
+              <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">紹介</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr))">
+              <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;color:#A89078">紹介した人数</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:22px">3 <span style="font-family:'Zen Kaku Gothic New';font-size:12px">人</span></span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:1px solid rgba(255,200,61,.18)"><span style="font-size:11px;color:#A89078">今月の紹介報酬</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:22px;color:#F2C463">$4.20</span></div>
+            </div>
+            <button style="height:50px;width:100%;border-radius:12px;border:1px solid rgba(255,200,61,.7);background:rgba(20,10,6,.55);box-shadow:inset 0 0 0 3px rgba(20,10,6,.9),inset 0 0 0 4px rgba(255,200,61,.22),0 4px 0 #0A0503;color:#F2C463;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px;letter-spacing:.18em;cursor:pointer;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(4px);box-shadow:inset 0 0 0 3px rgba(20,10,6,.9),inset 0 0 0 4px rgba(255,200,61,.22),0 0 0 #0A0503;transition-duration:80ms" onClick="{{ tap }}">紹介コードを送る</button>
+          </div>
+        </div>
+
+        <!-- Tab bar -->
+        <div style="position:absolute;left:0;right:0;bottom:0;height:92px;padding:10px 8px 24px;box-sizing:border-box;background:linear-gradient(180deg,rgba(17,8,5,.92),#0C0604);border-top:1px solid rgba(255,200,61,.35);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));z-index:3">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative">
+            <span style="position:absolute;top:-14px;width:6px;height:6px;transform:rotate(45deg);background:#FFC83D;box-shadow:0 0 8px #FFC83D"></span>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F2C463" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px rgba(255,138,31,.7))"><path d="M4 11L12 4l8 7v9h-6v-6h-4v6H4z"></path></svg>
+            <span style="font-size:10px;font-weight:700;color:#F2C463;letter-spacing:.06em">ホーム</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A89078" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11h-9l-5 4v-4H4z"></path></svg>
+            <span style="font-size:10px;color:#A89078;letter-spacing:.06em">サロン</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A89078" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14M5 12h14M5 18h9"></path></svg>
+            <span style="font-size:10px;color:#A89078;letter-spacing:.06em">履歴</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A89078" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 7.5v9M14.5 9.5h-3.5a1.75 1.75 0 0 0 0 3.5h2a1.75 1.75 0 0 1 0 3.5H9.5"></path></svg>
+            <span style="font-size:10px;color:#A89078;letter-spacing:.06em">精算</span>
+            <sc-if value="{{ unpaid }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:4px;right:20px;width:7px;height:7px;border-radius:50%;background:#FF6A24;box-shadow:0 0 6px #FF6A24"></span></sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A89078" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.5 3.6-7 8-7s8 2.5 8 7"></path></svg>
+            <span style="font-size:10px;color:#A89078;letter-spacing:.06em">マイページ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3b Splash -->
+    <div id="3b" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">3b</span><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;color:#B9A48F">起動画面</span></div>
+      <div data-screen-label="3b Splash" style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7)">
+        <div style="position:absolute;left:50%;top:50%;width:400px;height:400px;margin:-200px 0 0 -200px;transform-origin:50% 60%;animation:rgFlicker 3.2s ease-in-out infinite alternate;background:radial-gradient(circle at 50% 52%,rgba(255,110,31,.3),rgba(179,18,27,.1) 42%,transparent 68%)"></div>
+        {{ embersSplash3 }}
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px">
+          <svg width="120" height="120" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 18px rgba(255,120,31,.45))">
+            <defs><linearGradient id="t3sG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3B0"></stop><stop offset=".5" stop-color="#FFC83D"></stop><stop offset="1" stop-color="#D98A0A"></stop></linearGradient><linearGradient id="t3sF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD36A"></stop><stop offset=".5" stop-color="#FF6A24"></stop><stop offset="1" stop-color="#B3121B"></stop></linearGradient></defs>
+            <circle cx="50" cy="50" r="47" fill="none" stroke="url(#t3sG)" stroke-width="1.2"></circle>
+            <circle cx="50" cy="50" r="42.5" fill="none" stroke="url(#t3sG)" stroke-width=".6" opacity=".7"></circle>
+            <path d="M50 6C56 24 70 30 76 48 80 40 78 32 76 28 86 38 90 52 86 66 80 82 66 92 50 92 34 92 18 80 14 62 12 48 20 38 28 30 28 40 30 46 36 50 36 32 42 18 50 6Z" fill="url(#t3sF)" transform="translate(50 52) scale(.56) translate(-50 -50)"></path>
+            <path d="M50 42C55 52 63 56 63 68 63 78 57 85 50 85 43 85 37 78 37 68 37 60 43 56 45 50 46 56 48 58 50 60 49 54 49 48 50 42Z" fill="#FFE9A8" opacity=".9" transform="translate(50 52) scale(.56) translate(-50 -50)"></path>
+            <path d="M50 2.5 L52 5 L50 7.5 L48 5 Z M50 92.5 L52 95 L50 97.5 L48 95 Z" fill="#FFC83D"></path>
+          </svg>
+          <div style="font-family:'Cinzel',serif;font-weight:500;font-size:30px;letter-spacing:.3em;padding-left:.3em;background:linear-gradient(180deg,#FFF6DA,#F2C463 55%,#C8861A);-webkit-background-clip:text;background-clip:text;color:transparent">RENGOKU</div>
+        </div>
+        <div style="position:absolute;left:110px;right:110px;bottom:120px;height:1px;background:rgba(255,200,61,.2);overflow:hidden">
+          <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,#FF8A1F 40%,#FFE9A8 50%,#FF8A1F 60%,transparent);background-size:40% 100%;background-repeat:no-repeat;animation:rgBlade 1.8s ease-in-out infinite"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sc-for list="{{ iconD }}" as="o" hint-placeholder-count="1">
+    <div id="3c" style="width:760px;max-width:100%;border-radius:18px;border:1px solid rgba(255,200,61,.3);background:#160B06;padding:22px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">{{ o.id }}</span>
+        <span style="font-family:'Zen Old Mincho',serif;font-size:19px;font-weight:700">PWA アイコン — {{ o.name }}</span>
+      </div>
+      <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;color:#B9A48F;line-height:1.7">{{ o.desc }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
+          {{ o.xl }}
+          <div style="display:flex;align-items:flex-end;gap:16px">
+            {{ o.s48 }}
+            {{ o.s32 }}
+            <div style="width:40px;height:40px;border-radius:10px;background:#3a3a3c;display:grid;place-items:center">{{ o.mono }}</div>
+          </div>
+        </div>
+        <div style="width:252px;border-radius:26px;padding:34px 16px 14px;box-sizing:border-box;background:linear-gradient(165deg,#4b4f5a,#22242a 60%,#17181c);display:flex;flex-direction:column;gap:18px">
+          <div style="display:grid;grid-template-columns:repeat(4,52px);justify-content:space-between;row-gap:14px">
+            <sc-for list="{{ o.ios }}" as="it" hint-placeholder-count="8">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+                <div style="width:52px;height:52px;border-radius:12px;background:{{ it.color }};display:grid;place-items:center;overflow:hidden">{{ it.el }}</div>
+                <span style="font-size:10px;font-family:system-ui,sans-serif;color:#fff;white-space:nowrap">{{ it.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="height:60px"></div>
+          <div style="border-radius:22px;background:rgba(255,255,255,.18);padding:10px;display:grid;grid-template-columns:repeat(4,46px);justify-content:space-between">
+            <div style="width:46px;height:46px;border-radius:11px;background:#4CC764"></div>
+            <div style="width:46px;height:46px;border-radius:11px;background:#3B8DE6"></div>
+            <div style="width:46px;height:46px;border-radius:11px;background:#F2F2F4"></div>
+            <div style="width:46px;height:46px;border-radius:11px;background:#F2475A"></div>
+          </div>
+        </div>
+        <div style="width:252px;border-radius:26px;padding:34px 16px 14px;box-sizing:border-box;background:linear-gradient(180deg,#2c3a33,#1a2320 60%,#121816);display:flex;flex-direction:column;gap:18px">
+          <div style="display:grid;grid-template-columns:repeat(4,50px);justify-content:space-between;row-gap:14px">
+            <sc-for list="{{ o.and }}" as="it" hint-placeholder-count="8">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+                <div style="width:50px;height:50px;border-radius:50%;background:{{ it.color }};display:grid;place-items:center;overflow:hidden">{{ it.el }}</div>
+                <span style="font-size:10px;font-family:system-ui,sans-serif;color:#fff;white-space:nowrap">{{ it.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="height:60px"></div>
+          <div style="border-radius:24px;background:rgba(255,255,255,.12);padding:8px 14px;font-family:system-ui,sans-serif;font-size:12px;color:rgba(255,255,255,.6)">検索</div>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+</section>
+
+<section style="background:#0C0604;padding:64px 72px 40px;display:flex;flex-direction:column;gap:40px;border-bottom:1px solid rgba(255,200,61,.18)">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:900px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;letter-spacing:.3em;color:#FFC83D;font-size:14px">RENGOKU · TURN 2</div>
+    <div style="font-size:32px;font-weight:800">TOP（2a に決定）</div>
+    <div style="font-size:15px;color:#B9A48F;line-height:1.7;text-wrap:pretty">丸ゴシックと厚い板をやめ、ロゴは古典ローマン体（Cinzel）、日本語は明朝（Zen Old Mincho）にしました。金は細い線で使い、ボタンの沈みは 4px に抑えています。この方向でアプリ全体をそろえています。</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+
+    <!-- 2a -->
+    <div id="2a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#FFC83D;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">2a</span><span style="font-size:15px;font-weight:800;color:#B9A48F">篝火の紋 — 中央に紋章と英字</span></div>
+      <div data-screen-label="2a TOP" style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7)">
+        <div style="position:absolute;inset:0;background:radial-gradient(80% 38% at 50% 104%,rgba(255,110,31,.42),rgba(179,18,27,.16) 45%,transparent 75%),radial-gradient(50% 30% at 50% 34%,rgba(255,138,31,.10),transparent 70%)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:-30px;height:240px;transform-origin:50% 100%;animation:rgFlicker 3.2s ease-in-out infinite alternate;background:radial-gradient(36% 70% at 50% 100%,rgba(255,177,61,.38),rgba(255,90,31,.14) 50%,transparent 78%)"></div>
+        {{ embersFine }}
+        <div style="position:absolute;inset:22px;border:1px solid rgba(255,200,61,.22);border-radius:30px;pointer-events:none"></div>
+        <div style="position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8">
+          <span>18:47</span>
+          <span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span>
+        </div>
+        <div style="position:absolute;inset:44px 0 0;display:flex;flex-direction:column;align-items:center;padding:0 40px 52px">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;animation:rgRise 1.6s cubic-bezier(.2,.8,.2,1) both">
+            <svg width="112" height="112" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 18px rgba(255,120,31,.45))">
+              <defs>
+                <linearGradient id="t2aG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3B0"></stop><stop offset=".5" stop-color="#FFC83D"></stop><stop offset="1" stop-color="#D98A0A"></stop></linearGradient>
+                <linearGradient id="t2aF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD36A"></stop><stop offset=".5" stop-color="#FF6A24"></stop><stop offset="1" stop-color="#B3121B"></stop></linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="47" fill="none" stroke="url(#t2aG)" stroke-width="1.2"></circle>
+              <circle cx="50" cy="50" r="42.5" fill="none" stroke="url(#t2aG)" stroke-width=".6" opacity=".7"></circle>
+              <path d="M50 6C56 24 70 30 76 48 80 40 78 32 76 28 86 38 90 52 86 66 80 82 66 92 50 92 34 92 18 80 14 62 12 48 20 38 28 30 28 40 30 46 36 50 36 32 42 18 50 6Z" fill="url(#t2aF)" transform="translate(50 52) scale(.56) translate(-50 -50)"></path>
+              <path d="M50 42C55 52 63 56 63 68 63 78 57 85 50 85 43 85 37 78 37 68 37 60 43 56 45 50 46 56 48 58 50 60 49 54 49 48 50 42Z" fill="#FFE9A8" opacity=".9" transform="translate(50 52) scale(.56) translate(-50 -50)"></path>
+              <path d="M50 2.5 L52 5 L50 7.5 L48 5 Z M50 92.5 L52 95 L50 97.5 L48 95 Z" fill="#FFC83D"></path>
+            </svg>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+              <div style="font-family:'Cinzel',serif;font-weight:500;font-size:44px;letter-spacing:.22em;padding-left:.22em;line-height:1;background:linear-gradient(180deg,#FFF6DA,#F2C463 55%,#C8861A);-webkit-background-clip:text;background-clip:text;color:transparent">RENGOKU</div>
+              <div style="display:flex;align-items:center;gap:12px;width:220px">
+                <span style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,200,61,.7))"></span>
+                <span style="width:5px;height:5px;transform:rotate(45deg);background:#FFC83D"></span>
+                <span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(255,200,61,.7),transparent)"></span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px">
+              <div style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:22px;letter-spacing:.18em;padding-left:.18em;color:#F6EAD6">心を燃やせ。</div>
+              <div style="font-family:'Zen Old Mincho',serif;font-weight:500;font-size:13px;letter-spacing:.14em;padding-left:.14em;color:#BFA88F">仲間と、毎日を積み上げる。</div>
+            </div>
+          </div>
+          <div style="width:100%;display:flex;flex-direction:column;gap:16px">
+            <button style="height:62px;width:100%;border-radius:12px;border:1px solid #140A06;background:linear-gradient(180deg,#E8822E,#C8441A 55%,#8E1015);box-shadow:inset 0 0 0 1px rgba(255,222,150,.55),inset 0 1px 0 rgba(255,255,255,.35),0 4px 0 #0A0503,0 14px 26px rgba(150,40,10,.35);color:#FFF4E2;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:18px;letter-spacing:.3em;padding-left:.3em;cursor:pointer;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(4px);box-shadow:inset 0 0 0 1px rgba(255,222,150,.55),0 0 0 #0A0503,0 4px 10px rgba(150,40,10,.3);transition-duration:80ms" onClick="{{ tap }}">はじめる</button>
+            <button style="height:56px;width:100%;border-radius:12px;border:1px solid rgba(255,200,61,.7);background:rgba(20,10,6,.55);box-shadow:inset 0 0 0 3px rgba(20,10,6,.9),inset 0 0 0 4px rgba(255,200,61,.22),0 4px 0 #0A0503;color:#F2C463;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:16px;letter-spacing:.3em;padding-left:.3em;cursor:pointer;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(4px);box-shadow:inset 0 0 0 3px rgba(20,10,6,.9),inset 0 0 0 4px rgba(255,200,61,.22),0 0 0 #0A0503;transition-duration:80ms" onClick="{{ tap }}">ログイン</button>
+            <div style="text-align:center;font-family:'Zen Old Mincho',serif;font-size:11px;letter-spacing:.16em;color:#9C8670;margin-top:6px">招待制のチーム専用サイトです</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;unpaid&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;ダッシュボード&quot;},&quot;receiverOnline&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;ダッシュボード&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;動き&quot;},&quot;haptics&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;動き&quot;},&quot;iconVariant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],&quot;default&quot;:&quot;c&quot;,&quot;tsType&quot;:&quot;'a'|'b'|'c'&quot;,&quot;section&quot;:&quot;起動画面&quot;}}">
+class Component extends DCLogic {
+  state = { close: 5*3600+12*60+33, due: 18*3600+22*60+5, shown: 0, flash: false };
+  componentDidMount() {
+    this.iv = setInterval(() => this.setState(s => ({ close: Math.max(0, s.close-1), due: Math.max(0, s.due-1) })), 1000);
+    if (!(this.props.motion ?? true)) { this.setState({ shown: 42.8 }); return; }
+    const t0 = performance.now() + 500, D = 1300;
+    const step = t => {
+      const p = Math.max(0, Math.min(1, (t - t0) / D)), e = 1 - Math.pow(1 - p, 3);
+      this.setState({ shown: 42.8 * e });
+      if (p < 1) this.raf = requestAnimationFrame(step);
+      else { this.setState({ flash: true }); this.ft = setTimeout(() => this.setState({ flash: false }), 700); }
+    };
+    this.raf = requestAnimationFrame(step);
+  }
+  componentWillUnmount() { clearInterval(this.iv); cancelAnimationFrame(this.raf); clearTimeout(this.ft); }
+  fmt(s) { const p = n => String(n).padStart(2, '0'); return p(Math.floor(s/3600)) + ':' + p(Math.floor(s%3600/60)) + ':' + p(s%60); }
+
+  embers(n, seed, h) {
+    if (!(this.props.motion ?? true)) return null;
+    const R = React.createElement; let x = seed;
+    const rnd = () => { x = (x * 9301 + 49297) % 233280; return x / 233280; };
+    const kids = [];
+    for (let i = 0; i < n; i++) {
+      const sz = 2 + rnd() * 3.2, dur = 6 + rnd() * 8, del = -rnd() * dur, left = rnd() * 100, dx = rnd() * 70 - 35, gold = rnd() > .6;
+      kids.push(R('span', { key: i, style: { position: 'absolute', left: left + '%', bottom: '-10px', width: sz, height: sz, borderRadius: '50%', background: gold ? '#FFC83D' : '#FF8A1F', boxShadow: `0 0 ${sz*3}px ${sz*.8}px rgba(255,110,31,.55)`, animation: `rgEmber ${dur}s linear ${del}s infinite`, '--dx': dx + 'px', '--rise': -(h + 40) + 'px', opacity: 0 } }));
+    }
+    return R('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 2 } }, kids);
+  }
+
+  mkIcon(v, size, shape, mono) {
+    const R = React.createElement, id = `rg${v}${size}${shape}${mono ? 'm' : ''}`;
+    const F = `url(#${id}f)`, G = `url(#${id}g)`;
+    const flame = 'M50 6C56 24 70 30 76 48 80 40 78 32 76 28 86 38 90 52 86 66 80 82 66 92 50 92 34 92 18 80 14 62 12 48 20 38 28 30 28 40 30 46 36 50 36 32 42 18 50 6Z';
+    const core = 'M50 42C55 52 63 56 63 68 63 78 57 85 50 85 43 85 37 78 37 68 37 60 43 56 45 50 46 56 48 58 50 60 49 54 49 48 50 42Z';
+    const M = '#FFF4E2';
+    const defs = R('defs', null,
+      R('linearGradient', { id: id + 'f', x1: 0, y1: 0, x2: 0, y2: 1 }, R('stop', { offset: '0', stopColor: '#FFD36A' }), R('stop', { offset: '.45', stopColor: '#FF5A1F' }), R('stop', { offset: '1', stopColor: '#B3121B' })),
+      R('linearGradient', { id: id + 'g', x1: 0, y1: 0, x2: 1, y2: 1 }, R('stop', { offset: '0', stopColor: '#FFF3B0' }), R('stop', { offset: '.45', stopColor: '#FFC83D' }), R('stop', { offset: '1', stopColor: '#D98A0A' })),
+      R('radialGradient', { id: id + 'b', cx: '.5', cy: '.85', r: '.85' }, R('stop', { offset: '0', stopColor: '#5A2410' }), R('stop', { offset: '.55', stopColor: '#24120B' }), R('stop', { offset: '1', stopColor: '#140A06' })));
+    const round = shape === 'round';
+    let art;
+    if (v === 'a') art = [
+      R('path', { key: 1, d: flame, fill: mono ? 'none' : F, transform: 'translate(50 50) scale(.96) translate(-50 -48)' }),
+      R('text', { key: 2, x: 50, y: 75, textAnchor: 'middle', fontFamily: 'Shippori Mincho B1, serif', fontWeight: 800, fontSize: 54, fill: mono ? M : G, stroke: mono ? 'none' : '#140A06', strokeWidth: 4, paintOrder: 'stroke', strokeLinejoin: 'round' }, '煉'),
+      (!mono && !round) ? R('rect', { key: 3, x: 5, y: 5, width: 90, height: 90, rx: 19, fill: 'none', stroke: G, strokeWidth: 3.5 }) : null];
+    else if (v === 'b') art = [
+      R('path', { key: 1, d: flame, fill: mono ? M : F, transform: 'translate(50 50) scale(.9) translate(-50 -58)' }),
+      R('circle', { key: 2, cx: 50, cy: 63, r: 25, fill: mono ? 'none' : '#140A06', stroke: mono ? '#3a3a3c' : G, strokeWidth: mono ? 0 : 5.5 }),
+      mono ? R('circle', { key: 4, cx: 50, cy: 63, r: 21, fill: '#3a3a3c' }) : null,
+      R('text', { key: 3, x: 50, y: 76, textAnchor: 'middle', fontFamily: 'Saira Condensed, sans-serif', fontWeight: 700, fontSize: 38, fill: mono ? M : G }, 'R')];
+    else if (v === 'd') art = [
+      R('circle', { key: 1, cx: 50, cy: 50, r: 40, fill: 'none', stroke: mono ? M : G, strokeWidth: 3.2 }),
+      mono ? null : R('circle', { key: 2, cx: 50, cy: 50, r: 34, fill: 'none', stroke: G, strokeWidth: 1.2, opacity: .7 }),
+      R('path', { key: 3, d: flame, fill: mono ? M : F, transform: 'translate(50 52) scale(.5) translate(-50 -50)' }),
+      mono ? null : R('path', { key: 4, d: core, fill: '#FFE9A8', opacity: .9, transform: 'translate(50 52) scale(.5) translate(-50 -50)' }),
+      R('path', { key: 5, d: 'M50 6 L53.5 10 L50 14 L46.5 10 Z M50 86 L53.5 90 L50 94 L46.5 90 Z', fill: mono ? M : '#FFC83D' })];
+    else art = [
+      R('polygon', { key: 1, points: '50,5 89,27.5 89,72.5 50,95 11,72.5 11,27.5', fill: mono ? 'none' : '#1E0E07', stroke: mono ? M : G, strokeWidth: 6, strokeLinejoin: 'round' }),
+      R('path', { key: 2, d: flame, fill: mono ? M : F, transform: 'translate(50 53) scale(.62) translate(-50 -50)' }),
+      mono ? null : R('path', { key: 3, d: core, fill: G, transform: 'translate(50 53) scale(.62) translate(-50 -50)' })];
+    const svg = R('svg', { viewBox: '0 0 100 100', width: size, height: size, style: { display: 'block' } },
+      defs,
+      mono ? null : R('rect', { width: 100, height: 100, fill: `url(#${id}b)` }),
+      R('g', { transform: round ? 'translate(9 9) scale(.82)' : null }, art));
+    const radius = mono ? 0 : shape === 'ios' ? size * .225 : round ? '50%' : shape === 'fav' ? size * .2 : size * .22;
+    return R('div', { style: { width: size, height: size, borderRadius: radius, overflow: 'hidden', flex: 'none', boxShadow: mono || shape === 'home' ? 'none' : '0 0 0 1px rgba(255,200,61,.15)' } }, svg);
+  }
+
+  icons() {
+    if (this._icons) return this._icons;
+    const nb = [['カレンダー', '#F4F4F2'], ['写真', '#E9E3D6'], ['カメラ', '#8E9196'], ['天気', '#3F86D9'], ['時計', '#1C1C1E'], ['地図', '#6DBF73'], ['メモ', '#F6D04D']];
+    const grid = (v, shape, sz) => { const g = nb.map(([label, color]) => ({ label, color, el: null })); g.splice(5, 0, { label: 'Rengoku', color: 'transparent', el: this.mkIcon(v, sz, shape) }); return g; };
+    const meta = {
+      a: ['1a', '煉の紋', '炎の上に「煉」の一文字。名前がいちばんまっすぐ伝わる案。字の画数が多いので 32px 以下では読みにくくなります（favicon は炎だけに簡略化する想定）。'],
+      b: ['1b', 'R の焔輪', '金の輪に「R」、上に炎が立つ。英字なので海外端末でも読め、輪の形が小さくても残ります。'],
+      c: ['1c', '篝火の六角', '六角の金枠に炎だけ。文字なしで最も小さく強く、通知の単色アイコンにもそのまま使えます。']
+    };
+    this._icons = ['a', 'b', 'c'].map(v => ({
+      id: meta[v][0], name: meta[v][1], desc: meta[v][2],
+      xl: this.mkIcon(v, 180, 'ios'), s48: this.mkIcon(v, 48, 'ios'), s32: this.mkIcon(v, 32, 'fav'), mono: this.mkIcon(v, 26, 'ios', true),
+      ios: grid(v, 'home', 52), and: grid(v, 'round', 50)
+    }));
+    this._iconD = [{ id: '3c', name: '篝火の紋（2a のロゴから）', desc: '二重の金の輪に炎。小さいサイズでも輪が消えないよう、外側の線は太めにしています。',
+      xl: this.mkIcon('d', 180, 'ios'), s48: this.mkIcon('d', 48, 'ios'), s32: this.mkIcon('d', 32, 'fav'), mono: this.mkIcon('d', 26, 'ios', true),
+      ios: grid('d', 'home', 52), and: grid('d', 'round', 50) }];
+    this._splash = {};
+    ['a', 'b', 'c'].forEach(v => this._splash[v] = this.mkIcon(v, 136, 'plate'));
+    return this._icons;
+  }
+
+  renderVals() {
+    const unpaid = this.props.unpaid ?? true, online = this.props.receiverOnline ?? true;
+    const iconOpts = this.icons();
+    const wk = [['月', 18.2], ['火', -6.4], ['水', 31.05], ['木', 9.6], ['金', -12.3], ['土', 42.8], ['日', null]];
+    const max = 42.8;
+    const week = wk.map(([day, v]) => ({
+      day, val: v == null ? '—' : (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(v % 1 ? 2 : 0).replace(/\.?0+$/, m => m.includes('.') ? '' : m),
+      pos: v > 0 ? (v / max * 44) + 'px' : '0px', neg: v < 0 ? (-v / max * 44) + 'px' : '0px',
+      color: v == null ? '#6b5d52' : v >= 0 ? '#FFC83D' : '#7FB2FF',
+      glow: day === '土' ? '0 0 12px rgba(255,200,61,.7)' : 'none',
+      labelColor: day === '土' ? '#FFC83D' : '#B9A48F'
+    }));
+    const B = { 活動報告: ['#FFC83D', '#140A06'], 懇親会: ['#FF5A1F', '#140A06'], メンテナンス: ['#B3121B', '#FFF4E2'] };
+    const posts = [
+      ['メンテナンス', '10/12(日) 03:00〜04:00 システムの更新を行います', 1],
+      ['活動報告', '本日のセッション: 2 回・チーム合計 +$186。皆さんお疲れさまでした！', 1],
+      ['懇親会', '10/20(火) 21:00 オンライン懇親会 — 参加 12 / 定員 30', 0]
+    ].map(([type, title, u]) => ({ type, title, bg: B[type][0], fg: B[type][1], unread: u }));
+    const swatches = [['--rg-ink', '#140A06'], ['--rg-char', '#24120B'], ['--rg-crimson', '#B3121B'], ['--rg-flame', '#FF5A1F'], ['--rg-ember', '#FF8A1F'], ['--rg-gold', '#FFC83D'], ['--rg-gold-deep', '#D98A0A'], ['--rg-cream', '#FFF4E2'], ['--rg-ash', '#B9A48F'], ['--rg-lose', '#7FB2FF'], ['--rg-ok', '#5BD18B'], ['--rg-panel', 'rgba(36,18,11,.86)']].map(([n, v]) => ({ n, v }));
+    const shown = this.state.shown;
+    return {
+      unpaid, paid: !unpaid, receiverOnline: online, receiverOffline: !online,
+      profitText: '+$' + shown.toFixed(2),
+      profitColor: this.state.flash ? '#FFF3B0' : '#FFC83D',
+      profitGlow: this.state.flash ? '0 0 34px rgba(255,200,61,.95), 0 0 8px #FFE38A, 0 3px 0 #140A06' : '0 0 24px rgba(255,138,31,.5), 0 3px 0 #140A06',
+      closeText: this.fmt(this.state.close), dueText: this.fmt(this.state.due),
+      week, posts, swatches, iconOpts, iconD: this._iconD,
+      motionOn: this.props.motion ?? true,
+      embersPC1: this.embers(22, 41, 760), embersPC2: this.embers(22, 43, 760),
+      weekR: week.map(d => ({ ...d, glow: 'none', color: d.color === '#FFC83D' ? '#F2C463' : d.color })),
+      embersDash3: this.embers(8, 31, 844), embersSplash3: this.embers(10, 37, 844),
+      splashIcon: this._splash[this.props.iconVariant ?? 'c'],
+      embersTop: this.embers(26, 7, 844), embersDash: this.embers(12, 3, 844), embersSplash: this.embers(16, 11, 844), embersFine: this.embers(14, 19, 844), embersFine2: this.embers(9, 23, 844),
+      tap: () => { if (this.props.haptics && navigator.vibrate) navigator.vibrate(10); }
+    };
+  }
+}
+</script>
+</body>
+</html>

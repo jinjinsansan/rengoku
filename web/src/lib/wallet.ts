@@ -1,7 +1,7 @@
 // 資産の画面の記録 (2026-10-10)。VPS が 10 分ごとに /api/cron/wallet へ送るマスターの値を受け取り、
 // 残高の記録・期間の開始と終了・トレードで増えた枚数・入金と出金を数える。受け子は触らない。
 import { createAdminClient } from '@/lib/supabase/admin'
-import { detectFlow, isPegged, priceOf, PRICED, STABLE_MIN } from '@/lib/wallet-core'
+import { detectFlow, fmtBalance, isPegged, priceOf, PRICED, STABLE_MIN } from '@/lib/wallet-core'
 
 export type WalletPush = {
   now?: string
@@ -111,8 +111,8 @@ async function processExecutor(uid: string, ex: WalletPush['executors'][number],
       user_id: uid,
       kind: 'wallet_period',
       ref_id: null,
-      title: `財布の通貨が ${effective} に変わりました`,
-      body: `新しい期間を始めました。元本は ${balance} ${effective} です。`,
+      title: '新しい期間を始めました',
+      body: `財布の通貨が ${effective} に変わったので、新しい期間を始めました。元本 ${fmtBalance(balance, effective)}`,
     })
     return `switched ${open.currency} -> ${effective}`
   }

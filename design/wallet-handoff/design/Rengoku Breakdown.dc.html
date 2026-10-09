@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Cinzel:wght@500;600&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+</helmet>
+<div style="display:flex;flex-direction:column;gap:12px;font-family:'Zen Kaku Gothic New',sans-serif;color:#F6EAD6;width:100%">
+  <sc-if value="{{ isFull }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;align-items:center;gap:10px;min-height:28px">
+      <span style="font-size:11px;color:#A89078">元本の長さは縮めて表示しています</span>
+      <sc-if value="{{ hasCoin }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-left:auto;display:flex;padding:2px;border-radius:8px;border:1px solid rgba(255,200,61,.35);background:rgba(10,5,3,.6)">
+          <button style="height:24px;padding:0 10px;border:none;border-radius:6px;background:{{ tUsdBg }};color:{{ tUsdC }};font-family:inherit;font-size:11px;font-weight:700;cursor:pointer" onClick="{{ toUsd }}">ドル</button>
+          <button style="height:24px;padding:0 10px;border:none;border-radius:6px;background:{{ tCoinBg }};color:{{ tCoinC }};font-family:inherit;font-size:11px;font-weight:700;cursor:pointer" onClick="{{ toCoin }}">枚数</button>
+        </div>
+      </sc-if>
+    </div>
+    <div style="position:relative;height:30px;margin:4px 0 2px">
+      <div style="position:absolute;inset:0;border-radius:6px;background:rgba(10,5,3,.6);border:1px solid rgba(255,200,61,.18);overflow:hidden">
+        <sc-for list="{{ segs }}" as="s" hint-placeholder-count="3">
+          <div style="position:absolute;top:0;bottom:0;left:{{ s.left }};width:{{ s.width }};background:{{ s.bg }};box-shadow:{{ s.edge }};transition:width .9s cubic-bezier(.2,.8,.2,1) {{ s.delay }}"></div>
+        </sc-for>
+        <div style="position:absolute;top:-2px;bottom:-2px;left:20%;width:7px;transform:skewX(-20deg);background:#190C07"></div>
+      </div>
+      <div style="position:absolute;top:-6px;bottom:-6px;left:{{ markLeft }};width:2px;margin-left:-1px;background:#FFF4E2;box-shadow:0 0 8px rgba(255,233,168,.7);opacity:{{ markOp }};transition:opacity .4s .8s"></div>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,200,61,.1)">
+          <span style="width:10px;height:10px;border-radius:2px;flex:none;background:{{ r.bg }};box-shadow:{{ r.edge }}"></span>
+          <span style="flex:1;font-size:13px">{{ r.label }}</span>
+          <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:18px;font-variant-numeric:tabular-nums;color:{{ r.color }}">{{ r.value }}</span>
+        </div>
+      </sc-for>
+      <div style="display:flex;align-items:baseline;gap:10px;padding:10px 0 0">
+        <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:14px;flex:1">{{ totalLabel }}</span>
+        <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:26px;line-height:1;font-variant-numeric:tabular-nums;color:#FFF4E2">{{ total }}</span>
+      </div>
+    </div>
+    <div style="font-size:12px;line-height:1.7;color:#C9B8A6;text-wrap:pretty">{{ note }}</div>
+  </sc-if>
+  <sc-if value="{{ isThin }}" hint-placeholder-val="{{ false }}">
+    <div style="position:relative;height:6px;border-radius:3px;background:rgba(10,5,3,.6);overflow:hidden">
+      <sc-for list="{{ segs }}" as="s" hint-placeholder-count="3">
+        <div style="position:absolute;top:0;bottom:0;left:{{ s.left }};width:{{ s.width }};background:{{ s.bg }};transition:width .9s cubic-bezier(.2,.8,.2,1) {{ s.delay }}"></div>
+      </sc-for>
+      <div style="position:absolute;top:0;bottom:0;left:20%;width:4px;transform:skewX(-20deg);background:#190C07"></div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:358,&quot;height&quot;:330},&quot;principal&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:1200,&quot;tsType&quot;:&quot;number&quot;},&quot;trade&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:90,&quot;tsType&quot;:&quot;number&quot;},&quot;market&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:64.5,&quot;tsType&quot;:&quot;number | null&quot;},&quot;coinPrincipal&quot;:{&quot;editor&quot;:null,&quot;default&quot;:0.02,&quot;tsType&quot;:&quot;number&quot;},&quot;coinTrade&quot;:{&quot;editor&quot;:null,&quot;default&quot;:0.0015,&quot;tsType&quot;:&quot;number&quot;},&quot;coinSym&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;BTC&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;full&quot;,&quot;thin&quot;],&quot;default&quot;:&quot;full&quot;,&quot;tsType&quot;:&quot;'full'|'thin'&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { grown: false, mode: 'usd' };
+  componentDidMount() {
+    if (!(this.props.motion ?? true)) { this.setState({ grown: true }); return; }
+    this.t = setTimeout(() => this.setState({ grown: true }), 120);
+  }
+  componentWillUnmount() { clearTimeout(this.t); }
+  usd(x, sign) { const s = Math.abs(x).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); return (sign ? (x < 0 ? '−' : '+') : '') + '$' + s; }
+  coin(x, sym, sign) { return (sign ? (x < 0 ? '−' : '+') : '') + Math.abs(x).toFixed(4) + ' ' + sym; }
+  renderVals() {
+    const p = this.props, coinMode = this.state.mode === 'coin' && p.coinSym;
+    const P = coinMode ? p.coinPrincipal : (p.principal ?? 1200);
+    const t = coinMode ? p.coinTrade : (p.trade ?? 90);
+    const hasMarket = !coinMode && p.market != null;
+    const a = hasMarket ? p.market : 0;
+    const v = P + t + a;
+    const lo = Math.min(0, t, t + a), hi0 = Math.max(0, t, t + a), hi = hi0 === lo ? lo + 1 : hi0;
+    const PB = 44, GA = 54;
+    const pos = x => PB + (x - lo) / (hi - lo) * GA;
+    const g = this.state.grown;
+    const C = {
+      principal: 'linear-gradient(180deg,rgba(246,234,214,.34),rgba(246,234,214,.18))',
+      trade: 'linear-gradient(180deg,#FFE9A8,#E0A93A)',
+      market: 'linear-gradient(180deg,#FFB070,#E2602A)',
+      neg: 'repeating-linear-gradient(135deg,rgba(127,178,255,.7) 0 3px,rgba(127,178,255,.18) 3px 6px)'
+    };
+    const segs = [];
+    const add = (from, to, bg, edge, i) => segs.push({ left: from + '%', width: g ? Math.max(0, to - from) + '%' : '0%', bg, edge, delay: (i * .18) + 's' });
+    add(0, pos(0), C.principal, 'inset -1px 0 0 rgba(20,10,6,.8)', 0);
+    if (t !== 0) add(pos(Math.min(0, t)), pos(Math.max(0, t)), t > 0 ? C.trade : C.neg, t > 0 ? 'inset -1px 0 0 rgba(20,10,6,.6)' : 'inset 0 0 0 1px #7FB2FF', 1);
+    if (hasMarket && a !== 0) add(pos(Math.min(t, t + a)), pos(Math.max(t, t + a)), a > 0 ? C.market : C.neg, a > 0 ? 'none' : 'inset 0 0 0 1px #7FB2FF', 2);
+    const f = (x, s) => coinMode ? this.coin(x, p.coinSym, s) : this.usd(x, s);
+    const col = x => x < 0 ? '#7FB2FF' : null;
+    const rows = [{ label: '元本', value: f(P), color: '#E9DCC8', bg: C.principal, edge: 'none' }];
+    rows.push({ label: coinMode ? 'トレードで増えた枚数' : 'トレードの損益', value: f(t, true), color: col(t) || '#F2C463', bg: t >= 0 ? C.trade : C.neg, edge: t >= 0 ? 'none' : 'inset 0 0 0 1px #7FB2FF' });
+    if (hasMarket) rows.push({ label: '値上がり益', value: f(a, true), color: col(a) || '#FF9A5A', bg: a >= 0 ? C.market : C.neg, edge: a >= 0 ? 'none' : 'inset 0 0 0 1px #7FB2FF' });
+    let note;
+    if (coinMode) note = `枚数で見ると、増えた ${this.coin(t, p.coinSym, true)} はトレードの成果だけです。値段が動いても、この枚数は変わりません。`;
+    else if (!hasMarket) note = 'ドルのまま運用しているので、トレードの成果がそのまま積み上がります。';
+    else if (a >= 0) note = `トレードの成果 ${this.usd(t, true)} に、相場の値上がり ${this.usd(a, true)} が加わっています。`;
+    else note = `相場の動きで ${this.usd(a, true)} となりました。トレードの成果 ${this.usd(t, true)} はそのまま残っていて、値段が戻れば価値も戻ります。`;
+    const variant = p.variant ?? 'full';
+    return {
+      isFull: variant === 'full', isThin: variant === 'thin', hasCoin: !!p.coinSym,
+      segs, rows, note, total: f(v), totalLabel: coinMode ? '今の枚数' : '今の価値',
+      markLeft: pos(v - P) + '%', markOp: g ? 1 : 0,
+      tUsdBg: coinMode ? 'transparent' : '#F2C463', tUsdC: coinMode ? '#A89078' : '#140A06',
+      tCoinBg: coinMode ? '#F2C463' : 'transparent', tCoinC: coinMode ? '#140A06' : '#A89078',
+      toUsd: () => this.setState({ mode: 'usd' }), toCoin: () => this.setState({ mode: 'coin' })
+    };
+  }
+}
+</script>
+</body>
+</html>

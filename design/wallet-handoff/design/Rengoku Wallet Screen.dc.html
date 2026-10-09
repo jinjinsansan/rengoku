@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Cinzel:wght@500;600&family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+</helmet>
+<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;background:#110805;font-family:'Zen Kaku Gothic New',sans-serif;color:#F6EAD6;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(90% 40% at 50% 108%,rgba(255,110,31,.22),rgba(179,18,27,.08) 45%,transparent 75%);pointer-events:none"></div>
+
+  <!-- HUD -->
+  <div style="height:64px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;box-sizing:border-box;background:rgba(17,8,5,.92);border-bottom:1px solid rgba(255,200,61,.35);position:relative;z-index:2">
+    <div style="flex:1;display:flex">
+      <button style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,200,61,.6);background:rgba(20,10,6,.6);display:grid;place-items:center;cursor:pointer;padding:0" style-active="background:rgba(255,200,61,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2C463" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+      </button>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;line-height:1.15">
+      <span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;color:#C9A56A">ASSETS</span>
+      <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:17px;letter-spacing:.12em">資産</span>
+    </div>
+    <div style="flex:1;display:flex;justify-content:flex-end">
+      <button style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,200,61,.6);background:rgba(20,10,6,.6);display:grid;place-items:center;cursor:pointer;padding:0" style-active="background:rgba(255,200,61,.12)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2C463" stroke-width="1.7" stroke-linecap="round"><path d="M5 8h14M5 12h14M5 16h14"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div style="flex:1;min-height:0;overflow-y:auto;position:relative;z-index:1">
+    <div style="max-width:760px;margin:0 auto;padding:16px 16px 40px;box-sizing:border-box;display:grid;grid-auto-rows:max-content;gap:14px">
+
+      <sc-for list="{{ banners }}" as="b" hint-placeholder-count="0">
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;border:1px solid {{ b.border }};background:rgba(26,13,8,.9)">
+          <span style="width:6px;height:6px;margin-top:7px;transform:rotate(45deg);background:{{ b.color }};flex:none"></span>
+          <span style="flex:1;font-size:13px;line-height:1.6;text-wrap:pretty">{{ b.text }}</span>
+          <span style="flex:none;font-size:12px;font-weight:700;color:#F2C463;margin-top:2px;white-space:nowrap">{{ b.link }}</span>
+        </div>
+      </sc-for>
+
+      <!-- 1. current period -->
+      <div style="border-radius:14px;border:1px solid rgba(255,170,80,.6);background:linear-gradient(180deg,rgba(60,24,10,.9),rgba(24,12,7,.92));box-shadow:inset 0 0 0 4px rgba(17,8,5,.6),inset 0 0 0 5px rgba(255,200,61,.14),0 0 30px rgba(255,90,31,.12);padding:18px 20px 18px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">NOW</span>
+          <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">今の期間</span>
+          <span style="display:flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:4px;border:1px solid {{ cur.badge.border }};background:{{ cur.badge.bg }};color:{{ cur.badge.fg }}"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:14px;line-height:1">{{ cur.badge.glyph }}</span><span style="font-family:'Cinzel',serif;font-weight:600;font-size:11px;letter-spacing:.14em">{{ cur.badge.code }}</span></span>
+          <span style="margin-left:auto;font-size:11px;color:#A89078">{{ cur.span }}</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;padding:6px 0 0">
+          <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:60px;line-height:1.2;font-variant-numeric:tabular-nums;color:#F2C463;text-shadow:0 0 20px rgba(255,138,31,.3)">{{ cur.hero }}</span>
+          <span style="font-family:'Cinzel',serif;font-weight:600;font-size:18px;letter-spacing:.1em;color:#E9C98A">{{ cur.heroUnit }}</span>
+        </div>
+        <sc-if value="{{ cur.hasSub }}" hint-placeholder-val="{{ true }}">
+          <div style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:18px;color:#E9DCC8;margin-top:-4px">{{ cur.sub }}</div>
+        </sc-if>
+        <div style="height:1px;margin:10px 0 6px;background:linear-gradient(90deg,rgba(255,200,61,.45),rgba(255,200,61,.05))"></div>
+        <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+          <span style="font-size:11px;color:#A89078">元本</span>
+          <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:#E9DCC8;font-variant-numeric:tabular-nums">{{ cur.principal }}</span>
+          <span style="font-size:11px;color:#8E7A66">{{ cur.principalNote }}</span>
+        </div>
+      </div>
+
+      <!-- tiles -->
+      <sc-if value="{{ hasTiles }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+          <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="2">
+            <div style="border-radius:12px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:12px 14px;display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;align-items:center;gap:7px"><span style="width:8px;height:8px;border-radius:2px;background:{{ t.sw }}"></span><span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.24em;color:#C9A56A">{{ t.en }}</span></div>
+              <span style="font-size:12px;color:#E9DCC8">{{ t.label }}</span>
+              <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:26px;line-height:1.25;font-variant-numeric:tabular-nums;color:{{ t.color }}">{{ t.value }}</span>
+              <span style="font-size:11px;color:#A89078;line-height:1.5">{{ t.sub }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- breakdown -->
+      <sc-if value="{{ hasBreakdown }}" hint-placeholder-val="{{ true }}">
+        <div style="border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 18px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">BREAKDOWN</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">価値の分解</span>
+          </div>
+          <dc-import name="Rengoku Breakdown" principal="{{ bd.principal }}" trade="{{ bd.trade }}" market="{{ bd.market }}" coin-principal="{{ bd.coinPrincipal }}" coin-trade="{{ bd.coinTrade }}" coin-sym="{{ bd.coinSym }}" motion="{{ motion }}" hint-size="100%,300px"></dc-import>
+        </div>
+      </sc-if>
+
+      <!-- new: empty -->
+      <sc-if value="{{ isNew }}" hint-placeholder-val="{{ false }}">
+        <div style="border-radius:14px;border:1px dashed rgba(255,200,61,.3);background:rgba(26,13,8,.6);padding:22px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+          <svg width="56" height="56" viewBox="0 0 100 100" style="opacity:.55"><circle cx="50" cy="50" r="46" fill="none" stroke="#F2C463" stroke-width="1.5"></circle><path d="M50 6C56 24 70 30 76 48 80 40 78 32 76 28 86 38 90 52 86 66 80 82 66 92 50 92 34 92 18 80 14 62 12 48 20 38 28 30 28 40 30 46 36 50 36 32 42 18 50 6Z" fill="#E2602A" transform="translate(50 52) scale(.56) translate(-50 -50)"></path></svg>
+          <div style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:16px;letter-spacing:.06em">ようこそ。ここから積み上げます</div>
+          <div style="font-size:13px;line-height:1.75;color:#C9B8A6;text-wrap:pretty">最初のセッションが終わると、ここに「枚数の成長」と「価値の分解」が表示されます。元本は自動で記録しました。</div>
+          <div style="width:100%;height:70px;position:relative;margin-top:4px">
+            <div style="position:absolute;left:0;right:0;top:50%;border-top:1px dashed rgba(246,234,214,.25)"></div>
+            <div style="position:absolute;left:0;top:calc(50% - 4px);width:8px;height:8px;transform:rotate(45deg);background:#F2C463"></div>
+            <span style="position:absolute;left:14px;top:calc(50% - 22px);font-size:10px;color:#A89078">10/10 開始</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- chart -->
+      <sc-if value="{{ hasChart }}" hint-placeholder-val="{{ true }}">
+        <div style="border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 14px 10px 18px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">{{ ch.en }}</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">{{ ch.title }}</span>
+          </div>
+          <svg width="100%" viewBox="0 0 320 160" style="display:block;overflow:visible">
+            <defs><linearGradient id="wsA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2C463" stop-opacity=".42"></stop><stop offset="1" stop-color="#F2C463" stop-opacity=".06"></stop></linearGradient></defs>
+            <sc-for list="{{ ch.grid }}" as="g" hint-placeholder-count="3">
+              <line x1="40" x2="314" y1="{{ g.y }}" y2="{{ g.y }}" stroke="rgba(255,200,61,.1)" stroke-width="1"></line>
+              <text x="36" y="{{ g.ty }}" text-anchor="end" font-family="Saira Condensed" font-size="10" fill="#8E7A66">{{ g.label }}</text>
+            </sc-for>
+            <path d="{{ ch.area }}" fill="url(#wsA)"></path>
+            <line x1="40" x2="314" y1="{{ ch.py }}" y2="{{ ch.py }}" stroke="rgba(246,234,214,.55)" stroke-width="1.2" stroke-dasharray="4 4"></line>
+            <polyline points="{{ ch.line }}" fill="none" stroke="#F2C463" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+            <sc-for list="{{ ch.xs }}" as="x" hint-placeholder-count="5">
+              <text x="{{ x.x }}" y="156" text-anchor="middle" font-family="Saira Condensed" font-size="10.5" fill="#A89078">{{ x.label }}</text>
+            </sc-for>
+            <sc-for list="{{ ch.marks }}" as="m" hint-placeholder-count="1">
+              <polygon points="{{ m.pts }}" fill="{{ m.fill }}" stroke="#140A06" stroke-width="1"></polygon>
+              <text x="{{ m.x }}" y="{{ m.ty }}" text-anchor="start" font-family="Zen Kaku Gothic New" font-size="9.5" fill="{{ m.fill }}">{{ m.text }}</text>
+            </sc-for>
+            <circle cx="{{ ch.lx }}" cy="{{ ch.ly }}" r="7" fill="rgba(255,200,61,.18)"></circle>
+            <circle cx="{{ ch.lx }}" cy="{{ ch.ly }}" r="3.5" fill="#FFF4E2"></circle>
+          </svg>
+          <div style="display:flex;flex-wrap:wrap;gap:6px 16px;font-size:11px;color:#A89078;padding:2px 0 4px">
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:16px;height:0;border-top:1.5px dashed rgba(246,234,214,.6)"></span>元本</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:16px;height:2px;background:#F2C463"></span>{{ ch.lineLabel }}</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:10px;background:rgba(242,196,99,.3)"></span>{{ ch.areaLabel }}</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;transform:rotate(45deg);background:#F2C463"></span>開始・変更</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;transform:rotate(45deg);background:#FF9A5A"></span>入金</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;transform:rotate(45deg);background:#7FB2FF"></span>出金</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- price -->
+      <sc-if value="{{ hasPrice }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 16px;border-radius:10px;border:1px solid rgba(255,200,61,.18);background:rgba(20,10,6,.6)">
+          <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.24em;color:#C9A56A">PRICE</span>
+          <span style="font-size:12px;color:#E9DCC8">今日の値段</span>
+          <sc-for list="{{ prices }}" as="p" hint-placeholder-count="2">
+            <span style="display:flex;align-items:baseline;gap:5px"><span style="font-family:'Cinzel',serif;font-weight:600;font-size:10px;letter-spacing:.12em;color:{{ p.fg }}">{{ p.code }}</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px">{{ p.v }}</span></span>
+          </sc-for>
+          <span style="margin-left:auto;font-size:11px;color:#8E7A66">{{ priceAt }}</span>
+        </div>
+      </sc-if>
+
+      <!-- history -->
+      <sc-if value="{{ hasHistory }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px">
+          <div style="display:flex;align-items:baseline;gap:10px;padding:0 2px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">HISTORY</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">これまでの期間</span>
+            <span style="margin-left:auto;font-size:11px;color:#A89078">新しい順</span>
+          </div>
+          <div style="position:relative;display:flex;flex-direction:column;gap:12px;padding-left:22px">
+            <div style="position:absolute;left:6px;top:8px;bottom:20px;width:1px;background:linear-gradient(180deg,rgba(255,200,61,.6),rgba(255,200,61,.1))"></div>
+            <sc-for list="{{ history }}" as="h" hint-placeholder-count="2">
+              <div style="position:relative">
+                <span style="position:absolute;left:-20px;top:17px;width:8px;height:8px;transform:rotate(45deg);background:#140A06;border:1px solid #F2C463"></span>
+                <div style="border-radius:12px;border:1px solid rgba(255,200,61,.24);background:rgba(26,13,8,.78);padding:12px 14px 12px;display:flex;flex-direction:column;gap:9px">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="display:flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:4px;border:1px solid {{ h.badge.border }};background:{{ h.badge.bg }};color:{{ h.badge.fg }}"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:13px;line-height:1">{{ h.badge.glyph }}</span><span style="font-family:'Cinzel',serif;font-weight:600;font-size:10px;letter-spacing:.14em">{{ h.badge.code }}</span></span>
+                    <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:14px">{{ h.name }}</span>
+                    <span style="margin-left:auto;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:13px;color:#A89078">{{ h.span }}</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr))">
+                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:10px;color:#A89078">トレードで増えた枚数</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:18px;color:{{ h.tradeColor }}">{{ h.tradeCoin }}</span><span style="font-family:'Saira Condensed',sans-serif;font-size:12px;color:#A89078">{{ h.tradeUsd }}</span></div>
+                    <div style="display:flex;flex-direction:column;gap:2px;padding-left:12px;border-left:1px solid rgba(255,200,61,.16)"><span style="font-size:10px;color:#A89078">値上がり益</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:18px;color:{{ h.marketColor }}">{{ h.market }}</span><span style="font-family:'Saira Condensed',sans-serif;font-size:12px;color:#A89078">{{ h.priceMove }}</span></div>
+                  </div>
+                  <dc-import name="Rengoku Breakdown" variant="thin" principal="{{ h.bd.principal }}" trade="{{ h.bd.trade }}" market="{{ h.bd.market }}" motion="{{ motion }}" hint-size="100%,6px"></dc-import>
+                  <div style="display:flex;flex-direction:column;gap:3px;font-size:11px;color:#A89078">
+                    <div style="display:flex;gap:8px"><span style="width:100px;flex:none;white-space:nowrap">元本</span><span style="font-family:'Saira Condensed',sans-serif;font-size:13px;color:#E9DCC8">{{ h.principal }}</span></div>
+                    <div style="display:flex;gap:8px"><span style="width:100px;flex:none;white-space:nowrap">終わった時の価値</span><span style="font-family:'Saira Condensed',sans-serif;font-size:13px;color:#FFF4E2">{{ h.end }}</span></div>
+                  </div>
+                  <div style="display:flex"><span style="padding:2px 8px;border-radius:3px;border:1px solid rgba(255,200,61,.3);font-size:10px;color:#E9C98A">{{ h.reason }}</span></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- total -->
+        <div style="border-radius:14px;border:1px solid rgba(255,200,61,.5);background:rgba(26,13,8,.9);box-shadow:inset 0 0 0 4px rgba(17,8,5,.6),inset 0 0 0 5px rgba(255,200,61,.1);padding:14px 18px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">TOTAL</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">通算</span>
+            <span style="margin-left:auto;font-size:11px;color:#A89078">{{ total.span }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr))">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;color:#A89078">トレードの損益</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:30px;line-height:1.2;color:#F2C463">{{ total.trade }}</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px;padding-left:14px;border-left:1px solid rgba(255,200,61,.18)"><span style="font-size:11px;color:#A89078">値上がり益</span><span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:30px;line-height:1.2;color:#FF9A5A">{{ total.market }}</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <div style="display:grid;grid-template-columns:52px 60px minmax(0,1fr) minmax(0,1fr);gap:6px;padding:6px 0;border-bottom:1px solid rgba(255,200,61,.14);font-size:10px;color:#8E7A66"><span>期間</span><span>通貨</span><span style="text-align:right">トレード</span><span style="text-align:right">値上がり</span></div>
+            <sc-for list="{{ total.rows }}" as="r" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:52px 60px minmax(0,1fr) minmax(0,1fr);gap:6px;padding:6px 0;border-bottom:1px solid rgba(255,200,61,.08);align-items:center">
+                <span style="font-size:12px">{{ r.name }}</span>
+                <span style="font-family:'Cinzel',serif;font-weight:600;font-size:10px;letter-spacing:.12em;color:{{ r.fg }}">{{ r.code }}</span>
+                <span style="text-align:right;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:{{ r.tc }}">{{ r.trade }}</span>
+                <span style="text-align:right;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:{{ r.mc }}">{{ r.market }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- notes -->
+      <div style="display:flex;flex-direction:column;gap:8px;padding:6px 4px 0">
+        <sc-for list="{{ notes }}" as="n" hint-placeholder-count="2">
+          <div style="display:flex;gap:10px;font-size:12px;line-height:1.7;color:#A89078;text-wrap:pretty"><span style="width:5px;height:5px;margin-top:8px;transform:rotate(45deg);background:rgba(242,196,99,.6);flex:none"></span><span>{{ n }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:800},&quot;scenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;btc&quot;,&quot;usdt&quot;,&quot;new&quot;,&quot;doge&quot;,&quot;mismatch&quot;],&quot;default&quot;:&quot;btc&quot;,&quot;tsType&quot;:&quot;'btc'|'usdt'|'new'|'doge'|'mismatch'&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  BADGE = {
+    BTC: { code: 'BTC', glyph: '₿', fg: '#E8A24A', bg: 'rgba(232,162,74,.14)', border: 'rgba(232,162,74,.5)' },
+    ETH: { code: 'ETH', glyph: 'Ξ', fg: '#A3AEE8', bg: 'rgba(163,174,232,.13)', border: 'rgba(163,174,232,.45)' },
+    USDT: { code: 'USDT', glyph: '₮', fg: '#4FB894', bg: 'rgba(79,184,148,.12)', border: 'rgba(79,184,148,.45)' },
+    USDC: { code: 'USDC', glyph: '$', fg: '#93A8C6', bg: 'rgba(147,168,198,.12)', border: 'rgba(147,168,198,.45)' },
+    DOGE: { code: 'DOGE', glyph: 'Ð', fg: '#B9A48F', bg: 'rgba(185,164,143,.12)', border: 'rgba(185,164,143,.4)' }
+  };
+  usd(x, sign, dp = 2) { return (sign ? (x < 0 ? '−' : '+') : '') + '$' + Math.abs(x).toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp }); }
+  num(x, dp) { return Math.abs(x).toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp }); }
+  chart(pts, P, marks, fmtY, kind) {
+    const X0 = 44, X1 = 304, Y0 = 16, Y1 = 128;
+    const vals = pts.map(p => p.v).concat(P);
+    let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * .18 || 1; lo -= pad; hi += pad;
+    const x = i => X0 + (pts.length === 1 ? 0 : i / (pts.length - 1) * (X1 - X0));
+    const y = v => Y1 - (v - lo) / (hi - lo) * (Y1 - Y0);
+    const line = pts.map((p, i) => `${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(' ');
+    const area = 'M' + pts.map((p, i) => `${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(' L') + ` L${x(pts.length - 1).toFixed(1)},${y(P).toFixed(1)} L${x(0).toFixed(1)},${y(P).toFixed(1)} Z`;
+    const grid = [0, .5, 1].map(f => { const v = lo + pad + f * (hi - lo - 2 * pad); return { y: y(v).toFixed(1), ty: (y(v) + 3).toFixed(1), label: fmtY(v) }; });
+    const MC = { start: '#F2C463', change: '#F2C463', in: '#FF9A5A', out: '#7FB2FF' };
+    const mk = marks.map(m => { const cx = x(m.i), cy = y(pts[m.i].v); return { pts: `${cx},${cy - 6} ${cx + 5},${cy} ${cx},${cy + 6} ${cx - 5},${cy}`, fill: MC[m.kind], text: m.text, x: (cx + 8).toFixed(1), ty: (cy - 8).toFixed(1) }; });
+    const last = pts.length - 1;
+    return { line, area, grid, py: y(P).toFixed(1), xs: pts.map((p, i) => ({ x: x(i).toFixed(1), label: p.d })), marks: mk, lx: x(last).toFixed(1), ly: y(pts[last].v).toFixed(1),
+      en: kind === 'usd' ? 'GROWTH' : 'COINS', title: kind === 'usd' ? 'ドルの成長' : '枚数の成長',
+      lineLabel: kind === 'usd' ? '元本 + トレードの損益' : '元本 + トレードで増えた枚数', areaLabel: kind === 'usd' ? 'トレードで増えた分' : 'トレードで増えた枚数' };
+  }
+  scenario(id) {
+    const B = this.BADGE;
+    const notes = ['手数料はトレードの利益（ドル）にだけかかり、値上がり益にはかかりません。', 'BTC や ETH の値段が下がると、トレードで勝っていてもドルの価値は減ることがあります。枚数は減りません。'];
+    const btcChart = () => this.chart([{ d: '10/1', v: .02 }, { d: '10/2', v: .02046 }, { d: '10/3', v: .02079 }, { d: '10/4', v: .02068 }, { d: '10/5', v: .0215 }], .02, [{ i: 0, kind: 'start', text: '開始' }], v => v.toFixed(4), 'coin');
+    const btc = {
+      cur: { badge: B.BTC, span: '期間 1 · 10/1 から · 5 日目', hero: '0.0215', heroUnit: 'BTC', hasSub: true, sub: '≈ $1,354.50', principal: '0.0200 BTC @ $60,000 = $1,200.00', principalNote: '10/1 に自動で記録' },
+      tiles: [
+        { en: 'TRADE', label: 'トレードで増えた枚数', value: '+0.0015 BTC', sub: '+$90.00 · 打ち手の成果', color: '#F2C463', sw: 'linear-gradient(180deg,#FFE9A8,#E0A93A)' },
+        { en: 'MARKET', label: '値上がり益', value: '+$64.50', sub: 'BTC $60,000 → $63,000', color: '#FF9A5A', sw: 'linear-gradient(180deg,#FFB070,#E2602A)' }
+      ],
+      bd: { principal: 1200, trade: 90, market: 64.5, coinPrincipal: .02, coinTrade: .0015, coinSym: 'BTC' },
+      ch: btcChart(), prices: [{ code: 'BTC', fg: B.BTC.fg, v: '$63,000' }, { code: 'ETH', fg: B.ETH.fg, v: '$2,410' }], priceAt: '10/5(月) 18:45 更新',
+      banners: [], history: null, notes
+    };
+    if (id === 'btc') return btc;
+    if (id === 'mismatch') return { ...btc, banners: [{ text: '自動の判定では ETH ですが、ご申告は BTC です。表示はご申告の BTC に合わせています。', link: '確かめる ›', color: '#FFB04A', border: 'rgba(255,176,74,.55)' }] };
+    if (id === 'usdt') return {
+      cur: { badge: B.USDT, span: '期間 3 · 10/10 から · 4 日目', hero: '$1,288.00', heroUnit: '', hasSub: false, sub: '', principal: '$1,250.00', principalNote: '10/10 に自動で記録' },
+      tiles: [{ en: 'TRADE', label: 'トレードの損益', value: '+$38.00', sub: 'USDT はドルのまま運用するので、値上がり益はありません', color: '#F2C463', sw: 'linear-gradient(180deg,#FFE9A8,#E0A93A)' }],
+      bd: { principal: 1250, trade: 38, market: null, coinPrincipal: null, coinTrade: null, coinSym: null },
+      ch: this.chart([{ d: '10/10', v: 1250 }, { d: '10/11', v: 1262.4 }, { d: '10/12', v: 1258.1 }, { d: '10/13', v: 1288 }], 1250, [{ i: 0, kind: 'change', text: 'USDT に変更' }], v => '$' + Math.round(v).toLocaleString('en-US'), 'usd'),
+      prices: [{ code: 'BTC', fg: B.BTC.fg, v: '$63,800' }, { code: 'ETH', fg: B.ETH.fg, v: '$2,372' }], priceAt: '10/13(火) 18:45 更新',
+      banners: [{ text: '財布の通貨が USDT に変わったので、新しい期間を始めました。元本 $1,250.00', link: '違う場合 ›', color: '#F2C463', border: 'rgba(255,200,61,.55)' }],
+      history: [
+        { badge: B.ETH, name: '期間 2', span: '10/6〜10/9 · 4 日', tradeCoin: '+0.0180 ETH', tradeUsd: '+$43.00', tradeColor: '#F2C463', market: '−$25.70', marketColor: '#7FB2FF', priceMove: 'ETH $2,400 → $2,350', principal: '0.5000 ETH @ $2,400 = $1,200.00', end: '0.5180 ETH @ $2,350 = $1,217.30', reason: '10/10 USDT に変更', bd: { principal: 1200, trade: 43, market: -25.7 } },
+        { badge: B.BTC, name: '期間 1', span: '10/1〜10/5 · 5 日', tradeCoin: '+0.0015 BTC', tradeUsd: '+$90.00', tradeColor: '#F2C463', market: '+$64.50', marketColor: '#FF9A5A', priceMove: 'BTC $60,000 → $63,000', principal: '0.0200 BTC @ $60,000 = $1,200.00', end: '0.0215 BTC @ $63,000 = $1,354.50', reason: '10/6 BTC を出金 · ETH に変更', bd: { principal: 1200, trade: 90, market: 64.5 } }
+      ],
+      total: { span: '3 期間 · 13 日', trade: '+$171.00', market: '+$38.80', rows: [
+        { name: '期間 3', code: 'USDT', fg: B.USDT.fg, trade: '+$38.00', tc: '#F2C463', market: '—', mc: '#8E7A66' },
+        { name: '期間 2', code: 'ETH', fg: B.ETH.fg, trade: '+$43.00', tc: '#F2C463', market: '−$25.70', mc: '#7FB2FF' },
+        { name: '期間 1', code: 'BTC', fg: B.BTC.fg, trade: '+$90.00', tc: '#F2C463', market: '+$64.50', mc: '#FF9A5A' }
+      ] },
+      notes
+    };
+    if (id === 'new') return {
+      cur: { badge: B.BTC, span: '期間 1 · 10/10 から · 1 日目', hero: '0.0200', heroUnit: 'BTC', hasSub: true, sub: '≈ $1,260.00', principal: '0.0200 BTC @ $63,000 = $1,260.00', principalNote: '10/10 に自動で記録' },
+      tiles: [], bd: null, ch: null, isNew: true,
+      prices: [{ code: 'BTC', fg: B.BTC.fg, v: '$63,000' }, { code: 'ETH', fg: B.ETH.fg, v: '$2,410' }], priceAt: '10/10(土) 18:45 更新', banners: [], history: null, notes
+    };
+    if (id === 'doge') return {
+      cur: { badge: B.DOGE, span: '期間 1 · 10/8 から · 3 日目', hero: '5,420.00', heroUnit: 'DOGE', hasSub: false, sub: '', principal: '5,240.00 DOGE', principalNote: '10/8 に自動で記録' },
+      tiles: [{ en: 'TRADE', label: 'トレードで増えた枚数', value: '+180.00 DOGE', sub: 'ドルへの換算と値上がり益は出していません', color: '#F2C463', sw: 'linear-gradient(180deg,#FFE9A8,#E0A93A)' }],
+      bd: null, ch: this.chart([{ d: '10/8', v: 5240 }, { d: '10/9', v: 5296 }, { d: '10/10', v: 5420 }], 5240, [{ i: 0, kind: 'start', text: '開始' }], v => Math.round(v).toLocaleString('en-US'), 'coin'),
+      prices: null, banners: [{ text: 'DOGE は枚数だけ表示しています。ドルの換算と値上がり益は USDT・USDC・BTC・ETH だけです。', link: '', color: '#B9A48F', border: 'rgba(185,164,143,.45)' }], history: null,
+      notes: ['対応している通貨に変えると、次の期間からドルの価値と値上がり益も表示されます。']
+    };
+  }
+  renderVals() {
+    const s = this.scenario(this.props.scenario ?? 'btc');
+    return {
+      ...s, motion: this.props.motion ?? true,
+      hasTiles: s.tiles.length > 0, hasBreakdown: !!s.bd, hasChart: !!s.ch, hasPrice: !!s.prices, isNew: !!s.isNew,
+      hasHistory: !!s.history, history: s.history || [], total: s.total || { rows: [] }, prices: s.prices || [], bd: s.bd || {}, ch: s.ch || { grid: [], xs: [], marks: [] }
+    };
+  }
+}
+</script>
+</body>
+</html>

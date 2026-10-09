@@ -13,7 +13,8 @@ const HREF: Record<string, (id: string | null) => string> = {
   charge_due: () => '/settlement',
   charge_paid: () => '/settlement',
   referral: () => '/referral',
-  wallet_period: () => '/me',
+  wallet_period: () => '/assets',
+  wallet_override: () => '/admin/members',
 }
 
 export default async function Notifications() {

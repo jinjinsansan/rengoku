@@ -138,3 +138,37 @@ export async function signOut() {
   await supabase.auth.signOut()
   redirect('/')
 }
+
+const WALLET_CURRENCIES = ['USDT', 'USDC', 'BTC', 'ETH'] as const
+
+/**
+ * 財布の通貨を手で直す (2026-10-10・README_WALLET.md W5)。'AUTO' = 自動の判定に戻す。
+ * 次の記録 (10 分ごと) で、直した通貨の新しい期間が始まる。運営にも知らせる。
+ */
+export async function setWalletCurrency(cur: string): Promise<{ ok: boolean; error?: string }> {
+  const { userId, member } = await requireMember()
+  const c = String(cur || '').toUpperCase()
+  const override = c === 'AUTO' ? null : (WALLET_CURRENCIES as readonly string[]).includes(c) ? c : undefined
+  if (override === undefined) return { ok: false, error: '選べない通貨です' }
+  const admin = createAdminClient()
+  const { error } = await admin
+    .from('rg_members')
+    .update({ wallet_currency_override: override, wallet_override_at: new Date().toISOString() })
+    .eq('user_id', userId)
+  if (error) return { ok: false, error: error.message }
+  const { data: staff } = await admin.from('rg_members').select('user_id').in('role', ['staff', 'owner'])
+  const name = member.display_name || '会員'
+  const rows = (staff || [])
+    .filter((s) => s.user_id !== userId)
+    .map((s) => ({
+      user_id: s.user_id,
+      kind: 'wallet_override',
+      ref_id: null,
+      title: override ? `${name} さんが財布の通貨を ${override} に直しました` : `${name} さんが財布の通貨を自動の判定に戻しました`,
+      body: '資産の画面の新しい期間は、次の記録 (10 分ごと) で始まります。',
+    }))
+  if (rows.length) await admin.from('rg_notifications').insert(rows)
+  revalidatePath('/me/wallet')
+  revalidatePath('/assets')
+  return { ok: true }
+}

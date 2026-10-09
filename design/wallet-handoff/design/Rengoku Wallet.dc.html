@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=Cinzel:wght@500;600&family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0C0604;font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:#F6EAD6;-webkit-font-smoothing:antialiased}
+a{color:#F2C463}a:hover{color:#FFE9A8}
+@keyframes rgFlicker{0%{transform:scaleY(1) scaleX(1);opacity:.85}50%{transform:scaleY(1.08) scaleX(.97);opacity:1}100%{transform:scaleY(.95) scaleX(1.03);opacity:.8}}
+</style>
+</helmet>
+
+<section style="background:#0C0604;padding:64px 72px 96px;display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:960px">
+    <div style="font-family:'Cinzel',serif;font-weight:600;letter-spacing:.3em;color:#F2C463;font-size:14px">RENGOKU · ASSETS</div>
+    <div style="font-family:'Zen Old Mincho',serif;font-size:32px;font-weight:700">資産の画面（会員アプリへの追加）</div>
+    <div style="font-size:15px;color:#B9A48F;line-height:1.7;text-wrap:pretty">「トレードで増えた枚数」は金、「値上がり益」は炎色、減った分はどちらも青の斜線で分けています。価値の分解の帯は、小さな増減も見えるよう元本の部分だけ縮めて描き、そのことを帯の上に書き添えました。見本の数字は資料 07 のままです（BTC の会員は期間 1 を運用中の 10/5 時点、USDT の会員は通貨を 2 回変えたあとの 10/13 時点）。</div>
+  </div>
+
+  <!-- W1 -->
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">W1</span><span style="font-family:'Zen Old Mincho',serif;font-size:22px;font-weight:700">ホームの「資産」カード</span></div>
+    <div style="font-size:13px;color:#A89078">ホームの「今日の利益」のすぐ下に置きます。押すと資産の画面が開きます。</div>
+  </div>
+  <div id="W1" style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+    <sc-for list="{{ homeCards }}" as="c" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:13px;font-weight:700;color:#B9A48F">{{ c.caption }}</span>
+        <div style="width:358px;border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.86);padding:14px 18px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;cursor:pointer" style-hover="border-color:rgba(255,200,61,.55)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">ASSETS</span>
+            <span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">資産</span>
+            <span style="display:flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:4px;border:1px solid {{ c.badge.border }};background:{{ c.badge.bg }};color:{{ c.badge.fg }}"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:13px;line-height:1">{{ c.badge.glyph }}</span><span style="font-family:'Cinzel',serif;font-weight:600;font-size:10px;letter-spacing:.14em">{{ c.badge.code }}</span></span>
+            <span style="margin-left:auto;font-size:12px;font-weight:700;color:#F2C463">資産を見る ›</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:7px">
+            <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:40px;line-height:1.2;color:#F2C463;font-variant-numeric:tabular-nums">{{ c.hero }}</span>
+            <span style="font-family:'Cinzel',serif;font-weight:600;font-size:14px;letter-spacing:.1em;color:#E9C98A">{{ c.unit }}</span>
+            <span style="margin-left:auto;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:#E9DCC8">{{ c.sub }}</span>
+          </div>
+          <dc-import name="Rengoku Breakdown" variant="thin" principal="{{ c.bd.principal }}" trade="{{ c.bd.trade }}" market="{{ c.bd.market }}" motion="{{ motion }}" hint-size="100%,6px"></dc-import>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:4px">
+            <sc-for list="{{ c.stats }}" as="s" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column;gap:2px;padding-left:{{ s.pl }};border-left:{{ s.bl }}">
+                <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:#A89078"><span style="width:7px;height:7px;border-radius:2px;background:{{ s.sw }}"></span>{{ s.label }}</span>
+                <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:20px;color:{{ s.color }}">{{ s.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- W2 -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">W2</span><span style="font-family:'Zen Old Mincho',serif;font-size:22px;font-weight:700">資産の画面</span></div>
+    <div style="font-size:13px;color:#A89078">スマホの画面は中でスクロールできます。右の 2 つは同じ画面を縦に全部広げたものです。価値の分解の「ドル / 枚数」も押して切り替えられます。</div>
+  </div>
+  <div id="W2" style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+    <sc-for list="{{ phones }}" as="p" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:13px;font-weight:700;color:#B9A48F">{{ p.caption }}</span>
+        <div style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8;background:#110805"><span>18:47</span><span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span></div>
+          <dc-import name="Rengoku Wallet Screen" scenario="{{ p.scenario }}" motion="{{ motion }}" hint-size="390px,800px" style="position:absolute;top:44px;left:0;width:390px;height:800px;display:block"></dc-import>
+        </div>
+      </div>
+    </sc-for>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#B9A48F">BTC の会員 · 全体</span>
+      <div style="width:390px;border-radius:20px;overflow:hidden;box-shadow:0 0 0 1px #3a2c24,0 30px 60px rgba(0,0,0,.6)">
+        <dc-import name="Rengoku Wallet Screen" scenario="btc" motion="{{ motion }}" hint-size="390px,1900px" style="width:390px;display:block"></dc-import>
+      </div>
+    </div>
+    <div id="W4" style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#B9A48F">USDT の会員（通貨を 2 回変えた）· 全体 — 期間の履歴と通算（W4）</span>
+      <div style="width:390px;border-radius:20px;overflow:hidden;box-shadow:0 0 0 1px #3a2c24,0 30px 60px rgba(0,0,0,.6)">
+        <dc-import name="Rengoku Wallet Screen" scenario="usdt" motion="{{ motion }}" hint-size="390px,2400px" style="width:390px;display:block"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <!-- PC -->
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <span style="font-size:13px;font-weight:700;color:#B9A48F">PC 1280 · 会員アプリの決まりどおり、中央にスマホ幅で表示</span>
+    <div style="width:1280px;height:800px;border-radius:12px;overflow:hidden;background:#1c1714;box-shadow:0 0 0 1px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+      <div style="height:40px;flex:none;display:flex;align-items:center;gap:8px;padding:0 16px;background:#231d19;border-bottom:1px solid #3a2c24">
+        <span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span><span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span><span style="width:12px;height:12px;border-radius:50%;background:#5a4a40"></span>
+        <span style="margin-left:16px;width:360px;height:24px;border-radius:6px;background:#140F0C;display:flex;align-items:center;padding:0 12px;font-family:system-ui,sans-serif;font-size:12px;color:#8E7A66">rengoku.app/assets</span>
+      </div>
+      <div style="flex:1;position:relative;overflow:hidden;background:#0C0604">
+        <div style="position:absolute;inset:0;background:radial-gradient(40% 70% at 0% 100%,rgba(255,110,31,.32),rgba(179,18,27,.12) 50%,transparent 80%),radial-gradient(40% 70% at 100% 100%,rgba(255,110,31,.32),rgba(179,18,27,.12) 50%,transparent 80%)"></div>
+        <div style="position:absolute;left:0;bottom:-40px;width:520px;height:380px;transform-origin:0 100%;animation:rgFlicker 3.4s ease-in-out infinite alternate;background:radial-gradient(60% 70% at 20% 100%,rgba(255,177,61,.3),rgba(255,90,31,.1) 50%,transparent 78%)"></div>
+        <div style="position:absolute;right:0;bottom:-40px;width:520px;height:380px;transform-origin:100% 100%;animation:rgFlicker 3s ease-in-out infinite alternate-reverse;background:radial-gradient(60% 70% at 80% 100%,rgba(255,177,61,.3),rgba(255,90,31,.1) 50%,transparent 78%)"></div>
+        <div style="position:absolute;left:80px;top:0;bottom:0;display:flex;align-items:center;gap:18px">
+          <span style="width:1px;height:220px;background:linear-gradient(180deg,transparent,rgba(255,200,61,.5),transparent)"></span>
+          <span style="writing-mode:vertical-rl;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.6em;color:rgba(242,196,99,.55)">RENGOKU · MEMBERS</span>
+        </div>
+        <div style="position:absolute;top:0;bottom:0;left:50%;width:390px;margin-left:-195px;border-left:1px solid rgba(255,200,61,.3);border-right:1px solid rgba(255,200,61,.3);box-shadow:0 0 60px rgba(0,0,0,.8)">
+          <dc-import name="Rengoku Wallet Screen" scenario="usdt" motion="{{ motion }}" hint-size="390px,760px" style="width:390px;height:760px;display:block"></dc-import>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W3 -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">W3</span><span style="font-family:'Zen Old Mincho',serif;font-size:22px;font-weight:700">価値の分解 — 値上がり益がプラスの時 / マイナスの時</span></div>
+    <div style="font-size:13px;color:#A89078;max-width:900px;line-height:1.7">マイナスの時は、トレードで伸びた金色の帯の上に、相場で下がった分を青の斜線で重ねます。白い縦線が今の価値です。下の文では「トレードの成果は残っている」ことを先に伝え、怖がらせる言葉は使いません。</div>
+  </div>
+  <div id="W3" style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+    <sc-for list="{{ bds }}" as="b" hint-placeholder-count="3">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:13px;font-weight:700;color:#B9A48F">{{ b.caption }}</span>
+        <div style="width:358px;border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 18px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:.28em;color:#C9A56A">BREAKDOWN</span><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">価値の分解</span></div>
+          <dc-import name="Rengoku Breakdown" principal="{{ b.principal }}" trade="{{ b.trade }}" market="{{ b.market }}" coin-principal="{{ b.cp }}" coin-trade="{{ b.ct }}" coin-sym="{{ b.sym }}" motion="{{ motion }}" hint-size="100%,300px"></dc-import>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- W5 -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">W5</span><span style="font-family:'Zen Old Mincho',serif;font-size:22px;font-weight:700">通貨が変わった時のお知らせ · プロフィールの「財布の通貨」</span></div>
+    <div style="font-size:13px;color:#A89078">財布の通貨は押して選べます。自動で見つけた通貨と違うものを選んだ時だけ、「この通貨にする」が押せるようになります。</div>
+  </div>
+  <div id="W5" style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+    <!-- notifications -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#B9A48F">通知の一覧</span>
+      <div style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8"><span>09:14</span><span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span></div>
+        <div style="height:64px;flex:none;display:flex;align-items:center;padding:0 16px;background:rgba(17,8,5,.92);border-bottom:1px solid rgba(255,200,61,.35)">
+          <div style="flex:1"><span style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,200,61,.6);display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2C463" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;line-height:1.15"><span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;color:#C9A56A">NOTICE</span><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:17px;letter-spacing:.12em">通知</span></div>
+          <div style="flex:1"></div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="flex:none;border-radius:14px;border:1px solid rgba(255,200,61,.6);background:linear-gradient(180deg,rgba(48,22,10,.92),rgba(24,12,7,.92));padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="width:6px;height:6px;border-radius:50%;background:#FF6A24;box-shadow:0 0 6px #FF6A24"></span>
+              <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.24em;color:#C9A56A">WALLET</span>
+              <span style="display:flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:4px;border:1px solid rgba(232,162,74,.5);background:rgba(232,162,74,.14);color:#E8A24A"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:13px;line-height:1">₿</span><span style="font-family:'Cinzel',serif;font-weight:600;font-size:10px;letter-spacing:.12em">BTC</span></span>
+              <span style="color:#A89078;font-size:12px">→</span>
+              <span style="display:flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:4px;border:1px solid rgba(163,174,232,.45);background:rgba(163,174,232,.13);color:#A3AEE8"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:13px;line-height:1">Ξ</span><span style="font-family:'Cinzel',serif;font-weight:600;font-size:10px;letter-spacing:.12em">ETH</span></span>
+              <span style="margin-left:auto;font-family:'Saira Condensed',sans-serif;font-size:13px;color:#A89078">10/6 09:12</span>
+            </div>
+            <div style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:16px">新しい期間を始めました</div>
+            <div style="font-size:13px;line-height:1.75;color:#E9DCC8;text-wrap:pretty">財布の通貨が ETH に変わったので、新しい期間を始めました。元本 <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:#FFF4E2">0.5000 ETH</span>（= <span style="font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:15px;color:#FFF4E2">$1,200</span>）</div>
+            <div style="padding:8px 10px;border-radius:8px;background:rgba(10,5,3,.5);font-size:12px;line-height:1.6;color:#A89078">これまでの BTC の期間（10/1〜10/5）は、成績を「これまでの期間」に残しました。トレード <span style="font-family:'Saira Condensed',sans-serif;font-size:14px;color:#F2C463">+0.0015 BTC</span> · 値上がり益 <span style="font-family:'Saira Condensed',sans-serif;font-size:14px;color:#FF9A5A">+$64.50</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px">
+              <button style="height:44px;border-radius:10px;border:1px solid #140A06;background:linear-gradient(180deg,#E8822E,#C8441A 55%,#8E1015);box-shadow:inset 0 0 0 1px rgba(255,222,150,.55),0 3px 0 #0A0503;color:#FFF4E2;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:14px;letter-spacing:.08em;cursor:pointer" style-active="transform:translateY(3px);box-shadow:inset 0 0 0 1px rgba(255,222,150,.55),0 0 0 #0A0503">資産を見る</button>
+              <button style="height:44px;border-radius:10px;border:1px solid rgba(255,200,61,.6);background:rgba(20,10,6,.55);box-shadow:0 3px 0 #0A0503;color:#F2C463;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:14px;cursor:pointer" style-active="transform:translateY(3px);box-shadow:0 0 0 #0A0503">違う場合はこちら</button>
+            </div>
+          </div>
+          <sc-for list="{{ otherNotices }}" as="n" hint-placeholder-count="3">
+            <div style="flex:none;border-radius:12px;border:1px solid rgba(255,200,61,.2);background:rgba(26,13,8,.7);padding:12px 14px;display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:.24em;color:#C9A56A">{{ n.en }}</span><span style="margin-left:auto;font-family:'Saira Condensed',sans-serif;font-size:13px;color:#8E7A66">{{ n.at }}</span></div>
+              <span style="font-size:13px;line-height:1.6;color:#C9B8A6">{{ n.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- profile -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:13px;font-weight:700;color:#B9A48F">マイページ · 財布の通貨</span>
+      <div style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8"><span>09:15</span><span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span></div>
+        <div style="height:64px;flex:none;display:flex;align-items:center;padding:0 16px;background:rgba(17,8,5,.92);border-bottom:1px solid rgba(255,200,61,.35)">
+          <div style="flex:1"><span style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,200,61,.6);display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F2C463" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;line-height:1.15"><span style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:.3em;color:#C9A56A">WALLET</span><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:17px;letter-spacing:.12em">財布の通貨</span></div>
+          <div style="flex:1"></div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div style="flex:none;border-radius:14px;border:1px solid rgba(255,200,61,.28);background:rgba(26,13,8,.82);padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;color:#A89078">自動で見つけた通貨</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="display:flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:5px;border:1px solid rgba(163,174,232,.45);background:rgba(163,174,232,.13);color:#A3AEE8"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;line-height:1">Ξ</span><span style="font-family:'Cinzel',serif;font-weight:600;font-size:13px;letter-spacing:.14em">ETH</span></span>
+              <span style="font-size:12px;color:#C9B8A6;line-height:1.5">受け子 PC-01 から<br>10/6 09:12 に見つけました</span>
+            </div>
+          </div>
+          <div style="flex:none;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:baseline;gap:10px;padding:0 2px"><span style="font-family:'Zen Old Mincho',serif;font-weight:700;font-size:15px">手で直す</span><span style="font-size:11px;color:#A89078">違う時だけ選んでください</span></div>
+            <sc-for list="{{ walletOpts }}" as="o" hint-placeholder-count="4">
+              <div style="height:56px;border-radius:12px;border:1px solid {{ o.border }};background:{{ o.bg }};display:flex;align-items:center;gap:12px;padding:0 14px;cursor:pointer" onClick="{{ o.pick }}">
+                <span style="width:20px;height:20px;border-radius:50%;border:1.5px solid {{ o.ring }};display:grid;place-items:center;flex:none"><span style="width:10px;height:10px;border-radius:50%;background:#F2C463;opacity:{{ o.dot }}"></span></span>
+                <span style="display:flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:4px;border:1px solid {{ o.badge.border }};background:{{ o.badge.bg }};color:{{ o.badge.fg }}"><span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:14px;line-height:1">{{ o.badge.glyph }}</span><span style="font-family:'Cinzel',serif;font-weight:600;font-size:11px;letter-spacing:.14em">{{ o.badge.code }}</span></span>
+                <span style="flex:1;font-size:12px;color:#A89078">{{ o.desc }}</span>
+                <sc-if value="{{ o.isAuto }}" hint-placeholder-val="{{ false }}"><span style="padding:1px 6px;border-radius:3px;border:1px solid rgba(255,200,61,.4);font-size:10px;color:#E9C98A">自動</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="flex:none;font-size:12px;line-height:1.7;color:#A89078;text-wrap:pretty">直すと、その日から新しい期間を始め、運営にも知らせます。これまでの期間の成績は変わりません。</div>
+          <button style="flex:none;height:60px;border-radius:12px;border:1px solid #140A06;background:{{ saveBg }};box-shadow:{{ saveShadow }};color:{{ saveColor }};font-family:'Zen Old Mincho',serif;font-weight:700;font-size:17px;letter-spacing:.2em;cursor:pointer;transition:transform 120ms,box-shadow 120ms" style-active="transform:translateY(4px)" onClick="{{ save }}">{{ saveLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- W6 -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">W6</span><span style="font-family:'Zen Old Mincho',serif;font-size:22px;font-weight:700">状態</span></div>
+    <div style="font-size:13px;color:#A89078">ふだんの状態（BTC・USDT）は W2 にあります。ETH の時は、BTC の画面のバッジと単位が ETH に替わるだけです。</div>
+  </div>
+  <div id="W6" style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start">
+    <sc-for list="{{ states }}" as="p" hint-placeholder-count="3">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:13px;font-weight:700;color:#B9A48F">{{ p.caption }}</span>
+        <div style="width:390px;height:844px;border-radius:48px;overflow:hidden;position:relative;background:#110805;box-shadow:0 0 0 10px #201814,0 0 0 11px #3a2c24,0 40px 80px rgba(0,0,0,.7)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:16px;color:#E9DCC8;background:#110805"><span>18:47</span><span style="width:18px;height:10px;border:1.5px solid #E9DCC8;border-radius:3px;box-sizing:border-box;padding:1px"><span style="display:block;width:70%;height:100%;background:#E9DCC8;border-radius:1px"></span></span></div>
+          <dc-import name="Rengoku Wallet Screen" scenario="{{ p.scenario }}" motion="{{ motion }}" hint-size="390px,800px" style="position:absolute;top:44px;left:0;width:390px;height:800px;display:block"></dc-import>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- W7 -->
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+    <div style="display:flex;align-items:center;gap:10px"><span style="padding:3px 9px;border-radius:7px;background:#F2C463;color:#140A06;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px">W7</span><span style="font-family:'Zen Old Mincho',serif;font-size:22px;font-weight:700">新しいトークン</span></div>
+    <div style="font-size:13px;color:#A89078">rengoku-tokens.css の末尾に「資産の画面」（--rg-w-*）として足しました。</div>
+  </div>
+  <div id="W7" style="display:grid;grid-template-columns:repeat(4,minmax(0,240px));gap:14px">
+    <sc-for list="{{ swatches }}" as="s" hint-placeholder-count="12">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:40px;height:40px;border-radius:8px;flex:none;border:1px solid rgba(255,244,226,.12);background:{{ s.v }}"></span>
+        <div style="display:flex;flex-direction:column;min-width:0"><span style="font-family:'Saira Condensed',sans-serif;font-size:14px">{{ s.n }}</span><span style="font-size:11px;color:#A89078">{{ s.d }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;動き&quot;}}">
+class Component extends DCLogic {
+  state = { pick: 'ETH', saved: 'ETH' };
+  renderVals() {
+    const B = {
+      BTC: { code: 'BTC', glyph: '₿', fg: '#E8A24A', bg: 'rgba(232,162,74,.14)', border: 'rgba(232,162,74,.5)' },
+      ETH: { code: 'ETH', glyph: 'Ξ', fg: '#A3AEE8', bg: 'rgba(163,174,232,.13)', border: 'rgba(163,174,232,.45)' },
+      USDT: { code: 'USDT', glyph: '₮', fg: '#4FB894', bg: 'rgba(79,184,148,.12)', border: 'rgba(79,184,148,.45)' },
+      USDC: { code: 'USDC', glyph: '$', fg: '#93A8C6', bg: 'rgba(147,168,198,.12)', border: 'rgba(147,168,198,.45)' }
+    };
+    const TR = 'linear-gradient(180deg,#FFE9A8,#E0A93A)', MK = 'linear-gradient(180deg,#FFB070,#E2602A)';
+    const homeCards = [
+      { caption: 'BTC の会員', badge: B.BTC, hero: '0.0215', unit: 'BTC', sub: '≈ $1,354.50', bd: { principal: 1200, trade: 90, market: 64.5 },
+        stats: [{ label: 'トレードで増えた枚数', value: '+0.0015 BTC', color: '#F2C463', sw: TR, pl: '0px', bl: 'none' }, { label: '値上がり益', value: '+$64.50', color: '#FF9A5A', sw: MK, pl: '14px', bl: '1px solid rgba(255,200,61,.18)' }] },
+      { caption: 'USDT の会員', badge: B.USDT, hero: '$1,288.00', unit: '', sub: '元本 $1,250.00', bd: { principal: 1250, trade: 38, market: null },
+        stats: [{ label: 'トレードの損益（今の期間）', value: '+$38.00', color: '#F2C463', sw: TR, pl: '0px', bl: 'none' }] }
+    ];
+    const s = this.state, auto = 'ETH';
+    const desc = { USDT: 'テザー · ドルのまま', USDC: 'USD コイン · ドルのまま', BTC: 'ビットコイン · 枚数と値上がり益', ETH: 'イーサリアム · 枚数と値上がり益' };
+    const walletOpts = ['USDT', 'USDC', 'BTC', 'ETH'].map(k => {
+      const on = s.pick === k;
+      return { badge: B[k], desc: desc[k], isAuto: k === auto, dot: on ? 1 : 0, ring: on ? '#F2C463' : 'rgba(255,200,61,.35)', border: on ? 'rgba(255,200,61,.75)' : 'rgba(255,200,61,.22)', bg: on ? 'rgba(60,26,10,.85)' : 'rgba(26,13,8,.75)', pick: () => this.setState({ pick: k }) };
+    });
+    const changed = s.pick !== s.saved;
+    return {
+      motion: this.props.motion ?? true, homeCards, walletOpts,
+      phones: [{ caption: 'BTC の会員（期間 1 · 10/5）', scenario: 'btc' }, { caption: 'USDT の会員（期間 3 · 10/13）', scenario: 'usdt' }],
+      bds: [
+        { caption: 'プラスの時 — BTC 期間 1', principal: 1200, trade: 90, market: 64.5, cp: .02, ct: .0015, sym: 'BTC' },
+        { caption: 'マイナスの時 — ETH 期間 2', principal: 1200, trade: 43, market: -25.7, cp: .5, ct: .018, sym: 'ETH' },
+        { caption: '値上がり益がない時 — USDT 期間 3', principal: 1250, trade: 38, market: null, cp: null, ct: null, sym: null }
+      ],
+      states: [
+        { caption: 'まだデータが無い（参加したばかり）', scenario: 'new' },
+        { caption: '対応していない通貨（DOGE）', scenario: 'doge' },
+        { caption: '自動の判定と会員の申告が食い違っている', scenario: 'mismatch' }
+      ],
+      otherNotices: [
+        { en: 'SETTLEMENT', at: '10/6 00:05', text: '10/05 分の精算のご案内です。利益 $12.60 × 30% = $3.78' },
+        { en: 'SETTLEMENT', at: '10/5 21:40', text: '10/04 分のご送金を受け取りました。ありがとうございます。' },
+        { en: 'SALON', at: '10/5 12:00', text: '10/12(日) 03:00〜04:00 システムの更新を行います' }
+      ],
+      saveLabel: changed ? `${s.pick} にする` : (s.saved === auto ? '自動の判定のまま' : `${s.saved} にしました`),
+      saveBg: changed ? 'linear-gradient(180deg,#E8822E,#C8441A 55%,#8E1015)' : 'linear-gradient(180deg,#5a4f48,#3f3530)',
+      saveShadow: changed ? 'inset 0 0 0 1px rgba(255,222,150,.55),inset 0 1px 0 rgba(255,255,255,.35),0 4px 0 #0A0503,0 12px 22px rgba(150,40,10,.3)' : 'none',
+      saveColor: changed ? '#FFF4E2' : '#A89078',
+      save: () => { if (changed) this.setState({ saved: s.pick }); },
+      swatches: [
+        ['--rg-w-btc', '#E8A24A', 'BTC のバッジ'], ['--rg-w-eth', '#A3AEE8', 'ETH のバッジ'], ['--rg-w-usdt', '#4FB894', 'USDT のバッジ'], ['--rg-w-usdc', '#93A8C6', 'USDC のバッジ'],
+        ['--rg-w-unsupported', '#B9A48F', '対応していない通貨'], ['--rg-w-seg-principal', 'linear-gradient(180deg,rgba(246,234,214,.34),rgba(246,234,214,.18))', '分解: 元本'], ['--rg-w-seg-trade', TR, '分解: トレード'], ['--rg-w-seg-market', MK, '分解: 値上がり益'],
+        ['--rg-w-seg-neg', 'repeating-linear-gradient(135deg,rgba(127,178,255,.7) 0 3px,rgba(127,178,255,.18) 3px 6px)', '分解: 減った分'], ['--rg-w-market-text', '#FF9A5A', '値上がり益の文字'], ['--rg-w-chart-area', 'rgba(242,196,99,.3)', 'グラフ: 増えた枚数'], ['--rg-w-warn', '#FFB04A', '食い違いの帯']
+      ].map(([n, v, d]) => ({ n, v, d }))
+    };
+  }
+}
+</script>
+</body>
+</html>
