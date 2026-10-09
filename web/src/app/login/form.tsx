@@ -43,6 +43,7 @@ function LoginForm({ cfg }: { cfg: PublicSupabase }) {
         <input className="rg-input" type="password" autoComplete="current-password" placeholder="パスワード" value={password} onChange={(e) => setPassword(e.target.value)} required />
         {error && <p className="rg-err">{error}</p>}
         <button className="rg-btn" disabled={loading}>{loading ? '確認中…' : 'ログイン'}</button>
+        <Link href="/forgot-password" className="sub" style={{ fontSize: 12, textAlign: 'center' }}>パスワードを忘れた方</Link>
       </form>
       <p className="sub" style={{ textAlign: 'center', fontSize: 13 }}>
         はじめての方は <Link href="/signup" style={{ color: 'var(--rg-gold)' }}>登録</Link>
