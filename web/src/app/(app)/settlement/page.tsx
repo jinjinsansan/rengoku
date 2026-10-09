@@ -1,4 +1,4 @@
-import { requireMember } from '@/lib/member'
+import { isStaff, requireMember } from '@/lib/member'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { fmtJst } from '@/lib/jst'
 import { pnlClass, signedUsd, usd } from '@/lib/money'
@@ -12,7 +12,7 @@ const STATUS_JA: Record<string, string> = { due: 'お支払い待ち', paid: '�
 // 精算: 毎日 0:00 に前日の利益を締め、24 時間以内に送金。期限を過ぎても案内だけ (止めるのは運営が手で)。
 // 言葉づかいは丁寧に・責めない (説明書 6 章)。
 export default async function Settlement() {
-  const { userId } = await requireMember()
+  const { userId, member } = await requireMember()
   const { data } = await createAdminClient()
     .from('rg_daily_charges')
     .select('*')
@@ -72,6 +72,24 @@ export default async function Settlement() {
           </Card>
         )
       })()}
+
+      {due.length === 0 && isStaff(member) && (
+        <Card en="PREVIEW" ja="会員に出る精算の見本（運営だけに表示）">
+          <p className="faint" style={{ fontSize: 11, lineHeight: 1.7, marginTop: 0 }}>
+            運営の方は手数料 0% なので精算は出ません。会員の画面ではこう見えます。押しても注文は作られません。
+          </p>
+          <div className="rg-row" style={{ fontSize: 12 }}>
+            <span className="num" style={{ width: 52 }}>10/08</span>
+            <span className="sub">利益 <span className="num win">+$62.80</span> − 繰越 <span className="num lose">$20.00</span> × 30%</span>
+            <span className="num win" style={{ fontSize: 15 }}>$12.84</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 10, margin: '8px 0' }}>
+            <div className="sub" style={{ fontSize: 12 }}>お支払いの合計</div>
+            <div className="num win" style={{ fontSize: 38, lineHeight: 1 }}>$12.84</div>
+          </div>
+          <PayPanel count={1} total={12.84} demoAddress={process.env.PAYMENT_USDT_TRC20_ADDRESS || ''} />
+        </Card>
+      )}
 
       <Card en="HISTORY" ja="これまでの精算">
         {rows.length === 0 && <p className="sub">まだ精算はありません。毎日 0:00 に前日の分が締められます。</p>}
