@@ -64,5 +64,10 @@ export async function requireStaff() {
 
 /** マスター画面の入口 (田辺版のマスター)。ボタンは rg_members.can_master の人だけに出す。 */
 export function masterUrl(): string {
-  return (process.env.MASTER_URL || 'https://master.rengoku.net/master').trim()
+  return (process.env.MASTER_URL || 'https://master.rengoku.net/master2').trim()
+}
+
+/** 緊急の予備: 前のデザインのマスター画面 (動きは同じ)。新しい画面に何かあった時に使う。 */
+export function masterBackupUrl(): string {
+  return (process.env.MASTER_BACKUP_URL || 'https://master.rengoku.net/master').trim()
 }

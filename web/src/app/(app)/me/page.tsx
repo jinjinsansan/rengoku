@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { isStaff, masterUrl, requireMember } from '@/lib/member'
+import { isStaff, masterBackupUrl, masterUrl, requireMember } from '@/lib/member'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { receiverStatuses } from '@/lib/data'
 import { pnlClass, signedUsd, usd } from '@/lib/money'
@@ -65,6 +65,7 @@ export default async function Me() {
         <div className="faint" style={{ fontSize: 12, marginBottom: 12 }}>ログイン中: {email}</div>
         <div className="rg-stack">
           {member.can_master && <a href={masterUrl()} target="_blank" rel="noopener" className="rg-btn rg-btn-sm">マスター画面</a>}
+          {member.can_master && <a href={masterBackupUrl()} target="_blank" rel="noopener" className="rg-btn-sub rg-btn-sm">マスター画面の予備 (前の画面)</a>}
           {isStaff(member) && <Link href="/admin" className="rg-btn-sub rg-btn-sm">管理者画面</Link>}
           <Link href="/referral" className="rg-btn-sub rg-btn-sm">紹介</Link>
           <form action={signOut}><button className="rg-btn-sub rg-btn-sm">ログアウト</button></form>
