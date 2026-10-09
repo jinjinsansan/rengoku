@@ -226,3 +226,18 @@ create policy rg_referral_own on public.rg_referral_rewards for select using (re
 alter table public.rg_members add column if not exists can_master boolean not null default false;
 -- update public.rg_members m set can_master = true from public.receiver_status rs
 -- where rs.user_id = m.user_id and rs.product = 'bacopy' and rs.executor_id in ('tanabe01', 'tanabe03');
+
+-- ── 2026-10-09 追加: マイナスの繰り越し (相殺) と、まとめて払う送金の注文 ──
+alter table public.rg_daily_charges add column if not exists carry_in numeric(14,2) not null default 0;   -- 前日までの繰り越し (0 か マイナス)
+alter table public.rg_daily_charges add column if not exists net_pnl numeric(14,2);                       -- その日の利益 + 繰り越し
+alter table public.rg_daily_charges add column if not exists carry_out numeric(14,2) not null default 0;  -- 次の日へ繰り越す額 (0 か マイナス)
+
+-- 送金の注文 (bafather.uk の crypto_payments に kind = 'rg_charge' で作る) が、どのチャージをまとめて払うか
+alter table public.crypto_payments drop constraint if exists crypto_payments_kind_check;
+alter table public.crypto_payments add constraint crypto_payments_kind_check check (kind in ('license', 'charge', 'subscription', 'rg_charge'));
+create table if not exists public.rg_payment_items (
+  order_id  uuid not null references public.crypto_payments(id) on delete cascade,
+  charge_id uuid not null references public.rg_daily_charges(id) on delete cascade,
+  primary key (order_id, charge_id)
+);
+alter table public.rg_payment_items enable row level security;   -- サーバー (service role) だけが読み書きする

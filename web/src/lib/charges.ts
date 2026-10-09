@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { addDays } from '@/lib/jst'
-import { chargeFor } from '@/lib/money'
+import { settleDay } from '@/lib/money'
 
 // Rengoku の締めの中身 (毎日 0:15 の cron と、管理者画面の「締めを実行」から呼ぶ)。
 // 同じ日を 2 回流しても二重にならない (user_id + settle_date が一意・既にある行は触らない)。
@@ -20,6 +20,15 @@ export async function runCharges(date: string) {
   const { data: logs } = await admin.from('daily_pnl_log').select('user_id, bet_pnl, pnl_source').eq('date', date).in('user_id', ids)
   const { data: existing } = await admin.from('rg_daily_charges').select('user_id').eq('settle_date', date).in('user_id', ids)
   const done = new Set((existing || []).map((e) => e.user_id))
+  // ★マイナスの繰り越し (2026-10-09): 前日までの最後の行の carry_out を引き継ぐ (相殺しきるまで続く)
+  const { data: prev } = await admin
+    .from('rg_daily_charges')
+    .select('user_id, settle_date, carry_out')
+    .lt('settle_date', date)
+    .in('user_id', ids)
+    .order('settle_date', { ascending: false })
+  const carryBy = new Map<string, number>()
+  for (const r of prev || []) if (!carryBy.has(r.user_id)) carryBy.set(r.user_id, Number(r.carry_out || 0))
   const dueAt = new Date(new Date(`${addDays(date, 1)}T00:00:00+09:00`).getTime() + dueHours * 3600_000).toISOString()
 
   let created = 0
@@ -33,13 +42,16 @@ export async function runCharges(date: string) {
       continue
     }
     const pnl = Number(log.bet_pnl || 0)
-    const amount = chargeFor(pnl, rate)
+    const { carryIn, net, charge: amount, carryOut } = settleDay(pnl, carryBy.get(uid) || 0, rate)
     const { data: row, error } = await admin
       .from('rg_daily_charges')
       .insert({
         user_id: uid,
         settle_date: date,
         daily_pnl: pnl,
+        carry_in: carryIn,
+        net_pnl: net,
+        carry_out: carryOut,
         pnl_source: log.pnl_source,
         rate,
         charge_amount: amount,

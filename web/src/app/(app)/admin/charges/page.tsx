@@ -50,7 +50,10 @@ export default async function AdminCharges({ searchParams }: { searchParams: Pro
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 8 }}>
               <span className="sub" style={{ fontSize: 12 }}>
-                利益 <span className={'num ' + pnlClass(c.daily_pnl)}>{signedUsd(c.daily_pnl)}</span> × {(Number(c.rate) * 100).toFixed(0)}%
+                利益 <span className={'num ' + pnlClass(c.daily_pnl)}>{signedUsd(c.daily_pnl)}</span>
+                {Number(c.carry_in) < 0 && <> 繰越 <span className="num lose">{signedUsd(c.carry_in)}</span></>}
+                {' '}× {(Number(c.rate) * 100).toFixed(0)}%
+                {Number(c.carry_out) < 0 && <> · 翌日へ <span className="num lose">{signedUsd(c.carry_out)}</span></>}
                 {c.due_at && <> · 期限 <span className="num">{fmtJst(c.due_at)}</span></>}
               </span>
               <span className="num win" style={{ fontSize: 26 }}>{usd(c.charge_amount)}</span>
