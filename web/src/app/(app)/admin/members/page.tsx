@@ -4,6 +4,9 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { fmtJst } from '@/lib/jst'
 import { Card } from '@/components/card'
 import { addMember, updateMember } from '../actions'
+import { loadLive, modeLabel } from '@/lib/admin-live'
+import { LivePanel } from '@/components/admin-live'
+import { pnlClass, signedUsd, usd } from '@/lib/money'
 
 const ROLE_JA: Record<string, string> = { owner: 'オーナー', staff: '運営', member: '会員' }
 
@@ -15,11 +18,13 @@ export default async function AdminMembers() {
   const { data: members } = await admin.from('rg_members').select('*').order('joined_at')
   const uids = (members || []).map((m) => m.user_id)
   const none = ['00000000-0000-0000-0000-000000000000']
-  const [{ data: profiles }, { data: rs }, { data: due }] = await Promise.all([
+  const [{ data: profiles }, { data: rs }, { data: due }, live] = await Promise.all([
     admin.from('profiles').select('id, email').in('id', uids.length ? uids : none),
-    admin.from('receiver_status').select('user_id, executor_id, last_seen_at').in('user_id', uids.length ? uids : none),
+    admin.from('receiver_status').select('user_id, executor_id, last_seen_at, engine_running, engine_sha, app_version, product').in('user_id', uids.length ? uids : none),
     admin.from('rg_daily_charges').select('user_id').eq('status', 'due').in('user_id', uids.length ? uids : none),
+    loadLive(),
   ])
+  const master = live.get('__master__')
 
   return (
     <div className="rg-stack">
@@ -27,6 +32,19 @@ export default async function AdminMembers() {
         <Link href="/admin" className="rg-chip">‹ 管理者画面</Link>
         <span className="rg-chip on">会員 {(members || []).length} 人</span>
       </div>
+
+      {master && (
+        <Card en="MASTER" ja="マスター (打ち手)">
+          <div style={{ fontSize: 12, lineHeight: 1.9 }}>
+            方式 {modeLabel(master.money)} · 元本 <span className="num">{usd(Number(master.money.bankroll || 0))}</span> · 1 段目 <span className="num">{usd(Number(master.money.unit || 0))}</span>
+            <br />
+            今の段 {Number(master.money.step || 0) + 1} · 次 <span className="num">{usd(Number(master.money.next_amount || 0))}</span> · 今のセッション{' '}
+            <span className={'num ' + pnlClass(Number(master.money.session_pnl || 0))}>{signedUsd(Number(master.money.session_pnl || 0))}</span>
+            {' '}· 勝-負-分 {master.money.wins ?? 0}-{master.money.losses ?? 0}-{master.money.ties ?? 0}
+          </div>
+          <p className="faint" style={{ fontSize: 10, margin: '4px 0 0' }}>方式や元本を変えるのはマスター画面で。ここは見るだけです。</p>
+        </Card>
+      )}
 
       {owner && (
         <Card en="ADD" ja="bafather.uk の会員を加える">
@@ -52,13 +70,19 @@ export default async function AdminMembers() {
             </div>
             <div className="faint" style={{ fontSize: 12, marginTop: 4 }}>{email} · 入会 <span className="num">{String(m.joined_at).slice(0, 10)}</span></div>
             {recv.map((r) => {
-              const on = Date.now() - new Date(r.last_seen_at).getTime() < 150_000
+              const on = Date.now() - new Date(r.last_seen_at).getTime() < 150_000 && r.engine_running !== false
+              const lv = live.get(r.executor_id)
               return (
-                <div key={r.executor_id} className={'rg-online' + (on ? '' : ' off')} style={{ marginTop: 6 }}>
-                  <i />{r.executor_id} · 最後の通信 <span className="num">{fmtJst(r.last_seen_at)}</span>
+                <div key={r.executor_id}>
+                  <div className={'rg-online' + (on ? '' : ' off')} style={{ marginTop: 6 }}>
+                    <i />{r.executor_id} · 最後の通信 <span className="num">{fmtJst(r.last_seen_at)}</span>
+                    {r.engine_sha && <span className="faint"> · engine <span className="num">{String(r.engine_sha).slice(0, 8).toUpperCase()}</span></span>}
+                  </div>
+                  {lv && <LivePanel r={lv} />}
                 </div>
               )
             })}
+            <Link href={`/admin/members/${m.user_id}`} className="win" style={{ display: 'inline-block', fontSize: 12, marginTop: 8 }}>くわしく (BET の履歴・精算・資産) ›</Link>
             <details style={{ marginTop: 10 }}>
               <summary className="win" style={{ cursor: 'pointer', fontSize: 12 }}>編集する</summary>
               <form action={updateMember} className="rg-stack" style={{ marginTop: 10 }}>

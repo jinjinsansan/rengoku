@@ -325,3 +325,15 @@ alter table public.rg_wallet_snapshots enable row level security;
 alter table public.rg_wallet_periods enable row level security;
 alter table public.rg_wallet_flows enable row level security;
 alter table public.rg_wallet_bets enable row level security;
+
+-- ============================================================
+-- 2026-10-10 管理画面: 受け子ごとの「お金の状態」(マスターから 1 分ごと)
+--   方式・元本・倍率・段・次の額・損益・勝敗・止まっている理由・上限の壁で配らなかった回数・Stake の残高。
+--   executor_id = '__master__' はマスター (田辺さん) 自身。読み書きはサーバー (service role) だけ。
+-- ============================================================
+create table if not exists public.rg_receiver_live (
+  executor_id text primary key,
+  data        jsonb not null default '{}'::jsonb,
+  pushed_at   timestamptz not null default now()
+);
+alter table public.rg_receiver_live enable row level security;
