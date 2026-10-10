@@ -28,6 +28,9 @@ export type LiveMoney = {
   session_open?: boolean
   daily_pnl?: number
   cap_skips_today?: { count: number; last?: { amount?: number; cap?: number; balance?: number; at?: string } }
+  // 2026-10-11: SEQ はマイナスなら次のセッションへ持ち越す
+  seq_carry?: boolean
+  seq_carry_in?: { pnl?: number; count?: number; since?: string }
 }
 
 export type LiveRow = {

@@ -44,6 +44,12 @@ export function LivePanel({ r }: { r: LiveRow }) {
         <span className={'num ' + pnlClass(Number(m.session_pnl || 0))}>{signedUsd(Number(m.session_pnl || 0))}</span>
         <span className="faint"> · 勝-負-分 {wl}</span>
       </Row>
+      {m.seq_carry_in && (
+        <Row k="SEQ 持ち越し">
+          前のセッションまで <span className={'num ' + pnlClass(Number(m.seq_carry_in.pnl || 0))}>{signedUsd(Number(m.seq_carry_in.pnl || 0))}</span>
+          <span className="faint"> · {m.seq_carry_in.count ?? 1} 回目{m.seq_carry_in.since ? ` · ${fmtJst(m.seq_carry_in.since)} から` : ''}</span>
+        </Row>
+      )}
       {stop && <Row k="止まっている" warn>{stop}</Row>}
       {caps && caps.count > 0 && (
         <Row k="上限の壁" warn>
