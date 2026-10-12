@@ -9,6 +9,7 @@ import { addDays, jstDate } from '@/lib/jst'
 import { signedUsd, usd } from '@/lib/money'
 import { Card, KindBadge, Stat } from '@/components/card'
 import { CountUp, Countdown } from '@/components/timers'
+import { RefreshOnReturn } from '@/components/refresh-on-return'
 import { IconCheck } from '@/components/icons'
 
 const WD = ['日', '月', '火', '水', '木', '金', '土']
@@ -75,9 +76,10 @@ export default async function Home() {
       )}
 
       <Card tone="hero" en="TODAY" ja="今日の利益" aside={`${todayStr.slice(5).replace('-', '/')}(${wd(todayStr)}) · 0:00 締め`} className="full">
+        <RefreshOnReturn />
         <CountUp value={today.pnl} />
         <div className="sub" style={{ fontSize: 12 }}>
-          締めまで <span style={{ fontSize: 17, color: 'var(--rg-text)' }}><Countdown target={closeAt} serverNow={now} /></span>
+          {hm(now)} 時点 · 締めまで <span style={{ fontSize: 17, color: 'var(--rg-text)' }}><Countdown target={closeAt} serverNow={now} /></span>
         </div>
         <div className="rg-sep" />
         <div className="rg-stats">

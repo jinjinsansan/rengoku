@@ -37,19 +37,23 @@ export function CountUp({ value, className = '' }: { value: number; className?: 
   const fmt = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : '±'}$${Math.abs(v).toFixed(2)}`
   const [shown, setShown] = useState(value)
   const [glow, setGlow] = useState(false)
+  // ★2026-10-12: 画面に戻って数字が新しくなった時は、0 からでなく前の値から転がす
+  const from = useRef<number | null>(null)
   useEffect(() => {
-    if (reduceMotion() || value === 0) {
+    const prev = from.current ?? 0
+    from.current = value
+    if (reduceMotion() || value === prev) {
       setShown(value)
       return
     }
-    setShown(0)
+    setShown(prev)
     let raf = 0
     let t0 = 0
     const start = setTimeout(() => {
       const step = (t: number) => {
         if (!t0) t0 = t
         const p = Math.min(1, (t - t0) / 1300)
-        setShown(value * (1 - Math.pow(1 - p, 3)))
+        setShown(prev + (value - prev) * (1 - Math.pow(1 - p, 3)))
         if (p < 1) raf = requestAnimationFrame(step)
         else {
           setGlow(true)
